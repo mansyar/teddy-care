@@ -5,10 +5,10 @@
   - [x] pnpm create vite, TS strict, Biome config, `pnpm check` green
 - [x] Task: App shell, routing, base styles (4931060)
   - [x] Routes: care (home), runner, parent panel; 360px portrait baseline, ≥48px targets, pastel theme tokens
-- [ ] Task: PWA wiring (logic: precache config)
-  - [ ] Write failing test for precache manifest contents (logic-bearing) — then implement
-  - [ ] vite-plugin-pwa: manifest, icons, offline precache of shell + art + audio
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: PWA wiring (logic: precache config) (b991512)
+  - [x] Write failing test for precache manifest contents (logic-bearing) — then implement
+  - [x] vite-plugin-pwa: manifest, icons, offline precache of shell + art + audio
+- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Persistence & Stats Engine (logic — full TDD)
 - [ ] Task: IndexedDB wrapper
