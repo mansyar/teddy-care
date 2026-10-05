@@ -1,8 +1,8 @@
 # Track Plan — MVP: Teddy Care Initial Implementation
 
 ## Phase 1: Scaffold & PWA Shell
-- [ ] Task: Init Vite + React + TS app with pnpm, Biome, strict TS
-  - [ ] pnpm create vite, TS strict, Biome config, `pnpm check` green
+- [x] Task: Init Vite + React + TS app with pnpm, Biome, strict TS (f3a543e)
+  - [x] pnpm create vite, TS strict, Biome config, `pnpm check` green
 - [ ] Task: App shell, routing, base styles
   - [ ] Routes: care (home), runner, parent panel; 360px portrait baseline, ≥48px targets, pastel theme tokens
 - [ ] Task: PWA wiring (logic: precache config)
