@@ -1,0 +1,1 @@
+Presentational (no new Vitest): Teddy tap button (squash via WAAPI on float wrapper + happy flash 1.2s), idle antics every 20-40s (hop + joy). Pet action also squashes. Reduced-motion disables rAF/anticts; giggle sound deferred to Phase 6. 30/30 green, check clean, build green.
