@@ -1,31 +1,58 @@
 /**
- * Care screen: Teddy's idle presence.
+ * Care screen: feed / wash / rest / pet Teddy, watch his stats move and his
+ * face react. Wires the save store, stats engine, and mood derivation into
+ * the idle presence (blink + breathe + float).
  *
- * Presentational component (exempt from Vitest per workflow.md — verified via
- * `pnpm build` plus manual/Playwright checks). Shows the base still with a
- * periodic blink swap, the runtime breathe mirror (depth 0.06, 2 breaths/2s,
- * feet planted via transform-origin), and a gentle CSS float.
+ * Screen-level wiring (glue over fully-tested units) — verified via `pnpm
+ * build` plus manual/Playwright checks. Star rewards land in Phase 4.
  */
 import { useEffect, useRef, useState } from "react";
+import StatBar from "../components/StatBar";
 import { breathScaleAt } from "../pet/breathe";
+import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
+import type { CareAction } from "../pet/stats";
+import { usePetSave } from "../pet/usePetSave";
 
-const BASE_FACE = "/teddy/teddy-base.png";
 const BLINK_FACE = "/teddy/teddy-blink.png";
 /** How long the blink face stays visible (ms). */
 const BLINK_DURATION_MS = 180;
 /** Idle delay range between blinks (ms) — relaxed, lifelike rhythm. */
 const BLINK_MIN_DELAY_MS = 3000;
 const BLINK_MAX_DELAY_MS = 5000;
+/** How long the eating face shows after a feed (ms). */
+const EATING_FLASH_MS = 1500;
+
+const ACTIONS: { action: CareAction; icon: string; label: string }[] = [
+	{ action: "feed", icon: "🍎", label: "Feed" },
+	{ action: "wash", icon: "🧼", label: "Wash" },
+	{ action: "rest", icon: "😴", label: "Rest" },
+	{ action: "pet", icon: "💕", label: "Pet" },
+];
+
+const STAT_META = [
+	{ key: "hunger", icon: "🍎", label: "Food" },
+	{ key: "happiness", icon: "😊", label: "Happy" },
+	{ key: "energy", icon: "⚡", label: "Energy" },
+	{ key: "cleanliness", icon: "🧼", label: "Clean" },
+] as const;
 
 export default function CareScreen() {
+	const { save, loading, act } = usePetSave();
 	const [blinking, setBlinking] = useState(false);
+	const [eating, setEating] = useState(false);
 	const spriteRef = useRef<HTMLImageElement>(null);
 
+	// Preload every face so mood swaps never flash.
 	useEffect(() => {
-		// Preload the blink still so the swap never flashes.
-		const preload = new Image();
-		preload.src = BLINK_FACE;
+		for (const face of Object.values(FACE_FOR_MOOD)) {
+			const preload = new Image();
+			preload.src = face;
+		}
+		const blinkPreload = new Image();
+		blinkPreload.src = BLINK_FACE;
+	}, []);
 
+	useEffect(() => {
 		let blinkTimer: number | undefined;
 		let delayTimer: number | undefined;
 		let alive = true;
@@ -69,6 +96,18 @@ export default function CareScreen() {
 		return () => cancelAnimationFrame(frame);
 	}, []);
 
+	const stats = save?.stats;
+	const mood = stats ? deriveMood(stats, { eating }) : "idle";
+	const face = blinking ? BLINK_FACE : FACE_FOR_MOOD[mood];
+
+	const handleAction = (action: CareAction) => {
+		act(action);
+		if (action === "feed") {
+			setEating(true);
+			window.setTimeout(() => setEating(false), EATING_FLASH_MS);
+		}
+	};
+
 	return (
 		<section aria-label="Care">
 			<h1>Teddy Care</h1>
@@ -77,12 +116,36 @@ export default function CareScreen() {
 					<img
 						ref={spriteRef}
 						className="teddy-sprite"
-						src={blinking ? BLINK_FACE : BASE_FACE}
+						src={face}
 						alt="Teddy the teddy bear"
 						draggable={false}
 					/>
 				</div>
 			</div>
+			{loading || !stats ? (
+				<div className="placeholder-card">Waking Teddy up…</div>
+			) : (
+				<>
+					<div className="stat-list">
+						{STAT_META.map(({ key, icon, label }) => (
+							<StatBar key={key} label={label} icon={icon} value={stats[key]} />
+						))}
+					</div>
+					<div className="care-buttons">
+						{ACTIONS.map(({ action, icon, label }) => (
+							<button
+								key={action}
+								type="button"
+								className="care-btn"
+								onClick={() => handleAction(action)}
+								aria-label={label}
+							>
+								<span aria-hidden="true">{icon}</span> {label}
+							</button>
+						))}
+					</div>
+				</>
+			)}
 		</section>
 	);
 }

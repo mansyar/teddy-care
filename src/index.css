@@ -117,3 +117,72 @@ h1 {
 		animation: none;
 	}
 }
+
+.stat-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: white;
+	border: 3px solid var(--color-navy);
+	border-radius: var(--radius-lg);
+	padding: 12px;
+}
+
+.stat-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.stat-icon {
+	font-size: 1.5rem;
+	width: 2rem;
+	text-align: center;
+}
+
+.stat-track {
+	flex: 1;
+	height: 16px;
+	background: var(--color-peach);
+	border: 2px solid var(--color-navy);
+	border-radius: 999px;
+	overflow: hidden;
+	appearance: none;
+}
+
+.stat-track::-webkit-meter-bar {
+	background: var(--color-peach);
+	border-radius: 999px;
+}
+
+.stat-track::-webkit-meter-optimum-value {
+	background: var(--color-leaf);
+	border-radius: 999px;
+}
+
+.stat-track::-moz-meter-bar {
+	background: var(--color-leaf);
+	border-radius: 999px;
+}
+
+.care-buttons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	padding: 16px 0 8px;
+}
+
+.care-btn {
+	min-height: 64px;
+	font-family: inherit;
+	font-size: 1.25rem;
+	color: var(--color-navy);
+	background: var(--color-sun);
+	border: 3px solid var(--color-navy);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+}
+
+.care-btn:active {
+	transform: scale(0.95);
+}
