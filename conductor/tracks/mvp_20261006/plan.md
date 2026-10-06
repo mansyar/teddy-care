@@ -22,7 +22,7 @@
   - [checkpoint: 249a5b2]
 
 ## Phase 3: Care Screen (presentational + wiring)
-- [ ] Task: Teddy idle presence (base still, blink swap, ambient float via CSS)
+- [x] Task: Teddy idle presence (base still, blink swap, ambient float via CSS) (f17e499)
   - [ ] Playwright/manual verification plan noted (exempt from Vitest)
 - [ ] Task: Runtime breathe (JS mirror of breathe envelope, depth 0.06, 2 breaths/2s, face rigid)
 - [ ] Task: Care actions (feed/wash/rest/pet → stat change → face swap → feedback <300ms)
