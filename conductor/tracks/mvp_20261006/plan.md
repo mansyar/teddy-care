@@ -24,7 +24,7 @@
 ## Phase 3: Care Screen (presentational + wiring)
 - [x] Task: Teddy idle presence (base still, blink swap, ambient float via CSS) (f17e499)
   - [ ] Playwright/manual verification plan noted (exempt from Vitest)
-- [ ] Task: Runtime breathe (JS mirror of breathe envelope, depth 0.06, 2 breaths/2s, face rigid)
+- [x] Task: Runtime breathe (JS mirror of breathe envelope, depth 0.06, 2 breaths/2s, face rigid) (e81cf70)
 - [ ] Task: Care actions (feed/wash/rest/pet → stat change → face swap → feedback <300ms)
 - [ ] Task: Touch reactivity (tap squash + giggle + happy flash; idle events 20–40s)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
