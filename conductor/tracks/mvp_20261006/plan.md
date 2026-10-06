@@ -12,7 +12,7 @@
   - [checkpoint: 55c1a58]
 
 ## Phase 2: Persistence & Stats Engine (logic — full TDD)
-- [ ] Task: IndexedDB wrapper
+- [x] Task: IndexedDB wrapper (f6b12c0)
   - [ ] Write failing tests (CRUD, reload persistence, corrupted-save safe reset) — then implement
 - [ ] Task: Stats engine (4 stats, wall-clock deltas, gentle decay, clamps)
   - [ ] Write failing tests (decay math, clamps, kindness: never terminal) — then implement
