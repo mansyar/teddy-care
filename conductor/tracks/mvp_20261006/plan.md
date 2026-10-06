@@ -16,7 +16,7 @@
   - [ ] Write failing tests (CRUD, reload persistence, corrupted-save safe reset) — then implement
 - [x] Task: Stats engine (4 stats, wall-clock deltas, gentle decay, clamps) (ef6e3fe)
   - [ ] Write failing tests (decay math, clamps, kindness: never terminal) — then implement
-- [ ] Task: Mood derivation (stats → face: happy/sad/sleepy/eating/blink-idle)
+- [x] Task: Mood derivation (stats → face: happy/sad/sleepy/eating/blink-idle) (4d57da7)
   - [ ] Write failing tests (threshold mapping incl. bedtime override) — then implement
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
