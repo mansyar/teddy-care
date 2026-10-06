@@ -33,7 +33,7 @@
 - [x] Task: Star economy (earn from care events; balance persisted) (8ae4b27)
   - [x] Write failing tests (earn rules, persistence) — then implement
 - [x] Task: One unlockable costume (accessory overlay or recolor, equippable over any face) (3648c8d)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: 2341fa6]
 
 ## Phase 5: Runner Mini-Game (Phaser)
 - [ ] Task: Phaser mount + run strip integration (15-frame strip from side-run-asfilmed)
