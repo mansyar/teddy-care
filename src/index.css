@@ -84,3 +84,32 @@ h1 {
 	text-align: center;
 	font-size: 1.25rem;
 }
+
+.teddy-stage {
+	display: flex;
+	justify-content: center;
+	padding: 16px 0;
+}
+
+.teddy-sprite {
+	width: min(70vw, 300px);
+	height: auto;
+	animation: teddy-float 3s ease-in-out infinite;
+	user-select: none;
+}
+
+@keyframes teddy-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.teddy-sprite {
+		animation: none;
+	}
+}
