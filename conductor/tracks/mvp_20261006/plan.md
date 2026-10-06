@@ -30,8 +30,8 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: ffb932f]
 
 ## Phase 4: Stars & First Costume (logic + overlay)
-- [~] Task: Star economy (earn from care events; balance persisted)
-  - [ ] Write failing tests (earn rules, persistence) — then implement
+- [x] Task: Star economy (earn from care events; balance persisted) (8ae4b27)
+  - [x] Write failing tests (earn rules, persistence) — then implement
 - [ ] Task: One unlockable costume (accessory overlay or recolor, equippable over any face)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
