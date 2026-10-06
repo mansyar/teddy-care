@@ -32,7 +32,7 @@
 ## Phase 4: Stars & First Costume (logic + overlay)
 - [x] Task: Star economy (earn from care events; balance persisted) (8ae4b27)
   - [x] Write failing tests (earn rules, persistence) — then implement
-- [ ] Task: One unlockable costume (accessory overlay or recolor, equippable over any face)
+- [x] Task: One unlockable costume (accessory overlay or recolor, equippable over any face) (3648c8d)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Runner Mini-Game (Phaser)
