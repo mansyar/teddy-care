@@ -13,12 +13,13 @@
 
 ## Phase 2: Persistence & Stats Engine (logic — full TDD)
 - [x] Task: IndexedDB wrapper (f6b12c0)
-  - [ ] Write failing tests (CRUD, reload persistence, corrupted-save safe reset) — then implement
+  - [x] Write failing tests (CRUD, reload persistence, corrupted-save safe reset) — then implement
 - [x] Task: Stats engine (4 stats, wall-clock deltas, gentle decay, clamps) (ef6e3fe)
-  - [ ] Write failing tests (decay math, clamps, kindness: never terminal) — then implement
+  - [x] Write failing tests (decay math, clamps, kindness: never terminal) — then implement
 - [x] Task: Mood derivation (stats → face: happy/sad/sleepy/eating/blink-idle) (4d57da7)
-  - [ ] Write failing tests (threshold mapping incl. bedtime override) — then implement
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [x] Write failing tests (threshold mapping incl. bedtime override) — then implement
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [checkpoint: 249a5b2]
 
 ## Phase 3: Care Screen (presentational + wiring)
 - [ ] Task: Teddy idle presence (base still, blink swap, ambient float via CSS)
