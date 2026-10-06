@@ -94,8 +94,12 @@ h1 {
 .teddy-sprite {
 	width: min(70vw, 300px);
 	height: auto;
-	animation: teddy-float 3s ease-in-out infinite;
+	transform-origin: bottom center;
 	user-select: none;
+}
+
+.teddy-float {
+	animation: teddy-float 3s ease-in-out infinite;
 }
 
 @keyframes teddy-float {
@@ -109,7 +113,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.teddy-sprite {
+	.teddy-float {
 		animation: none;
 	}
 }
