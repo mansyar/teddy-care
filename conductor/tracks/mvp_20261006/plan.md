@@ -8,7 +8,8 @@
 - [x] Task: PWA wiring (logic: precache config) (b991512)
   - [x] Write failing test for precache manifest contents (logic-bearing) — then implement
   - [x] vite-plugin-pwa: manifest, icons, offline precache of shell + art + audio
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  - [checkpoint: 55c1a58]
 
 ## Phase 2: Persistence & Stats Engine (logic — full TDD)
 - [ ] Task: IndexedDB wrapper
