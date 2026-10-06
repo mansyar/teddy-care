@@ -110,6 +110,16 @@ h1 {
 	-webkit-tap-highlight-color: transparent;
 }
 
+.star-chip {
+	width: fit-content;
+	margin: 0 auto 8px;
+	font-size: 1.5rem;
+	background: white;
+	border: 3px solid var(--color-navy);
+	border-radius: 999px;
+	padding: 4px 16px;
+}
+
 @keyframes teddy-float {
 	0%,
 	100% {

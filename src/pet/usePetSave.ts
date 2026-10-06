@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import { loadSave, type SaveData, saveSave } from "../save/store";
+import { earnCareStar } from "./stars";
 import { applyCareAction, applyWallClockDecay, type CareAction } from "./stats";
 
 export interface PetSave {
@@ -38,10 +39,10 @@ export function usePetSave(): PetSave {
 	const act = useCallback((action: CareAction) => {
 		setSave((prev) => {
 			if (prev === null) return prev;
-			const next: SaveData = {
+			const next: SaveData = earnCareStar({
 				...prev,
 				stats: applyCareAction(prev.stats, action),
-			};
+			});
 			void saveSave(next);
 			return next;
 		});

@@ -192,6 +192,15 @@ export default function CareScreen() {
 	return (
 		<section aria-label="Care">
 			<h1>Teddy Care</h1>
+			{save && (
+				<div
+					className="star-chip"
+					role="status"
+					aria-label={`${save.stars} stars`}
+				>
+					<span aria-hidden="true">⭐</span> {save.stars}
+				</div>
+			)}
 			<div className="teddy-stage">
 				<div className="teddy-float" ref={floatRef}>
 					<button
