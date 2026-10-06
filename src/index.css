@@ -224,3 +224,21 @@ h1 {
 	font-size: 1.1rem;
 	padding: 0 20px;
 }
+
+.runner-track {
+	width: 100%;
+	border: 3px solid var(--color-navy);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	background: #cdeefb;
+}
+
+.runner-track canvas {
+	display: block;
+	width: 100%;
+}
+
+.jump-btn {
+	width: 100%;
+	margin-top: 12px;
+}
