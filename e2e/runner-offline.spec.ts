@@ -34,6 +34,11 @@ test("runner boots from precache with the network off", async ({
 	});
 
 	// The canvas is actually drawing Teddy's world, not a blank box.
-	const shot = await page.locator(".runner-track canvas").screenshot();
-	expect(shot.length).toBeGreaterThan(10_000);
+	// Phaser boots the canvas element before its textures arrive, so poll
+	// until real pixels land instead of trusting the first frame.
+	const canvas = page.locator(".runner-track canvas");
+	await expect(async () => {
+		const shot = await canvas.screenshot();
+		expect(shot.length).toBeGreaterThan(10_000);
+	}).toPass({ timeout: 15000 });
 });
