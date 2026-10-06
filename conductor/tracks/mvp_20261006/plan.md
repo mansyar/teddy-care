@@ -45,7 +45,7 @@
 ## Phase 6: Audio & Parent Panel
 - [x] Task: Placeholder music + SFX via WebAudio; mute persisted; bedtime silences+dims (3e1b4a4)
 - [x] Task: Parent panel (mute, bedtime, reset-save; no PIN) (3e1b4a4)
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: 6f3c1aa]
 
 ## Phase 7: E2E, PWA Proof & Playtest Prep
 - [ ] Task: Playwright flows (install, offline reload, care→star, runner rewards, mute/bedtime persist)
