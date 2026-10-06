@@ -102,6 +102,14 @@ h1 {
 	animation: teddy-float 3s ease-in-out infinite;
 }
 
+.teddy-tap {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
 @keyframes teddy-float {
 	0%,
 	100% {

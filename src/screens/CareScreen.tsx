@@ -1,12 +1,14 @@
 /**
  * Care screen: feed / wash / rest / pet Teddy, watch his stats move and his
  * face react. Wires the save store, stats engine, and mood derivation into
- * the idle presence (blink + breathe + float).
+ * the idle presence (blink + breathe + float), plus touch reactivity (tap
+ * squash, happy flashes, idle antics).
  *
  * Screen-level wiring (glue over fully-tested units) — verified via `pnpm
- * build` plus manual/Playwright checks. Star rewards land in Phase 4.
+ * build` plus manual/Playwright checks. Star rewards land in Phase 4, and
+ * the giggle sound lands with the Phase 6 audio placeholders.
  */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import StatBar from "../components/StatBar";
 import { breathScaleAt } from "../pet/breathe";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
@@ -21,6 +23,11 @@ const BLINK_MIN_DELAY_MS = 3000;
 const BLINK_MAX_DELAY_MS = 5000;
 /** How long the eating face shows after a feed (ms). */
 const EATING_FLASH_MS = 1500;
+/** How long the happy face flashes after a tap or idle antic (ms). */
+const JOY_FLASH_MS = 1200;
+/** Idle antic schedule: Teddy entertains himself every 20–40s. */
+const IDLE_MIN_DELAY_MS = 20000;
+const IDLE_MAX_DELAY_MS = 40000;
 
 const ACTIONS: { action: CareAction; icon: string; label: string }[] = [
 	{ action: "feed", icon: "🍎", label: "Feed" },
@@ -40,7 +47,10 @@ export default function CareScreen() {
 	const { save, loading, act } = usePetSave();
 	const [blinking, setBlinking] = useState(false);
 	const [eating, setEating] = useState(false);
+	const [joy, setJoy] = useState(false);
 	const spriteRef = useRef<HTMLImageElement>(null);
+	const floatRef = useRef<HTMLDivElement>(null);
+	const joyTimer = useRef<number | undefined>(undefined);
 
 	// Preload every face so mood swaps never flash.
 	useEffect(() => {
@@ -50,6 +60,7 @@ export default function CareScreen() {
 		}
 		const blinkPreload = new Image();
 		blinkPreload.src = BLINK_FACE;
+		return () => window.clearTimeout(joyTimer.current);
 	}, []);
 
 	useEffect(() => {
@@ -96,9 +107,69 @@ export default function CareScreen() {
 		return () => cancelAnimationFrame(frame);
 	}, []);
 
+	const flashJoy = useCallback(() => {
+		window.clearTimeout(joyTimer.current);
+		setJoy(true);
+		joyTimer.current = window.setTimeout(() => setJoy(false), JOY_FLASH_MS);
+	}, []);
+
+	/** Squash-and-stretch on the float wrapper (composes with breathe). */
+	const squash = () => {
+		floatRef.current?.animate(
+			[
+				{ transform: "scale(1, 1)" },
+				{ transform: "scale(1.15, 0.8)", offset: 0.35 },
+				{ transform: "scale(0.95, 1.05)", offset: 0.7 },
+				{ transform: "scale(1, 1)" },
+			],
+			{ duration: 320, easing: "ease-out" },
+		);
+	};
+
+	/** Little hop for idle antics. */
+	const hop = useCallback(() => {
+		floatRef.current?.animate(
+			[
+				{ transform: "translateY(0)" },
+				{ transform: "translateY(-28px)", offset: 0.45 },
+				{ transform: "translateY(0)" },
+			],
+			{ duration: 480, easing: "ease-out" },
+		);
+	}, []);
+
+	// Idle antics: every 20–40s Teddy hops and beams to invite play.
+	useEffect(() => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		let timer: number | undefined;
+		let alive = true;
+		const scheduleAntic = () => {
+			const delay =
+				IDLE_MIN_DELAY_MS +
+				Math.random() * (IDLE_MAX_DELAY_MS - IDLE_MIN_DELAY_MS);
+			timer = window.setTimeout(() => {
+				if (!alive) return;
+				hop();
+				flashJoy();
+				scheduleAntic();
+			}, delay);
+		};
+		scheduleAntic();
+		return () => {
+			alive = false;
+			window.clearTimeout(timer);
+		};
+	}, [flashJoy, hop]);
+
 	const stats = save?.stats;
 	const mood = stats ? deriveMood(stats, { eating }) : "idle";
-	const face = blinking ? BLINK_FACE : FACE_FOR_MOOD[mood];
+	const face = blinking
+		? BLINK_FACE
+		: eating
+			? FACE_FOR_MOOD.eating
+			: joy
+				? FACE_FOR_MOOD.happy
+				: FACE_FOR_MOOD[mood];
 
 	const handleAction = (action: CareAction) => {
 		act(action);
@@ -106,20 +177,37 @@ export default function CareScreen() {
 			setEating(true);
 			window.setTimeout(() => setEating(false), EATING_FLASH_MS);
 		}
+		if (action === "pet") {
+			squash();
+			flashJoy();
+		}
+	};
+
+	const handleTapTeddy = () => {
+		// Phase 6 will add the giggle sound here.
+		squash();
+		flashJoy();
 	};
 
 	return (
 		<section aria-label="Care">
 			<h1>Teddy Care</h1>
 			<div className="teddy-stage">
-				<div className="teddy-float">
-					<img
-						ref={spriteRef}
-						className="teddy-sprite"
-						src={face}
-						alt="Teddy the teddy bear"
-						draggable={false}
-					/>
+				<div className="teddy-float" ref={floatRef}>
+					<button
+						type="button"
+						className="teddy-tap"
+						onClick={handleTapTeddy}
+						aria-label="Say hi to Teddy"
+					>
+						<img
+							ref={spriteRef}
+							className="teddy-sprite"
+							src={face}
+							alt="Teddy the teddy bear"
+							draggable={false}
+						/>
+					</button>
 				</div>
 			</div>
 			{loading || !stats ? (
