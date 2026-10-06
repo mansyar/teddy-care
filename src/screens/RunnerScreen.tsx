@@ -58,6 +58,7 @@ export default function RunnerScreen() {
 			<button
 				type="button"
 				className="care-btn jump-btn"
+				onPointerDown={() => apiRef.current?.jump()}
 				onClick={() => apiRef.current?.jump()}
 				aria-label="Jump"
 			>

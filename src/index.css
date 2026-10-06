@@ -238,6 +238,12 @@ h1 {
 	width: 100%;
 }
 
+/* No 300ms tap delay anywhere: the browser never waits for double-tap
+   zoom on buttons, so every toddler tap dispatches immediately. */
+button {
+	touch-action: manipulation;
+}
+
 .jump-btn {
 	width: 100%;
 	margin-top: 12px;
