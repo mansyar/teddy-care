@@ -26,7 +26,7 @@
   - [ ] Playwright/manual verification plan noted (exempt from Vitest)
 - [x] Task: Runtime breathe (JS mirror of breathe envelope, depth 0.06, 2 breaths/2s, face rigid) (e81cf70)
 - [x] Task: Care actions (feed/wash/rest/pet → stat change → face swap → feedback <300ms) (0a8190a)
-- [ ] Task: Touch reactivity (tap squash + giggle + happy flash; idle events 20–40s)
+- [x] Task: Touch reactivity (tap squash + giggle + happy flash; idle events 20–40s) (2b2424d)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: Stars & First Costume (logic + overlay)
