@@ -39,8 +39,8 @@
 - [x] Task: Phaser mount + run strip integration (15-frame strip from side-run-asfilmed) (fbff149)
 - [x] Task: One-button auto-run/jump mechanics (logic: distance→stars, no lose state) (fbff149)
   - [x] Write failing tests (reward math, happy-end guarantee) — then implement
-- [ ] Task: Runner offline from precache (Playwright: airplane-mode run)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Runner offline from precache (Playwright: airplane-mode run) (be76d52)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: 71ab37e]
 
 ## Phase 6: Audio & Parent Panel
 - [ ] Task: Placeholder music + SFX via WebAudio; mute persisted; bedtime silences+dims
