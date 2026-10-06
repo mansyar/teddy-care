@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import { loadSave, type SaveData, saveSave } from "../save/store";
+import { buyCostume } from "./costume";
 import { earnCareStar } from "./stars";
 import { applyCareAction, applyWallClockDecay, type CareAction } from "./stats";
 
@@ -17,6 +18,8 @@ export interface PetSave {
 	loading: boolean;
 	/** Apply a care action instantly (render first, persist in background). */
 	act: (action: CareAction) => void;
+	/** Buy (and equip) a costume by id; no-op when unaffordable or unknown. */
+	buy: (id: string) => void;
 }
 
 export function usePetSave(): PetSave {
@@ -48,5 +51,14 @@ export function usePetSave(): PetSave {
 		});
 	}, []);
 
-	return { save, loading: save === null, act };
+	const buy = useCallback((id: string) => {
+		setSave((prev) => {
+			if (prev === null) return prev;
+			const next = buyCostume(prev, id);
+			if (next !== prev) void saveSave(next);
+			return next;
+		});
+	}, []);
+
+	return { save, loading: save === null, act, buy };
 }

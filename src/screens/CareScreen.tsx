@@ -5,12 +5,13 @@
  * squash, happy flashes, idle antics).
  *
  * Screen-level wiring (glue over fully-tested units) — verified via `pnpm
- * build` plus manual/Playwright checks. Star rewards land in Phase 4, and
- * the giggle sound lands with the Phase 6 audio placeholders.
+ * build` plus manual/Playwright checks. Star rewards and the wardrobe card
+ * are wired here; the giggle sound lands with the Phase 6 audio placeholders.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import StatBar from "../components/StatBar";
 import { breathScaleAt } from "../pet/breathe";
+import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
 import type { CareAction } from "../pet/stats";
 import { usePetSave } from "../pet/usePetSave";
@@ -44,7 +45,7 @@ const STAT_META = [
 ] as const;
 
 export default function CareScreen() {
-	const { save, loading, act } = usePetSave();
+	const { save, loading, act, buy } = usePetSave();
 	const [blinking, setBlinking] = useState(false);
 	const [eating, setEating] = useState(false);
 	const [joy, setJoy] = useState(false);
@@ -163,6 +164,8 @@ export default function CareScreen() {
 
 	const stats = save?.stats;
 	const mood = stats ? deriveMood(stats, { eating }) : "idle";
+	const costumeFilter =
+		COSTUMES.find((c) => c.id === save?.costume)?.filter ?? "none";
 	const face = blinking
 		? BLINK_FACE
 		: eating
@@ -215,6 +218,7 @@ export default function CareScreen() {
 							src={face}
 							alt="Teddy the teddy bear"
 							draggable={false}
+							style={{ filter: costumeFilter }}
 						/>
 					</button>
 				</div>
@@ -241,6 +245,35 @@ export default function CareScreen() {
 							</button>
 						))}
 					</div>
+					{COSTUMES.map((costume) => {
+						const owned = save.costume === costume.id;
+						const affordable = save.stars >= costume.price;
+						return (
+							<div className="wardrobe-card" key={costume.id}>
+								<span aria-hidden="true">{costume.icon}</span>{" "}
+								{owned
+									? `Teddy loves his ${costume.name}!`
+									: `${costume.name} — ⭐${costume.price}`}
+								{!owned && (
+									<button
+										type="button"
+										className="care-btn"
+										disabled={!affordable}
+										onClick={() => buy(costume.id)}
+										aria-label={
+											affordable
+												? `Buy ${costume.name} for ${costume.price} stars`
+												: `${costume.name} costs ${costume.price} stars, keep caring for Teddy`
+										}
+									>
+										{affordable
+											? "Get it!"
+											: `⭐${costume.price - save.stars} to go`}
+									</button>
+								)}
+							</div>
+						);
+					})}
 				</>
 			)}
 		</section>
