@@ -242,3 +242,38 @@ h1 {
 	width: 100%;
 	margin-top: 12px;
 }
+
+/* Bedtime: calm night tint over the whole app (toggled on <body>). */
+body.bedtime {
+	background: #1b2340;
+}
+
+body.bedtime .app-main {
+	filter: brightness(0.72) saturate(0.85);
+}
+
+/* Parent panel: one calm column of full-width decisions. */
+.parent-card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 16px 0;
+}
+
+.parent-card .care-btn {
+	width: 100%;
+}
+
+.care-btn.danger {
+	background: #f2b8b5;
+}
+
+.parent-card p {
+	color: var(--color-navy);
+	font-size: 1rem;
+	margin: 0;
+}
+
+body.bedtime .parent-card p {
+	color: #e8e4f5;
+}

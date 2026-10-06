@@ -7,9 +7,11 @@
  * build` plus manual/Playwright runs.
  */
 import { useEffect, useRef, useState } from "react";
+import { playFanfare } from "../audio/sound";
 import { createRunnerGame, type RunnerApi } from "../game/runGame";
 import { type RunResult, runReward } from "../pet/runner";
 import { usePetSave } from "../pet/usePetSave";
+import { useSettings } from "../pet/useSettings";
 
 interface FinishedRun {
 	result: RunResult;
@@ -18,6 +20,7 @@ interface FinishedRun {
 
 export default function RunnerScreen() {
 	const { award } = usePetSave();
+	const { settings } = useSettings();
 	const hostRef = useRef<HTMLDivElement>(null);
 	const apiRef = useRef<RunnerApi | null>(null);
 	const [runId, setRunId] = useState(0);
@@ -35,12 +38,13 @@ export default function RunnerScreen() {
 			onFinish: (result) => {
 				setFinished({ result, reward: runReward(result) });
 				award(result);
+				playFanfare(settings);
 			},
 		});
 		return () => {
 			game.destroy(true);
 		};
-	}, [runId, award]);
+	}, [runId, award, settings]);
 
 	const runAgain = () => {
 		setFinished(null);

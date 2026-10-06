@@ -7,9 +7,15 @@
  * feedback always lands well under 300ms.
  */
 import { useCallback, useEffect, useState } from "react";
-import { loadSave, type SaveData, saveSave } from "../save/store";
+import {
+	loadSave,
+	type ParentSettings,
+	type SaveData,
+	saveSave,
+} from "../save/store";
 import { buyCostume } from "./costume";
 import { awardRun, type RunResult } from "./runner";
+import { withSettings } from "./settings";
 import { earnCareStar } from "./stars";
 import { applyCareAction, applyWallClockDecay, type CareAction } from "./stats";
 
@@ -23,6 +29,8 @@ export interface PetSave {
 	buy: (id: string) => void;
 	/** Bank a finished runner run (stars + happiness). */
 	award: (result: RunResult) => void;
+	/** Patch parent settings (mute/bedtime), persisted like everything else. */
+	updateSettings: (patch: Partial<ParentSettings>) => void;
 }
 
 export function usePetSave(): PetSave {
@@ -72,5 +80,14 @@ export function usePetSave(): PetSave {
 		});
 	}, []);
 
-	return { save, loading: save === null, act, buy, award };
+	const updateSettings = useCallback((patch: Partial<ParentSettings>) => {
+		setSave((prev) => {
+			if (prev === null) return prev;
+			const next = withSettings(prev, patch);
+			void saveSave(next);
+			return next;
+		});
+	}, []);
+
+	return { save, loading: save === null, act, buy, award, updateSettings };
 }

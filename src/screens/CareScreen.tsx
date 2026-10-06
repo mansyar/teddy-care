@@ -9,12 +9,14 @@
  * are wired here; the giggle sound lands with the Phase 6 audio placeholders.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { playGiggle, playPop, playStar, startMusic } from "../audio/sound";
 import StatBar from "../components/StatBar";
 import { breathScaleAt } from "../pet/breathe";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
 import type { CareAction } from "../pet/stats";
 import { usePetSave } from "../pet/usePetSave";
+import { useSettings } from "../pet/useSettings";
 
 const BLINK_FACE = "/teddy/teddy-blink.png";
 /** How long the blink face stays visible (ms). */
@@ -46,6 +48,7 @@ const STAT_META = [
 
 export default function CareScreen() {
 	const { save, loading, act, buy } = usePetSave();
+	const { settings } = useSettings();
 	const [blinking, setBlinking] = useState(false);
 	const [eating, setEating] = useState(false);
 	const [joy, setJoy] = useState(false);
@@ -163,7 +166,9 @@ export default function CareScreen() {
 	}, [flashJoy, hop]);
 
 	const stats = save?.stats;
-	const mood = stats ? deriveMood(stats, { eating }) : "idle";
+	const mood = stats
+		? deriveMood(stats, { eating, bedtime: settings.bedtime })
+		: "idle";
 	const costumeFilter =
 		COSTUMES.find((c) => c.id === save?.costume)?.filter ?? "none";
 	const face = blinking
@@ -176,20 +181,25 @@ export default function CareScreen() {
 
 	const handleAction = (action: CareAction) => {
 		act(action);
+		startMusic(settings);
 		if (action === "feed") {
 			setEating(true);
+			playPop(settings);
 			window.setTimeout(() => setEating(false), EATING_FLASH_MS);
-		}
-		if (action === "pet") {
+		} else if (action === "pet") {
 			squash();
 			flashJoy();
+			playGiggle(settings);
+		} else {
+			playPop(settings);
 		}
 	};
 
 	const handleTapTeddy = () => {
-		// Phase 6 will add the giggle sound here.
+		startMusic(settings);
 		squash();
 		flashJoy();
+		playGiggle(settings);
 	};
 
 	return (
@@ -259,7 +269,10 @@ export default function CareScreen() {
 										type="button"
 										className="care-btn"
 										disabled={!affordable}
-										onClick={() => buy(costume.id)}
+										onClick={() => {
+											buy(costume.id);
+											playStar(settings);
+										}}
 										aria-label={
 											affordable
 												? `Buy ${costume.name} for ${costume.price} stars`
