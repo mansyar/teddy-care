@@ -49,6 +49,6 @@
 
 ## Phase 7: E2E, PWA Proof & Playtest Prep
 - [x] Task: Playwright flows (install, offline reload, care→star, runner rewards, mute/bedtime persist) (bd2f189)
-- [ ] Task: Real-phone build + install + airplane-mode pass
-- [ ] Task: Son playtest gate (feed→happy→star + runner run unaided)
-- [~] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Real-phone build + install + airplane-mode pass
+- [x] Task: Son playtest gate (feed→happy→star + runner run unaided)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: 938bdaa]
