@@ -1,0 +1,24 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "prompt": "cozy toddler bedroom interior background for a kids pet game, 2D flat cartoon style with thick navy outlines and soft pastel colors, tall vertical room, warm cream walls with pale blue wainscot, a small wooden toddler bed with a patchwork quilt in the upper left, a white wardrobe with a round mirror in the upper right, a small clawfoot bathtub with a rubber duck on the middle right wall, a ceramic pet food bowl on the floor lower left, an open wooden toy box with scattered blocks lower right, a large window with soft daylight on the upper wall, warm wooden floor with a round pastel rug in the open center, gentle rounded shapes, children's picture book mood, no characters, no people, no animals, no text",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\room-portrait.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\room-portrait.png.raw.png",
+  "raw_bytes": 3928594,
+  "elapsed_seconds": 98.662,
+  "model": "grok-imagine-image-2.0",
+  "session_id": null,
+  "refs": [],
+  "transparent": false,
+  "alpha": null,
+  "chroma": null,
+  "extra": {
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "endpoint": "/images/generations",
+    "aspect_ratio_source": "request-or-auto",
+    "quality": "medium",
+    "resolution": "2k"
+  },
+  "provider_resolved_from": "explicit"
+}
