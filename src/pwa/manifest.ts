@@ -48,4 +48,6 @@ export const PRECACHE_ART: string[] = [
 	"teddy/room-landscape.webp",
 	"teddy/teddy-walk.webp",
 	"teddy/closet.webp",
+	// Bubble Pop: rising bubble sprite for the tap mini-game (WebP).
+	"teddy/bubble.webp",
 ];
