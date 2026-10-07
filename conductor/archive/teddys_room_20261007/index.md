@@ -7,3 +7,6 @@ toy box, closet) replacing the care buttons. Feature track ("Track 2" from
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)
 - [Metadata](./metadata.json)
+
+*Archived 2026-10-07 — reviewed (conductor-review), findings applied,
+approved.*
