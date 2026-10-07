@@ -50,4 +50,9 @@ export const PRECACHE_ART: string[] = [
 	"teddy/closet.webp",
 	// Bubble Pop: rising bubble sprite for the tap mini-game (WebP).
 	"teddy/bubble.webp",
+
+	// Puzzle Pieces: three round pictures, sliced into pieces at runtime (WebP).
+	"teddy/puzzle-ball.webp",
+	"teddy/puzzle-tub.webp",
+	"teddy/puzzle-bed.webp",
 ];
