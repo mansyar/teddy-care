@@ -124,6 +124,16 @@ export function playStar(settings: ParentSettings): void {
 	]);
 }
 
+/** Shimmering ascending run for the buy-a-costume celebration. */
+export function playSparkle(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 880, delayS: 0, durationS: 0.1, volume: 0.09 },
+		{ frequency: 1175, delayS: 0.07, durationS: 0.1, volume: 0.09 },
+		{ frequency: 1320, delayS: 0.14, durationS: 0.12, volume: 0.1 },
+		{ frequency: 1760, delayS: 0.21, durationS: 0.3, volume: 0.1 },
+	]);
+}
+
 /** Little victory run for finishing the race. */
 export function playFanfare(settings: ParentSettings): void {
 	play(settings, [

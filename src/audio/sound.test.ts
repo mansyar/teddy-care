@@ -202,6 +202,30 @@ describe("puzzle sounds", () => {
 	});
 });
 
+describe("wardrobe buy celebration", () => {
+	it("playSparkle exists as a function", async () => {
+		const s = await load();
+		expect(typeof s.playSparkle).toBe("function");
+	});
+
+	it("playSparkle stays silent under mute and bedtime — no context is created", async () => {
+		installAudioStub();
+		const { playSparkle } = await load();
+		playSparkle(MUTED);
+		playSparkle(BEDTIME);
+		expect(constructed).toBe(0);
+		expect(oscillators).toBe(0);
+	});
+
+	it("audible playSparkle schedules a shimmering run of notes", async () => {
+		installAudioStub();
+		const { playSparkle } = await load();
+		playSparkle(AUDIBLE);
+		expect(constructed).toBe(1);
+		expect(oscillators).toBeGreaterThanOrEqual(4);
+	});
+});
+
 describe("placeholder sounds and music loop", () => {
 	it("giggle, star and fanfare schedule their notes when audible", async () => {
 		installAudioStub();
