@@ -6,7 +6,7 @@
 > TDD applies to all logic-bearing tasks (Red → Green → Refactor).
 > Presentational/asset tasks note their Playwright/manual verification plan.
 
-## Phase 1: Room Foundation — Layout Logic & Art Assets
+## Phase 1: Room Foundation — Layout Logic & Art Assets [checkpoint: 9e3963]
 
 - [x] Task: Write failing tests for room layout module (Red) — baaa4cd
   - [x] POI registry: ids, action mapping, per-orientation anchor positions
