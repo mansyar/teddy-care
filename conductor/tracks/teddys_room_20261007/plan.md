@@ -27,12 +27,13 @@
   (≥48px targets), floor tap zones, Teddy sprite staging reusing
   breathe/blink/eat/joy/sad/sleepy stills - presentational; verify via
   Playwright render checks + manual pass — 07853df
-- [ ] Task: Responsive two-layout CSS: portrait 360px baseline + landscape
-  repositioning of POIs and floor zones — presentational; verify both
-  orientations via Playwright viewport matrix
-- [ ] Task: Reduced-motion behavior: skip walk animation, instant
-  reposition, keep feedback — presentational; verify via Playwright
-  reduced-motion emulation
+- [x] Task: Responsive two-layout CSS: portrait 360px baseline + landscape
+  repositioning of POIs and floor zones - presentational; verify both
+  orientations via Playwright viewport matrix — d97c493
+- [x] Task: Reduced-motion behavior: skip walk animation, instant
+  reposition, keep feedback - presentational; verify via Playwright
+  reduced-motion emulation — d97c493 (walk anim + breathe verified off; the
+  instant-reposition path itself is the Phase 3 controller test)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Interaction — Walk → Act Controller
