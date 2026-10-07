@@ -9,7 +9,9 @@ export default defineConfig({
 	webServer: {
 		command: "pnpm exec vite preview --port 4317",
 		port: 4317,
-		reuseExistingServer: !process.env.CI,
+		// Never reuse a foreign server: a squatter on this port once made the
+		// suite test the wrong app. Playwright always boots its own preview.
+		reuseExistingServer: false,
 	},
 	use: { baseURL: "http://localhost:4317" },
 });

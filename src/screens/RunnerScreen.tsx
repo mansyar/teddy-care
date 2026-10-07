@@ -25,6 +25,12 @@ export default function RunnerScreen() {
 	const apiRef = useRef<RunnerApi | null>(null);
 	const [runId, setRunId] = useState(0);
 	const [finished, setFinished] = useState<FinishedRun | null>(null);
+	// Latest settings for the finish fanfare. The game mounts once per run
+	// and must NOT remount when the save loads: each loadSave resolution
+	// mints a new settings object, which used to reboot Phaser mid-entry
+	// and strand a second canvas in the track.
+	const settingsRef = useRef(settings);
+	settingsRef.current = settings;
 
 	// runId is a deliberate remount key: a fresh game per run.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: remount on runId
@@ -38,13 +44,13 @@ export default function RunnerScreen() {
 			onFinish: (result) => {
 				setFinished({ result, reward: runReward(result) });
 				award(result);
-				playFanfare(settings);
+				playFanfare(settingsRef.current);
 			},
 		});
 		return () => {
 			game.destroy(true);
 		};
-	}, [runId, award, settings]);
+	}, [runId, award]);
 
 	const runAgain = () => {
 		setFinished(null);
