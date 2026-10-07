@@ -36,7 +36,7 @@
   instant-reposition path itself is the Phase 3 controller test)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3: Interaction — Walk → Act Controller
+## Phase 3: Interaction — Walk→Act Controller [checkpoint: fdb5792]
 
 - [x] Task: Write failing tests for interaction controller (Red)
   - [ ] Tap floor → walk target, no action
