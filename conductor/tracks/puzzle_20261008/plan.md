@@ -40,7 +40,7 @@
   `d4689b0`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4 — Puzzle Screen & Route (presentational + e2e)
+## Phase 4 — Puzzle Screen & Route (presentational + e2e) [checkpoint: 618ace5]
 
 - [x] Task: `/puzzle` route + `src/screens/PuzzleScreen.tsx` — board with
   shadow outlines, piece tray, tap-select/tap-place flow, round transitions +
@@ -52,9 +52,9 @@
   snap rather than a cross-screen glide; reduced motion via CSS media query)
 - [x] Task: Reward wiring — `awardPuzzleRound` via `usePetSave` pattern; quit
   after any round keeps earned stars `618ace5`
-- [ ] Task: Commit code changes + attach git note + update plan task status
-  (full-flow e2e noted in Phase 5)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  (full-flow e2e noted in Phase 5) `618ace5`
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5 — E2E, Offline & Docs
 
