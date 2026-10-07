@@ -1,0 +1,14 @@
+Task: Add popBubble WebAudio SFX (Phase 2, TDD)
+
+Red phase: 3 failing tests in src/audio/sound.test.ts (popBubble exists,
+silent under mute/bedtime with no AudioContext created, audible pop
+schedules exactly one oscillator).
+
+Green phase: implemented popBubble in src/audio/sound.ts following the
+established play(settings, notes) pattern — one bright 1150Hz 80ms sine
+blip, gated by isAudible at the shared play() layer so callers never
+branch on mute/bedtime.
+
+Result: 17/17 sound tests passing, pnpm check clean. Files:
+src/audio/sound.ts (popBubble added), src/audio/sound.test.ts
+(bubble pop sound describe block added).
