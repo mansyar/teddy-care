@@ -5,7 +5,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 
 ## Phase 1 — Game Logic Core (TDD)
 
-- [ ] Task: Create pure bubble game module `src/pet/bubbles.ts` — Red phase
+- [x] Task: Create pure bubble game module `src/pet/bubbles.ts` — Red phase `172e847`
   - [ ] Write failing Vitest tests: reward math (`1 + floor(pops/8)`, clamp
     max 5, guarantee min 1), gentle ramp pacing (spawn interval/speed curve
     over the 30s round), round timer expiry behavior
