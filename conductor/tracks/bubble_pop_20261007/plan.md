@@ -51,16 +51,24 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 
 ## Phase 5 — Bubbles Screen & Route (presentational + e2e)
 
-- [ ] Task: Create `/bubbles` route + `BubblesScreen`: 30s round, rising
+- [x] Task: Create `/bubbles` route + `BubblesScreen`: 30s round, rising
   sprite bubbles (CSS transform animation, gentle ramp), tap-to-pop with
   full juice (pop sound, star burst at pop point, corner counter),
-  no-lose overflow, "All done!" summary card + "Again!" replay
-- [ ] Task: Reduced-motion parity (bubbles appear in place) + keyboard
-  parity (Tab-focusable buttons, Enter/Space pops, ≥48px targets)
-- [ ] Task: Wire reward: round end → `bubblesReward()` → `award()`
-  (+10 happiness)
-- [ ] Task: Note Playwright/manual verification plan in task
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  no-lose overflow, "All done!" summary card + "Again!" replay `411f276`
+- [x] Task: Reduced-motion parity (bubbles appear in place) + keyboard
+  parity (Tab-focusable buttons, Enter/Space pops, ≥48px targets) `411f276`
+  (bubbles are real `<button>`s; reduced-motion parks them via
+  `usePrefersReducedMotion` in `src/pet/useMotion.ts`, extracted from
+  RoomScreen so both screens share one hook)
+- [x] Task: Wire reward: round end → `bubblesReward()` → `award()`
+  (+10 happiness) `411f276` (`awardBubbles` added to `usePetSave`,
+  `awardRun`-pattern clone; fanfare on finish)
+- [x] Task: Note Playwright/manual verification plan in task
+  (e2e for the full round lands in Phase 6's `bubble-pop.spec.ts`; this
+  phase verified via `pnpm check` clean, 121/121 unit tests, `pnpm build`
+  ok, plus manual run of `pnpm dev` → toy box → Bubbles!)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `411f276`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6 — E2E, Offline & Docs
