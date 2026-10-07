@@ -2,7 +2,7 @@
 
 **Track:** `puzzle_20261008` · Follows `conductor/workflow.md` methodology.
 
-## Phase 1 — Puzzle Logic Core (TDD)
+## Phase 1 — Puzzle Logic Core (TDD) [checkpoint: 0915f26]
 
 - [x] Task: Write failing tests first (`src/pet/puzzle.test.ts`) — round
   configs (4/6/9 pieces; grids 2×2, 3×2, 3×3), slicing math (grid → percent
@@ -16,7 +16,7 @@
   15 tests)
 - [x] Task: Commit code changes + attach git note + update plan task status
   `0915f26`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2 — Sounds (TDD)
 
