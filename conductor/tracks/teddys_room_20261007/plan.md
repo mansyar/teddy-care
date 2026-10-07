@@ -17,7 +17,7 @@
   `assets/teddy/`, runtime copy → `public/teddy/`) — presentational;
   verify via visual review + later e2e render checks — f29a49c
 - [x] Task: Generate landscape room background (sprite-gen) — presentational — 1e4c693
-- [x] Task: Generate walk cycle strip (sprite-gen, gentle gait) — presentational — 7949363
+- [x] Task: Generate walk cycle strip (sprite-gen, gentle gait) — presentational — 7949363, 9e39631 (take 3 accepted after gait review)
 - [x] Task: Generate closet/mirror POI art (sprite-gen) — presentational — 05d8ee8
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
