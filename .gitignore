@@ -34,3 +34,8 @@ assets/teddy/run-set/side-run/
 *.njsproj
 *.sln
 *.sw?
+
+# Walk-set intermediates (finals are committed)
+assets/teddy/walk-set/side-walk/frames/
+assets/teddy/walk-set/side-walk/clip*.mp4
+assets/teddy/walk-set/probe/

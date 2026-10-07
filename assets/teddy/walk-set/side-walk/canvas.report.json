@@ -1,0 +1,79 @@
+{
+  "kind": "sprite-gen-video-canvas-report",
+  "still": [
+    1024,
+    1024
+  ],
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set\\side-walk\\canvas.png",
+  "state": "walk",
+  "fit": "state",
+  "shape": "square",
+  "ratio": 1.0,
+  "canvas": [
+    1024,
+    1024
+  ],
+  "offset": [
+    0,
+    0
+  ],
+  "headroom": 0.0,
+  "lead": 0.0,
+  "trail": 0.0,
+  "facing": "right",
+  "key_rgb": [
+    255,
+    255,
+    255
+  ],
+  "corner_rgb": [
+    255,
+    255,
+    255
+  ],
+  "key": null,
+  "key_painted": [
+    255,
+    255,
+    255
+  ],
+  "normalized_px": 0,
+  "normalized_pct": 0.0,
+  "why": "in-place motion fits the still's own frame",
+  "facing_check": {
+    "model": "grok-4.6",
+    "usage": {
+      "input_tokens": 1108,
+      "input_tokens_details": {
+        "cached_tokens": 640
+      },
+      "output_tokens": 624,
+      "output_tokens_details": {
+        "reasoning_tokens": 610
+      },
+      "total_tokens": 1732,
+      "num_sources_used": 0,
+      "num_server_side_tools_used": 0,
+      "cost_in_usd_ticks": 17000000,
+      "context_details": {
+        "input_tokens": 1108,
+        "output_tokens": 631
+      }
+    },
+    "response_status": "completed",
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "direction": "right",
+    "confidence": 0.95,
+    "confidence_source": "model-self-report",
+    "requested": "right",
+    "fix": "none",
+    "action": "none",
+    "source": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-side-right.png",
+    "source_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9",
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set\\side.facing.png",
+    "final_direction": "right",
+    "final_direction_source": "observation",
+    "output_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9"
+  }
+}

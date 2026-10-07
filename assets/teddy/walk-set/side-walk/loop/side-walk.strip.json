@@ -1,0 +1,228 @@
+{
+  "frames": 18,
+  "w": 441,
+  "h": 520,
+  "kind": "periodic",
+  "loop": true,
+  "body_h": 515,
+  "body_src_h": 890,
+  "body_ref": "tallest-grounded",
+  "scale": 0.5791,
+  "delay_ms": 41.67,
+  "cycle_frames": 18,
+  "cycle_seconds": 0.75,
+  "subsampled": false,
+  "cell_cap": 64,
+  "top_margin_px": 39,
+  "cell_height_cap": 520,
+  "body_height_target": null,
+  "foot_anchor": "motion-auto",
+  "drift_px": 0,
+  "foot_sway_px": 0,
+  "foot_x": null,
+  "state": "walk",
+  "drawings": {
+    "hold": 1,
+    "drawings_per_second": 24.0,
+    "contrast": {
+      "2": 0.9728,
+      "3": 0.9482
+    },
+    "frames": 68
+  },
+  "cycle_drawings": {
+    "start": 3,
+    "length": 18,
+    "steps": 18,
+    "hold": 1,
+    "drawings_per_second": 24.0,
+    "contrast": {
+      "2": 0.9707,
+      "3": 0.9484
+    }
+  },
+  "motion_anchor": {
+    "method": "masked-ncc-boundary-velocity-v1",
+    "regions": [
+      [
+        330,
+        192,
+        504,
+        360
+      ],
+      [
+        492,
+        336,
+        666,
+        504
+      ]
+    ],
+    "region_weights": [
+      0.7,
+      0.3
+    ],
+    "search_radius_xy": [
+      14,
+      28
+    ],
+    "coarse_dx_px": 0,
+    "boundary_measurements": [
+      {
+        "k": 0,
+        "dx": 0,
+        "dy": 0,
+        "cost": -3.5762786865234374e-08,
+        "region_costs": [
+          0.0,
+          -1.1920928955078125e-07
+        ]
+      },
+      {
+        "k": 1,
+        "dx": 3,
+        "dy": 7,
+        "cost": 0.09203022122383117,
+        "region_costs": [
+          0.02831268310546875,
+          0.2407044768333435
+        ]
+      },
+      {
+        "k": 2,
+        "dx": 8,
+        "dy": 14,
+        "cost": 0.13367058038711546,
+        "region_costs": [
+          0.03875696659088135,
+          0.3551356792449951
+        ]
+      },
+      {
+        "k": 15,
+        "dx": -4,
+        "dy": -22,
+        "cost": 0.15802013874053955,
+        "region_costs": [
+          0.053803086280822754,
+          0.4011932611465454
+        ]
+      },
+      {
+        "k": 16,
+        "dx": -4,
+        "dy": -15,
+        "cost": 0.1547188878059387,
+        "region_costs": [
+          0.037800610065460205,
+          0.4275282025337219
+        ]
+      },
+      {
+        "k": 17,
+        "dx": -3,
+        "dy": -8,
+        "cost": 0.1401590585708618,
+        "region_costs": [
+          0.03410762548446655,
+          0.38761240243911743
+        ]
+      }
+    ],
+    "raw_start_velocity_xy": [
+      -4.0,
+      -7.0
+    ],
+    "raw_end_velocity_xy": [
+      -0.5,
+      -7.0
+    ],
+    "endpoint_float_xy": [
+      -0.7083333333333334,
+      -0.9444444444444444
+    ],
+    "endpoint_xy": [
+      -1,
+      -1
+    ],
+    "shifts_xy": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1
+      ]
+    ],
+    "padding_ltrb": [
+      1,
+      1,
+      0,
+      0
+    ]
+  }
+}

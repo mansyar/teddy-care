@@ -1,0 +1,85 @@
+{
+  "kind": "sprite-gen-video-set-report",
+  "root": "D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set",
+  "states": [
+    "walk"
+  ],
+  "facing": "right",
+  "facing_fix": "none",
+  "directions": [
+    "side@right"
+  ],
+  "body_height": null,
+  "ok": 0,
+  "failed": [
+    "side-walk"
+  ],
+  "warnings": [],
+  "items": [
+    {
+      "item": "side-walk",
+      "direction": "side",
+      "state": "walk",
+      "dir": "D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set\\side-walk",
+      "turned": "right",
+      "canvas": {
+        "fit": "state",
+        "shape": "square",
+        "canvas": [
+          1024,
+          1024
+        ],
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "facing": {
+        "model": "grok-4.6",
+        "usage": {
+          "input_tokens": 1108,
+          "input_tokens_details": {
+            "cached_tokens": 640
+          },
+          "output_tokens": 624,
+          "output_tokens_details": {
+            "reasoning_tokens": 610
+          },
+          "total_tokens": 1732,
+          "num_sources_used": 0,
+          "num_server_side_tools_used": 0,
+          "cost_in_usd_ticks": 17000000,
+          "context_details": {
+            "input_tokens": 1108,
+            "output_tokens": 631
+          }
+        },
+        "response_status": "completed",
+        "auth_source": "grok-login",
+        "transport": "xai-api",
+        "direction": "right",
+        "confidence": 0.95,
+        "confidence_source": "model-self-report",
+        "requested": "right",
+        "fix": "none",
+        "action": "none",
+        "source": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-side-right.png",
+        "source_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9",
+        "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set\\side.facing.png",
+        "final_direction": "right",
+        "final_direction_source": "observation",
+        "output_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9"
+      },
+      "clip": {
+        "attempts": [
+          0
+        ],
+        "duration": 3,
+        "last_frame": false
+      },
+      "ok": false,
+      "error": "cutout: no background located from corners in D:\\Projects\\raise-the-pet\\assets\\teddy\\walk-set\\side-walk\\frames\\raw\\frame-0003.png (estimated bg (248, 247, 242)); is the border actually a uniform colour?"
+    }
+  ],
+  "cycle_align": {}
+}
