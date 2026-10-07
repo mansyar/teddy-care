@@ -1,0 +1,23 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "model": "grok-imagine-image-2.0",
+  "prompt": "white wooden wardrobe with a large round mirror on its front, 2D flat cartoon style with thick navy outlines and soft pastel colors, closed double doors with small round golden handles, standing on short wooden legs, gentle rounded shapes, children's picture book style for a kids pet game, centered object, no characters, no text",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\closet.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\closet.png.raw.png",
+  "transparent": true,
+  "alpha": {
+    "strategy": "chroma",
+    "key": "magenta",
+    "alpha_zero_pct": 100.0,
+    "note": "Chroma keying keyed out the ENTIRE frame: white wardrobe on cream background is hue-inseparable. Final asset was rebuilt from the raw instead (see deviation)."
+  },
+  "deviation": "Final closet.png is the raw image with the Grok watermark (bottom-right) patched by cloning the strip to its left; kept as opaque cream-background art for the wardrobe panel UI. Runtime copy public/teddy/closet.webp (40KB, q90).",
+  "extra": {
+    "auth_source": "grok-login",
+    "aspect_ratio": "1:1",
+    "quality": "medium",
+    "resolution": "1k",
+    "size": "1024x1024"
+  }
+}
