@@ -170,6 +170,38 @@ describe("bubble pop sound", () => {
 	});
 });
 
+describe("puzzle sounds", () => {
+	it("exposes the three puzzle SFX", async () => {
+		const s = await load();
+		expect(typeof s.playPickup).toBe("function");
+		expect(typeof s.playSnap).toBe("function");
+		expect(typeof s.playBoop).toBe("function");
+	});
+
+	it("stays silent under mute and bedtime", async () => {
+		for (const settings of [MUTED, BEDTIME]) {
+			const s = await load();
+			installAudioStub();
+			s.playPickup(settings);
+			s.playSnap(settings);
+			s.playBoop(settings);
+			expect(constructed).toBe(0);
+			expect(oscillators).toBe(0);
+		}
+	});
+
+	it("audible pickup, snap, and boop schedule their blips", async () => {
+		const s = await load();
+		installAudioStub();
+		s.playPickup(AUDIBLE);
+		expect(oscillators).toBe(1);
+		s.playSnap(AUDIBLE);
+		expect(oscillators).toBe(3);
+		s.playBoop(AUDIBLE);
+		expect(oscillators).toBe(5);
+	});
+});
+
 describe("placeholder sounds and music loop", () => {
 	it("giggle, star and fanfare schedule their notes when audible", async () => {
 		installAudioStub();

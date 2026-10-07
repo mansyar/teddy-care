@@ -2,8 +2,9 @@
 
 ## Architecture: Hybrid
 **React PWA shell + embedded mini-games.** React owns care UI, stats,
-persistence, parent panel; Phaser mounts inside the runner route, while
-the Bubble Pop tap mini-game is pure React/DOM (2026-10-08, Track 3).
+persistence, parent panel; Phaser mounts inside the runner route, while the
+Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
+(2026-10-08, Tracks 3–4).
 
 > Versions: use the latest mutually-compatible releases at scaffold time
 > (recorded in Track 1's plan). No pinned versions in this doc.

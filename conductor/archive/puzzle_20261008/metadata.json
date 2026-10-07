@@ -1,0 +1,11 @@
+{
+  "id": "puzzle_20261008",
+  "title": "Puzzle Pieces — tap-to-place jigsaw mini-game with three-round climb",
+  "type": "feature",
+  "status": "complete",
+  "created": "2026-10-08",
+  "completed": "2026-10-08",
+  "branch": "track/puzzle-minigame",
+  "spec": "spec.md",
+  "plan": "plan.md"
+}

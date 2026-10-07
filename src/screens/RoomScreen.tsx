@@ -342,6 +342,14 @@ export default function RoomScreen() {
 					</button>
 					<button
 						type="button"
+						className="mini-menu-btn"
+						onClick={() => navigate("/puzzle")}
+						aria-label="Play the puzzle game"
+					>
+						<span aria-hidden="true">🧩</span> Puzzle!
+					</button>
+					<button
+						type="button"
 						className="care-btn"
 						ref={closeMenuRef}
 						onClick={() => setMenuOpen(false)}

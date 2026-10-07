@@ -27,6 +27,12 @@ describe("PWA manifest", () => {
 		expect(PRECACHE_ART).toContain("teddy/bubble.webp");
 	});
 
+	it("precaches all three puzzle pictures for the puzzle mini-game", () => {
+		expect(PRECACHE_ART).toContain("teddy/puzzle-ball.webp");
+		expect(PRECACHE_ART).toContain("teddy/puzzle-tub.webp");
+		expect(PRECACHE_ART).toContain("teddy/puzzle-bed.webp");
+	});
+
 	it("keeps the offline payload lean: no raw exports or preview GIFs", () => {
 		for (const art of PRECACHE_ART) {
 			expect(art).not.toContain(".raw.png");

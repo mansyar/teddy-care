@@ -6,6 +6,7 @@
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
 import BubblesScreen from "./screens/BubblesScreen.tsx";
 import ParentScreen from "./screens/ParentScreen.tsx";
+import PuzzleScreen from "./screens/PuzzleScreen.tsx";
 import RoomScreen from "./screens/RoomScreen.tsx";
 import RunnerScreen from "./screens/RunnerScreen.tsx";
 
@@ -18,6 +19,7 @@ export default function App() {
 						<Route path="/" element={<RoomScreen />} />
 						<Route path="/runner" element={<RunnerScreen />} />
 						<Route path="/bubbles" element={<BubblesScreen />} />
+						<Route path="/puzzle" element={<PuzzleScreen />} />
 						<Route path="/parents" element={<ParentScreen />} />
 						{/* Unknown hashes land back home — never an empty room. */}
 						<Route path="*" element={<RoomScreen />} />

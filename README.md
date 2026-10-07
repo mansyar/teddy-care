@@ -6,14 +6,14 @@ he loves you back with expressive faces, breathing idle motion, and playful
 reactions. Free forever: no ads, no accounts, zero tracking.
 
 - **Audience:** children ages 4+ (tap-first, zero reading) and their parents
-- **Screens:** Care (home) · Mini-games: Runner & Bubble Pop · Parent panel (mute, bedtime, reset)
+- **Screens:** Care (home) · Mini-games: Runner, Bubble Pop & Puzzle · Parent panel (mute, bedtime, reset)
 - **Offline:** full PWA — install it, use airplane mode, everything still works
 
 ## Tech Stack
 
 - **React 19 + Vite + TypeScript** (strict) — app shell, care UI, parent panel
 - **Phaser 4** — runner mini-game (mounted per run inside the React shell)
-- **Pure React/DOM** — Bubble Pop mini-game (CSS-animated sprite bubbles)
+- **Pure React/DOM** — Bubble Pop + Puzzle Pieces mini-games (CSS sprites/animations)
 - **Plain CSS** with custom properties — pastel theme, tiny payload
 - **IndexedDB** (local-only) — stats, stars, costumes, settings
 - **vite-plugin-pwa** — installable, offline via precache
@@ -41,14 +41,14 @@ pnpm test:e2e   # Playwright flows (care, mini-games, offline, settings)
 
 ```
 src/
-  screens/    RoomScreen, RunnerScreen, BubblesScreen, ParentScreen (React glue)
+  screens/    RoomScreen, RunnerScreen, BubblesScreen, PuzzleScreen, ParentScreen (React glue)
   room/      layout, walk→act controller, object-state mapping
-  pet/        Pure game logic: stats, mood, breathe, stars, costume, bubbles, settings
+  pet/        Pure game logic: stats, mood, breathe, stars, costume, bubbles, puzzle, settings
   save/       IndexedDB persistence
   game/       Phaser runner mounting (runGame.ts)
   audio/      WebAudio SFX + music
   pwa/        Manifest / precache list
-public/teddy/ Runtime art (stills, run strip, bubble sprite)
+public/teddy/ Runtime art (stills, run strip, bubble sprite, puzzle pictures)
 assets/teddy/ Asset-pipeline outputs (source stills, reports, previews)
 conductor/    Project docs & track history (Conductor workflow)
 ```

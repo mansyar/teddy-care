@@ -1,0 +1,69 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "prompt": "a sleepy teddy bear tucked into a small cozy bed with a soft blue blanket and a white pillow, a crescent moon and two small stars in the upper corner, 2D flat cartoon style with thick navy outlines and soft pastel colors, children's picture book style for a kids pet game, simple flat scene, the whole scene sits on a solid bright green chroma-key background with a visible green margin all around the scene, absolutely no green colors inside the scene itself, no text, no watermarks",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-bed.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-bed.png.raw.png",
+  "raw_bytes": 629623,
+  "elapsed_seconds": 74.369,
+  "model": "grok-imagine-image-2.0",
+  "session_id": null,
+  "refs": [],
+  "transparent": true,
+  "alpha": {
+    "strategy": "chroma",
+    "strategy_source": "provider-default",
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-bed.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1024x1024",
+    "key": "magenta",
+    "keyed_pixels": 778988,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 6626,
+    "alpha_zero_pct": 74.29,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "chroma": {
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-bed.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1024x1024",
+    "key": "magenta",
+    "keyed_pixels": 778988,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 6626,
+    "alpha_zero_pct": 74.29,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "extra": {
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "endpoint": "/images/generations",
+    "aspect_ratio_source": "request-or-auto",
+    "quality": "medium",
+    "trim_alpha": {
+      "bbox": [
+        173,
+        147,
+        850,
+        836
+      ],
+      "before": [
+        1024,
+        1024
+      ],
+      "after": [
+        677,
+        689
+      ],
+      "margin_px": {
+        "left": 173,
+        "top": 147,
+        "right": 174,
+        "bottom": 188
+      }
+    }
+  },
+  "provider_resolved_from": "explicit"
+}
