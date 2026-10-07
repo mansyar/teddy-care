@@ -1,6 +1,7 @@
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
 import CareScreen from "./screens/CareScreen.tsx";
 import ParentScreen from "./screens/ParentScreen.tsx";
+import RoomScreen from "./screens/RoomScreen.tsx";
 import RunnerScreen from "./screens/RunnerScreen.tsx";
 
 /**
@@ -14,6 +15,8 @@ export default function App() {
 				<main className="app-main">
 					<Routes>
 						<Route path="/" element={<CareScreen />} />
+						{/* Temporary Room preview; replaces CareScreen in Phase 3. */}
+						<Route path="/room" element={<RoomScreen />} />
 						<Route path="/runner" element={<RunnerScreen />} />
 						<Route path="/parents" element={<ParentScreen />} />
 					</Routes>
