@@ -143,6 +143,26 @@ describe("v1 → v2 migration", () => {
 		expect(save.costume).toBeNull();
 	});
 
+	it("lifts the database itself to the current schema version", async () => {
+		await writeRaw({
+			version: 1,
+			stats: { hunger: 50, happiness: 60, energy: 70, cleanliness: 80 },
+			stars: 0,
+			costume: null,
+			settings: { muted: false, bedtime: false },
+			lastSeen: 1000,
+		});
+		await loadSave();
+		const open = indexedDB.open("teddy-care");
+		const db = await new Promise<IDBDatabase>((resolve, reject) => {
+			open.onsuccess = () => resolve(open.result);
+			open.onerror = () => reject(open.error);
+		});
+		const version = db.version;
+		db.close();
+		expect(version).toBe(2);
+	});
+
 	it("migrates v1 through migrateSave without any storage", () => {
 		const migrated = migrateSave({
 			version: 1,

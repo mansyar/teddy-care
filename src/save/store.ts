@@ -118,9 +118,13 @@ export function migrateSave(value: unknown): SaveData {
 /** Open (or create) the save database. */
 function openDb(): Promise<IDBDatabase> {
 	return new Promise((resolve, reject) => {
-		const request = indexedDB.open(DB_NAME, 1);
+		const request = indexedDB.open(DB_NAME, SAVE_VERSION);
 		request.onupgradeneeded = () => {
-			request.result.createObjectStore(STORE_NAME);
+			// Upgrade runs for brand-new databases and for version lifts from
+			// older installs — only create the store when it is missing.
+			if (!request.result.objectStoreNames.contains(STORE_NAME)) {
+				request.result.createObjectStore(STORE_NAME);
+			}
 		};
 		request.onsuccess = () => resolve(request.result);
 		request.onerror = () => reject(request.error);
