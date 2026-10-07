@@ -139,6 +139,29 @@ export function playPopBubble(settings: ParentSettings): void {
 	play(settings, [{ frequency: 1150, delayS: 0, durationS: 0.08 }]);
 }
 
+/** Quick light tick when a puzzle piece is picked up. */
+export function playPickup(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 660, delayS: 0, durationS: 0.06, volume: 0.07 },
+	]);
+}
+
+/** Two-note snap when a puzzle piece lands on its outline. */
+export function playSnap(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 880, delayS: 0, durationS: 0.05 },
+		{ frequency: 1175, delayS: 0.06, durationS: 0.06 },
+	]);
+}
+
+/** Gentle descending boop when a piece meets the wrong outline. */
+export function playBoop(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 300, delayS: 0, durationS: 0.09, volume: 0.08 },
+		{ frequency: 220, delayS: 0.08, durationS: 0.1, volume: 0.08 },
+	]);
+}
+
 /** Placeholder music-box loop (C–E–G lullaby fragment). Idempotent. */
 export function startMusic(settings: ParentSettings): void {
 	if (!isAudible(settings) || musicTimer !== undefined) return;
