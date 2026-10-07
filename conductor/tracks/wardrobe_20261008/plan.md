@@ -2,7 +2,7 @@
 
 **Track:** `wardrobe_20261008` · Follows `conductor/workflow.md` methodology.
 
-## Phase 1 — Wardrobe Logic Core (TDD)
+## Phase 1 — Wardrobe Logic Core (TDD) [checkpoint: 9380764]
 
 - [x] Task: Write failing tests first — costume catalog (3 items:
   `sunset-onesie` 10⭐ filter, `party-hat` 20⭐ overlay, `cozy-scarf` 30⭐
