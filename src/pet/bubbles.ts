@@ -42,10 +42,7 @@ export function awardBubbles(save: SaveData, pops: number): SaveData {
 		stars: save.stars + bubbleReward(pops),
 		stats: {
 			...save.stats,
-			happiness: Math.min(
-				100,
-				save.stats.happiness + BUBBLE_HAPPINESS_BOOST,
-			),
+			happiness: Math.min(100, save.stats.happiness + BUBBLE_HAPPINESS_BOOST),
 		},
 	};
 }

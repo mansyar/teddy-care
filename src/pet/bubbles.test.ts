@@ -10,8 +10,8 @@ import {
 	BUBBLE_MAX_STARS,
 	BUBBLE_POPS_PER_STAR,
 	BUBBLE_ROUND_MS,
-	bubblePace,
 	type BubblePace,
+	bubblePace,
 	bubbleReward,
 } from "./bubbles";
 
