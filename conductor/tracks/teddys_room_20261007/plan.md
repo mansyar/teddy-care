@@ -23,10 +23,10 @@
 
 ## Phase 2: Room Scene UI (Presentational)
 
-- [~] Task: Build `RoomScene` component: layered background, POI hotspots
+- [x] Task: Build `RoomScene` component: layered background, POI hotspots
   (≥48px targets), floor tap zones, Teddy sprite staging reusing
-  breathe/blink/eat/joy/sad/sleepy stills — presentational; verify via
-  Playwright render checks + manual pass
+  breathe/blink/eat/joy/sad/sleepy stills - presentational; verify via
+  Playwright render checks + manual pass — 07853df
 - [ ] Task: Responsive two-layout CSS: portrait 360px baseline + landscape
   repositioning of POIs and floor zones — presentational; verify both
   orientations via Playwright viewport matrix
