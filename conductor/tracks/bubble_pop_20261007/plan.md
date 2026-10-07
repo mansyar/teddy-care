@@ -71,12 +71,13 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
   `411f276`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 6 — E2E, Offline & Docs
+## Phase 6 — E2E, Offline & Docs [checkpoint: 0dfb2e6]
 
-- [ ] Task: Playwright e2e `bubble-pop.spec.ts`: menu entry → full round →
-  stars banked in room star chip; muted path; reduced-motion mode
-- [ ] Task: Extend offline coverage: bubble sprite precached, `/bubbles`
-  renders after offline reload
-- [ ] Task: Update README + `product.md` (Shipped section)
-- [ ] Task: Commit code changes + attach git note + update plan task status
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Playwright e2e `bubble-pop.spec.ts`: menu entry → full round →
+  stars banked in room star chip; muted path; reduced-motion mode `0dfb2e6`
+- [x] Task: Extend offline coverage: bubble sprite precached, `/bubbles`
+  renders after offline reload `0dfb2e6` (`bubbles-offline.spec.ts`)
+- [x] Task: Update README + `product.md` (Shipped section) `0dfb2e6`
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `0dfb2e6`
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
