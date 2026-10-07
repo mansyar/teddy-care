@@ -18,7 +18,7 @@
   `0915f26`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2 — Sounds (TDD)
+## Phase 2 — Sounds (TDD) [checkpoint: c58da95]
 
 - [x] Task: Write failing tests in `src/audio/sound.test.ts` (piece pick-up
   tick, place click, wrong-slot boop — silent under MUTED/BEDTIME fixtures)
@@ -27,7 +27,7 @@
   `play()`/`isAudible` `c58da95`
 - [x] Task: Commit code changes + attach git note + update plan task status
   `c58da95`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3 — Puzzle Art (asset pipeline)
 
