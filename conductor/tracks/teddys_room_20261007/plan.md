@@ -64,11 +64,12 @@
 
 ## Phase 5: Object-State Visuals & Bedtime Staging
 
-- [ ] Task: Write failing tests for stat→object-state mapping (Red):
+- [x] Task: Write failing tests for stat→object-state mapping (Red):
   bowl fill level vs hunger, scruffiness vs cleanliness, droop vs energy
-- [ ] Task: Implement object-state visuals + bedtime staging: room dim,
+  (RED confirmed — module missing; tests committed with mapping — 215c22f)
+- [x] Task: Implement object-state visuals + bedtime staging: room dim,
   glowing bed, sleeping Teddy (Green) — visuals themselves verified via
-  Playwright/manual
+  Playwright/manual — a0bf3ba
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6: E2E, Offline & Polish
