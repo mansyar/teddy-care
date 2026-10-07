@@ -9,4 +9,4 @@
   *Link: [teddys_room_20261007](../archive/teddys_room_20261007/index.md) — archived 2026-10-07 (reviewed, approved)*
 
 - [x] **Track: Bubble Pop — tap mini-game with toy box mini-menu**
-  *Link: [bubble_pop_20261007](./tracks/bubble_pop_20261007/index.md)*
+  *Link: [bubble_pop_20261007](../archive/bubble_pop_20261007/index.md) — archived 2026-10-08 (reviewed, fixes applied, approved)*
