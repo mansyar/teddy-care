@@ -9,7 +9,7 @@
 const DB_NAME = "teddy-care";
 const STORE_NAME = "saves";
 const SAVE_KEY = "save";
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
 
 /** The four care stats, each clamped to 0–100. */
 export interface PetStats {
@@ -32,6 +32,8 @@ export interface SaveData {
 	stars: number;
 	/** Equipped costume id, or null when Teddy wears the default onesie. */
 	costume: string | null;
+	/** Every costume id ever purchased; the wardrobe's free-switching set. */
+	owned: string[];
 	settings: ParentSettings;
 	/** Wall-clock timestamp (ms) of the last save, for decay math. */
 	lastSeen: number;
@@ -43,6 +45,7 @@ export const DEFAULT_SAVE: SaveData = {
 	stats: { hunger: 100, happiness: 100, energy: 100, cleanliness: 100 },
 	stars: 0,
 	costume: null,
+	owned: [],
 	settings: { muted: false, bedtime: false },
 	lastSeen: Date.now(),
 };
@@ -52,11 +55,8 @@ function freshDefault(): SaveData {
 	return JSON.parse(JSON.stringify(DEFAULT_SAVE)) as SaveData;
 }
 
-/** Type guard: true only when `value` is a usable save object. */
-function isSaveData(value: unknown): value is SaveData {
-	if (typeof value !== "object" || value === null) return false;
-	const v = value as Record<string, unknown>;
-	if (v.version !== SAVE_VERSION) return false;
+/** Field checks shared by the v1 and v2 save shapes. */
+function hasValidCommon(v: Record<string, unknown>): boolean {
 	const stats = v.stats as Record<string, unknown> | undefined;
 	if (typeof stats !== "object" || stats === null) return false;
 	for (const key of ["hunger", "happiness", "energy", "cleanliness"]) {
@@ -71,6 +71,48 @@ function isSaveData(value: unknown): value is SaveData {
 	if (typeof settings.muted !== "boolean") return false;
 	if (typeof settings.bedtime !== "boolean") return false;
 	return typeof v.lastSeen === "number" && Number.isFinite(v.lastSeen);
+}
+
+/** Type guard: true only when `value` is a usable v2 save object. */
+function isSaveData(value: unknown): value is SaveData {
+	if (typeof value !== "object" || value === null) return false;
+	const v = value as Record<string, unknown>;
+	if (v.version !== SAVE_VERSION) return false;
+	if (!Array.isArray(v.owned)) return false;
+	if (v.owned.some((id) => typeof id !== "string")) return false;
+	if (typeof v.costume === "string" && !v.owned.includes(v.costume)) {
+		return false;
+	}
+	return hasValidCommon(v);
+}
+
+/** Type guard: true only when `value` is a usable v1 (pre-wardrobe) save. */
+function isSaveDataV1(value: unknown): value is Record<string, unknown> {
+	if (typeof value !== "object" || value === null) return false;
+	const v = value as Record<string, unknown>;
+	return v.version === 1 && hasValidCommon(v);
+}
+
+/**
+ * Lift any stored payload to the current save version: v2 passes through,
+ * v1 migrates (a v1 equipped costume implies ownership), and anything else —
+ * garbage, unknown versions — falls back to safe fresh-install defaults.
+ */
+export function migrateSave(value: unknown): SaveData {
+	if (isSaveData(value)) return value;
+	if (isSaveDataV1(value)) {
+		const costume = value.costume as string | null;
+		return {
+			version: SAVE_VERSION,
+			stats: value.stats as SaveData["stats"],
+			stars: value.stars as number,
+			costume,
+			owned: costume ? [costume] : [],
+			settings: value.settings as SaveData["settings"],
+			lastSeen: value.lastSeen as number,
+		};
+	}
+	return freshDefault();
 }
 
 /** Open (or create) the save database. */
@@ -101,7 +143,7 @@ export async function loadSave(): Promise<SaveData> {
 				request.onerror = () => reject(request.error);
 			});
 			if (value === undefined) return freshDefault();
-			return isSaveData(value) ? value : freshDefault();
+			return migrateSave(value);
 		} finally {
 			db.close();
 		}
