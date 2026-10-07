@@ -16,14 +16,14 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Commit code changes + attach git note + update plan task status `172e847`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2 — Sound (TDD)
+## Phase 2 — Sound (TDD) `[checkpoint: 8d1e979]`
 
 - [x] Task: Add `popBubble` WebAudio SFX to `src/audio/sound.ts` — Red phase `8d1e979`
   - [x] Write failing tests: oscillator scheduling; gated by parent
     mute/bedtime via existing `isAudible` pattern
 - [x] Task: Implement pop SFX — Green phase `8d1e979`
 - [x] Task: Commit code changes + attach git note + update plan task status `8d1e979`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3 — Bubble Sprite Art (asset pipeline)
 
