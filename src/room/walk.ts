@@ -140,6 +140,8 @@ function facingFor(from: Vec2 | undefined, to: Vec2): "left" | "right" {
  * arrival it transitions to idle with a cleared pending action.
  */
 export function arrive(state: WalkState): Arrival {
-	const position = state.position ?? state.target ?? { x: 50, y: 60 };
+	// A walking state has just reached its target — the stale `position`
+	// field is where the walk STARTED, never where Teddy stands now.
+	const position = state.target ?? state.position ?? { x: 50, y: 60 };
 	return { action: state.pendingAction, position };
 }

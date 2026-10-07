@@ -192,6 +192,48 @@ describe("walkDuration", () => {
 	});
 });
 
+describe("arrive", () => {
+	it("an animated walk lands on the target, not the old position", () => {
+		const tap = resolveTap(LAYOUT, CENTER.x + 5, CENTER.y);
+		expect(tap?.kind).toBe("floor");
+		const state = startWalk(
+			{
+				phase: "idle",
+				target: null,
+				pendingAction: null,
+				facing: "right",
+				position: CENTER,
+			},
+			LAYOUT,
+			tapOrThrow(tap),
+			false,
+		);
+		const done = arrive(state);
+		expect(done.action).toBeNull();
+		expect(done.position).toEqual({ x: CENTER.x + 5, y: CENTER.y });
+	});
+
+	it("an already-standing arrival keeps the current position", () => {
+		const poi = poiOrThrow(LAYOUT, "bowl");
+		const target = walkTargetFor(poi);
+		const state = startWalk(
+			{
+				phase: "idle",
+				target: null,
+				pendingAction: null,
+				facing: "right",
+				position: target,
+			},
+			LAYOUT,
+			{ kind: "poi", poi },
+			false,
+		);
+		const done = arrive(state);
+		expect(done.position).toEqual(target);
+		expect(done.action).toBe(poi.action);
+	});
+});
+
 describe("layout sanity for the controller", () => {
 	it("both layouts resolve taps for every POI", () => {
 		for (const layout of [PORTRAIT, LANDSCAPE]) {
