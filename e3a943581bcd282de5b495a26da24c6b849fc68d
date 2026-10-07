@@ -12,3 +12,5 @@ Automated: 10/10 e2e specs pass (room-care x5, room-offline airplane-mode, care-
 Manual/live: 360px portrait + 800x360 landscape screenshots and e2e aspect assertions; payload 6.9MB dist; 182fps average rAF cadence at 4x CPU throttle; q90 walk strip vision-QA'd artifact-free.
 Real-phone pass: user approved checkpoint now, will install and playtest on phone separately (track's final install check).
 User approval: Approve, continue (via question tool).
+
+Real-phone pass CONFIRMED by user (2026-10-07): playtest great - install, offline, and play loop verified by the actual user on an actual phone. Phase 6 deferred item closed.
