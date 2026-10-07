@@ -9,11 +9,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+	playBoop,
 	playFizz,
 	playFootsteps,
 	playGiggle,
 	playMunch,
 	playPop,
+	playSparkle,
 	playStar,
 	playYawn,
 } from "../audio/sound";
@@ -61,7 +63,7 @@ const INITIAL_WALK: WalkState = {
 };
 
 export default function RoomScreen() {
-	const { save, loading, act, buy } = usePetSave();
+	const { save, loading, act, buy, equip } = usePetSave();
 	const { settings } = useSettings();
 	const navigate = useNavigate();
 	const layout = useRoomLayout();
@@ -77,11 +79,13 @@ export default function RoomScreen() {
 	const [sleepyFlash, setSleepyFlash] = useState(false);
 	const [effect, setEffect] = useState<RoomEffect | null>(null);
 	const [petting, setPetting] = useState(false);
+	const [wiggleId, setWiggleId] = useState<string | null>(null);
 	const closeWardrobeRef = useRef<HTMLButtonElement>(null);
 	const closeMenuRef = useRef<HTMLButtonElement>(null);
 	const walkTimer = useRef<number | undefined>(undefined);
 	const stepTimer = useRef<number | undefined>(undefined);
 	const effectTimer = useRef<number | undefined>(undefined);
+	const wiggleTimer = useRef<number | undefined>(undefined);
 	const effectSeq = useRef(0);
 
 	const stats = save?.stats;
@@ -98,6 +102,7 @@ export default function RoomScreen() {
 			window.clearTimeout(walkTimer.current);
 			window.clearInterval(stepTimer.current);
 			window.clearTimeout(effectTimer.current);
+			window.clearTimeout(wiggleTimer.current);
 		},
 		[],
 	);
@@ -128,6 +133,39 @@ export default function RoomScreen() {
 			effectTimer.current = window.setTimeout(() => setEffect(null), 1600);
 		},
 		[],
+	);
+
+	/**
+	 * Wardrobe tap: wear owned items instantly (Teddy behind the panel
+	 * updates live), buy unowned affordable ones with a small celebration,
+	 * or wiggle + boop when stars fall short — never a dead end, never
+	 * failure language.
+	 */
+	const chooseCostume = useCallback(
+		(id: string | null) => {
+			if (!save) return;
+			if (save.costume === id) return; // already wearing it
+			if (id === null || save.owned.includes(id)) {
+				equip(id);
+				return;
+			}
+			const costume = COSTUMES.find((c) => c.id === id);
+			if (!costume) return;
+			if (save.stars >= costume.price) {
+				buy(id);
+				const at = walk.position;
+				if (at) showEffect("sparkle", at.x, at.y - 25);
+				playSparkle(settings);
+			} else {
+				if (!reducedMotion) {
+					setWiggleId(id);
+					window.clearTimeout(wiggleTimer.current);
+					wiggleTimer.current = window.setTimeout(() => setWiggleId(null), 500);
+				}
+				playBoop(settings);
+			}
+		},
+		[buy, equip, reducedMotion, save, settings, showEffect, walk.position],
 	);
 
 	/** Fire a POI action once Teddy arrives (or immediately, reduced motion). */
@@ -277,35 +315,57 @@ export default function RoomScreen() {
 					aria-label="Teddy's wardrobe"
 				>
 					<img src="/teddy/closet.webp" alt="" className="wardrobe-art" />
-					{COSTUMES.map((costume) => {
-						const owned = save?.costume === costume.id;
-						const affordable = (save?.stars ?? 0) >= costume.price;
-						return (
-							<div className="wardrobe-card" key={costume.id}>
-								<span aria-hidden="true">{costume.icon}</span>{" "}
-								{owned
-									? `Teddy loves his ${costume.name}!`
-									: `${costume.name} — ⭐${costume.price}`}
-								{!owned && (
-									<button
-										type="button"
-										className="care-btn"
-										disabled={!affordable}
-										onClick={() => buy(costume.id)}
-										aria-label={
-											affordable
-												? `Buy ${costume.name} for ${costume.price} stars`
-												: `${costume.name} costs ${costume.price} stars, keep caring for Teddy`
-										}
-									>
-										{affordable
-											? "Get it!"
-											: `⭐${costume.price - (save?.stars ?? 0)} to go`}
-									</button>
-								)}
-							</div>
-						);
-					})}
+					<div className="wardrobe-strip">
+						{[
+							{
+								id: null,
+								name: "Comfy Onesie",
+								icon: "🧸",
+								price: 0,
+								filter: "none",
+							},
+							...COSTUMES,
+						].map((item) => {
+							const worn = save?.costume === item.id;
+							const owned =
+								item.id === null || (save?.owned.includes(item.id) ?? false);
+							const affordable = (save?.stars ?? 0) >= item.price;
+							return (
+								<button
+									type="button"
+									key={item.id ?? "default"}
+									className={
+										"wardrobe-item" +
+										(worn ? " worn" : "") +
+										(wiggleId === item.id ? " wiggle" : "")
+									}
+									aria-pressed={worn}
+									onClick={() => chooseCostume(item.id)}
+									aria-label={
+										worn
+											? `${item.name}, wearing it now`
+											: owned
+												? `Wear ${item.name}`
+												: affordable
+													? `Get ${item.name} for ${item.price} stars`
+													: `${item.name} costs ${item.price} stars, keep caring for Teddy`
+									}
+								>
+									<img
+										src="/teddy/teddy-base.png"
+										alt=""
+										style={{ filter: item.filter }}
+									/>
+									<span className="wardrobe-item-name">
+										<span aria-hidden="true">{item.icon}</span> {item.name}
+									</span>
+									<span className="wardrobe-item-price">
+										{worn ? "Worn!" : owned ? "Tap to wear" : `⭐${item.price}`}
+									</span>
+								</button>
+							);
+						})}
+					</div>
 					<button
 						type="button"
 						className="care-btn"

@@ -288,25 +288,101 @@ h1 {
 	}
 }
 
-/* Wardrobe panel: the closet POI opens a cozy overlay. */
+/* Wardrobe panel: the closet POI opens a bottom sheet, leaving the room —
+	and the freshly equipped Teddy — visible behind it for live preview. */
 .wardrobe-panel {
 	position: fixed;
-	inset: 0;
+	inset: auto 0 0 0;
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	padding: 16px;
+	padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
 	background: rgba(253, 246, 236, 0.96);
+	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+	max-height: 46dvh;
 	z-index: 10;
 }
 
 .wardrobe-art {
-	width: min(60vw, 220px);
+	width: min(18vw, 84px);
 	height: auto;
 	border-radius: var(--radius-md);
+}
+
+/* Live preview strip: one tappable look per card, Teddy rendered through
+	the costume's own filter so what you see is exactly what you get. */
+.wardrobe-strip {
+	display: flex;
+	gap: 12px;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.wardrobe-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	min-width: 96px;
+	min-height: var(--touch-min);
+	padding: 10px 12px;
+	font-family: inherit;
+	color: var(--color-navy);
+	background: #fff;
+	border: 3px solid var(--color-navy);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+}
+
+.wardrobe-item img {
+	width: 72px;
+	height: 72px;
+	object-fit: contain;
+	pointer-events: none;
+}
+
+.wardrobe-item.worn {
+	background: var(--color-peach);
+	border-color: var(--color-coral);
+}
+
+.wardrobe-item-name {
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.wardrobe-item-price {
+	font-size: 0.95rem;
+}
+
+/* Gentle wiggle for a not-yet-affordable tap: playful, never punitive. */
+.wardrobe-item.wiggle {
+	animation: wardrobe-wiggle 0.4s ease-in-out;
+}
+
+@keyframes wardrobe-wiggle {
+	0%,
+	100% {
+		transform: rotate(0deg);
+	}
+
+	25% {
+		transform: rotate(-5deg);
+	}
+
+	75% {
+		transform: rotate(5deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wardrobe-item.wiggle {
+		animation: none;
+	}
 }
 
 /* Mini-game menu: the toy box opens an icon-only chooser overlay. */

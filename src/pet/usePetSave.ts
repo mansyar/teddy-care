@@ -14,7 +14,7 @@ import {
 	saveSave,
 } from "../save/store";
 import { awardBubbles as awardBubblesSave } from "./bubbles";
-import { buyCostume } from "./costume";
+import { buyCostume, equipCostume } from "./costume";
 import { awardPuzzleRound as awardPuzzleSave } from "./puzzle";
 import { awardRun, type RunResult } from "./runner";
 import { withSettings } from "./settings";
@@ -29,6 +29,8 @@ export interface PetSave {
 	act: (action: CareAction) => void;
 	/** Buy (and equip) a costume by id; no-op when unaffordable or unknown. */
 	buy: (id: string) => void;
+	/** Wear an owned costume, or the default onesie with null; no-op otherwise. */
+	equip: (id: string | null) => void;
 	/** Bank a finished runner run (stars + happiness). */
 	award: (result: RunResult) => void;
 	/** Bank a finished bubble round (stars + happiness). */
@@ -77,6 +79,15 @@ export function usePetSave(): PetSave {
 		});
 	}, []);
 
+	const equip = useCallback((id: string | null) => {
+		setSave((prev) => {
+			if (prev === null) return prev;
+			const next = equipCostume(prev, id);
+			if (next !== prev) void saveSave(next);
+			return next;
+		});
+	}, []);
+
 	const award = useCallback((result: RunResult) => {
 		setSave((prev) => {
 			if (prev === null) return prev;
@@ -118,6 +129,7 @@ export function usePetSave(): PetSave {
 		loading: save === null,
 		act,
 		buy,
+		equip,
 		award,
 		awardBubbles,
 		awardPuzzleRound,
