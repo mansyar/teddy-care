@@ -54,7 +54,7 @@
   2 tabs (🐻 Room / 🌙 Parents); star chip in top corner — presentational — fdb5792
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4: Room Audio
+## Phase 4: Room Audio [checkpoint: bba73fb]
 
 - [x] Task: Write failing tests for new sound gating (Red): footsteps,
   munch, water fizz, yawn all silent under mute/bedtime via `isAudible`
