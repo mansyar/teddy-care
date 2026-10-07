@@ -42,15 +42,16 @@
 
 ## Phase 4 — Puzzle Screen & Route (presentational + e2e)
 
-- [ ] Task: `/puzzle` route + `src/screens/PuzzleScreen.tsx` — board with
+- [x] Task: `/puzzle` route + `src/screens/PuzzleScreen.tsx` — board with
   shadow outlines, piece tray, tap-select/tap-place flow, round transitions +
-  between-round cards, "All done!" end card
-- [ ] Task: Mini-menu third button 🧩 → `/puzzle` (RoomScreen)
-- [ ] Task: Juice + a11y parity — select wiggle, place glide, gentle
+  between-round cards, "All done!" end card `618ace5`
+- [x] Task: Mini-menu third button 🧩 → `/puzzle` (RoomScreen) `618ace5`
+- [x] Task: Juice + a11y parity — select wiggle, place glide, gentle
   bounce-back, reduced-motion instant placement, keyboard Enter/Space
-  select/place, ≥48px targets
-- [ ] Task: Reward wiring — `awardPuzzleRound` via `usePetSave` pattern; quit
-  after any round keeps earned stars
+  select/place, ≥48px targets `618ace5` (placement feedback is a pop-in +
+  snap rather than a cross-screen glide; reduced motion via CSS media query)
+- [x] Task: Reward wiring — `awardPuzzleRound` via `usePetSave` pattern; quit
+  after any round keeps earned stars `618ace5`
 - [ ] Task: Commit code changes + attach git note + update plan task status
   (full-flow e2e noted in Phase 5)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
