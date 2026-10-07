@@ -88,8 +88,8 @@
 
 ## Phase: Review Fixes
 
-- [~] Task: Apply review suggestions (8 Medium + cheap Low findings from
+- [x] Task: Apply review suggestions (8 Medium + cheap Low findings from
   conductor-review): FR10 easter-egg reachability, toy-box nav timer,
   repeat-tap effect key, wardrobe dialog semantics, portrait walk-target
   invariant, completeWalk structural helper, deterministic e2e waits,
-  dead precache entries, misc Low polish
+  dead precache entries, misc Low polish — 0bdd486
