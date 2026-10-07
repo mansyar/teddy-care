@@ -56,7 +56,7 @@
   (full-flow e2e noted in Phase 5) `618ace5`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5 — E2E, Offline & Docs
+## Phase 5 — E2E, Offline & Docs [checkpoint: ebb5671]
 
 - [x] Task: Playwright `puzzle.spec.ts` — menu entry → full climb → 3 stars
   banked; wrong-slot bounce-back; quit after round 1 keeps ⭐1; muted path;
@@ -67,4 +67,4 @@
 - [x] Task: Update README + `product.md` (Shipped section) `ebb5671`
 - [x] Task: Commit code changes + attach git note + update plan task status
   `ebb5671`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
