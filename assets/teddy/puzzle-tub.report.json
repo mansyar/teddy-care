@@ -1,11 +1,11 @@
 {
   "kind": "sprite-gen-image-report",
   "provider": "grok",
-  "prompt": "a happy brown teddy bear in a white bathtub full of foam bubbles, only head and paws visible above the foam, a yellow rubber duck on the tub rim, 2D flat cartoon style with thick navy outlines and soft pastel colors, children's picture book style for a kids pet game, simple flat scene on a solid magenta background, no text, no watermarks",
+  "prompt": "a happy teddy bear sitting in a white bathtub full of foam bubbles, only head and paws visible above the foam, a yellow rubber duck on the tub rim, 2D flat cartoon style with thick navy outlines and soft pastel colors, children's picture book style for a kids pet game, simple flat scene, the whole scene sits on a solid bright green chroma-key background with a visible green margin all around the scene, absolutely no green colors inside the scene itself, no text, no watermarks",
   "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-tub.png",
   "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\puzzle-tub.png.raw.png",
-  "raw_bytes": 677444,
-  "elapsed_seconds": 51.951,
+  "raw_bytes": 731035,
+  "elapsed_seconds": 75.274,
   "model": "grok-imagine-image-2.0",
   "session_id": null,
   "refs": [],
@@ -18,10 +18,10 @@
     "method": "ycbcr",
     "size": "1024x1024",
     "key": "magenta",
-    "keyed_pixels": 870263,
-    "fringe_pixels": 21883,
-    "cleaned_transparent_rgb_pixels": 269426,
-    "alpha_zero_pct": 82.99,
+    "keyed_pixels": 649189,
+    "fringe_pixels": 56,
+    "cleaned_transparent_rgb_pixels": 6261,
+    "alpha_zero_pct": 61.91,
     "stale_transparent_rgb_pixels": 0
   },
   "chroma": {
@@ -30,10 +30,10 @@
     "method": "ycbcr",
     "size": "1024x1024",
     "key": "magenta",
-    "keyed_pixels": 870263,
-    "fringe_pixels": 21883,
-    "cleaned_transparent_rgb_pixels": 269426,
-    "alpha_zero_pct": 82.99,
+    "keyed_pixels": 649189,
+    "fringe_pixels": 56,
+    "cleaned_transparent_rgb_pixels": 6261,
+    "alpha_zero_pct": 61.91,
     "stale_transparent_rgb_pixels": 0
   },
   "extra": {
@@ -44,24 +44,24 @@
     "quality": "medium",
     "trim_alpha": {
       "bbox": [
-        87,
-        131,
-        937,
-        912
+        88,
+        144,
+        936,
+        860
       ],
       "before": [
         1024,
         1024
       ],
       "after": [
-        850,
-        781
+        848,
+        716
       ],
       "margin_px": {
-        "left": 87,
-        "top": 131,
-        "right": 87,
-        "bottom": 112
+        "left": 88,
+        "top": 144,
+        "right": 88,
+        "bottom": 164
       }
     }
   },
