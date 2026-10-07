@@ -33,15 +33,19 @@
 
 ## Phase 3 — Accessory Art (asset pipeline)
 
-- [ ] Task: sprite-gen the Party Hat 🎉 and Cozy Scarf 🧣 overlay PNGs
+- [x] Task: sprite-gen the Party Hat 🎉 and Cozy Scarf 🧣 overlay PNGs
   (navy-outline style, anchored to head/neck) → `assets/teddy/` + runtime
-  copies → `public/teddy/`; vision-QA alignment over base Teddy
-- [ ] Task: Bake companion 34-cell walk strips per accessory aligned to the
+  copies → `public/teddy/`; vision-QA alignment over base Teddy <fb13195>
+  (front + side views; magenta-family subjects need a green chroma key)
+- [x] Task: Bake companion 34-cell walk strips per accessory aligned to the
   walk grid (same cell size/timing contract) + run strips for the runner;
-  verify frame-by-frame alignment (no jitter) via preview bake
-- [ ] Task: Add all new assets to `PRECACHE_ART` + extend
-  `src/pwa/manifest.test.ts` (TDD: extend the test first)
-- [ ] Task: Commit assets + attach git note + update plan task status
+  verify frame-by-frame alignment (no jitter) via preview bake <fb13195>
+  (hand bake stage `assets/teddy/bake_companion.py`: per-cell head-top
+  tracking; strip hat shrunk to 84.5% since strips have no crown headroom;
+  9-cell vision QA all good)
+- [x] Task: Add all new assets to `PRECACHE_ART` + extend
+  `src/pwa/manifest.test.ts` (TDD: extend the test first) <fb13195>
+- [x] Task: Commit assets + attach git note + update plan task status <fb13195>
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4 — Wardrobe UI & Room Overlay (presentational)
