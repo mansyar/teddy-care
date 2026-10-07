@@ -1,0 +1,1 @@
+Phase 5: wardrobe bottom sheet + live preview strip (tap-to-wear free switching, buy = sparkle + playSparkle, unaffordable = wiggle + playBoop, reduced-motion respected); .wardrobe-strip/.wardrobe-item keep shared .wardrobe-card untouched; verified in driven browser incl. 360px (sheet top-align fix); gate: check clean, 159/159.
