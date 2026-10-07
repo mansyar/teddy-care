@@ -22,12 +22,13 @@
 
 ## Phase 2 — Purchase Sound (TDD)
 
-- [ ] Task: Write failing tests in `src/audio/sound.test.ts` — buy-celebration
+- [x] Task: Write failing tests in `src/audio/sound.test.ts` — buy-celebration
   sparkle sound (silent under MUTED/BEDTIME fixtures); reuse existing boop for
-  the unaffordable wiggle
-- [ ] Task: Implement in `src/audio/sound.ts` via the shared
-  `play()`/`isAudible` gate
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  the unaffordable wiggle `7558d1c`
+- [x] Task: Implement in `src/audio/sound.ts` via the shared
+  `play()`/`isAudible` gate `7558d1c` (4-note ascending shimmer)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `7558d1c`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3 — Accessory Art (asset pipeline)
