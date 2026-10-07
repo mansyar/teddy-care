@@ -29,7 +29,7 @@
   `c58da95`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3 — Puzzle Art (asset pipeline)
+## Phase 3 — Puzzle Art (asset pipeline) [checkpoint: d4689b0]
 
 - [x] Task: sprite-gen three simple Teddy pictures (navy-outline picture-book
   style) → `assets/teddy/` + WebP → `public/teddy/`; vision-QA each
@@ -38,7 +38,7 @@
   (TDD: extend the test first) `d4689b0`
 - [x] Task: Commit assets + attach git note + update plan task status
   `d4689b0`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4 — Puzzle Screen & Route (presentational + e2e)
 
