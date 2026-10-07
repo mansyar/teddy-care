@@ -23,6 +23,10 @@ describe("PWA manifest", () => {
 		}
 	});
 
+	it("precaches the bubble sprite for the Bubble Pop mini-game", () => {
+		expect(PRECACHE_ART).toContain("teddy/bubble.webp");
+	});
+
 	it("keeps the offline payload lean: no raw exports or preview GIFs", () => {
 		for (const art of PRECACHE_ART) {
 			expect(art).not.toContain(".raw.png");

@@ -13,6 +13,7 @@ import {
 	type SaveData,
 	saveSave,
 } from "../save/store";
+import { awardBubbles as awardBubblesSave } from "./bubbles";
 import { buyCostume } from "./costume";
 import { awardRun, type RunResult } from "./runner";
 import { withSettings } from "./settings";
@@ -29,6 +30,8 @@ export interface PetSave {
 	buy: (id: string) => void;
 	/** Bank a finished runner run (stars + happiness). */
 	award: (result: RunResult) => void;
+	/** Bank a finished bubble round (stars + happiness). */
+	awardBubbles: (pops: number) => void;
 	/** Patch parent settings (mute/bedtime), persisted like everything else. */
 	updateSettings: (patch: Partial<ParentSettings>) => void;
 }
@@ -80,6 +83,15 @@ export function usePetSave(): PetSave {
 		});
 	}, []);
 
+	const awardBubbles = useCallback((pops: number) => {
+		setSave((prev) => {
+			if (prev === null) return prev;
+			const next = awardBubblesSave(prev, pops);
+			void saveSave(next);
+			return next;
+		});
+	}, []);
+
 	const updateSettings = useCallback((patch: Partial<ParentSettings>) => {
 		setSave((prev) => {
 			if (prev === null) return prev;
@@ -89,5 +101,13 @@ export function usePetSave(): PetSave {
 		});
 	}, []);
 
-	return { save, loading: save === null, act, buy, award, updateSettings };
+	return {
+		save,
+		loading: save === null,
+		act,
+		buy,
+		award,
+		awardBubbles,
+		updateSettings,
+	};
 }

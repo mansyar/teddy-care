@@ -134,6 +134,11 @@ export function playFanfare(settings: ParentSettings): void {
 	]);
 }
 
+/** Bright short blip for popping a bubble in the tap game. */
+export function playPopBubble(settings: ParentSettings): void {
+	play(settings, [{ frequency: 1150, delayS: 0, durationS: 0.08 }]);
+}
+
 /** Placeholder music-box loop (C–E–G lullaby fragment). Idempotent. */
 export function startMusic(settings: ParentSettings): void {
 	if (!isAudible(settings) || musicTimer !== undefined) return;

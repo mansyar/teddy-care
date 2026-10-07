@@ -19,6 +19,7 @@ import {
 } from "../audio/sound";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
+import { usePrefersReducedMotion } from "../pet/useMotion";
 import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 import {
@@ -37,20 +38,6 @@ import {
 	type WalkState,
 	walkDuration,
 } from "../room/walk";
-
-/** Track `prefers-reduced-motion` live. */
-function usePrefersReducedMotion() {
-	const [reduced, setReduced] = useState(
-		() => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-	);
-	useEffect(() => {
-		const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-		const onChange = () => setReduced(mq.matches);
-		mq.addEventListener("change", onChange);
-		return () => mq.removeEventListener("change", onChange);
-	}, []);
-	return reduced;
-}
 
 /** Orientation-tracked room layout. */
 function useRoomLayout(): RoomLayout {
@@ -85,15 +72,16 @@ export default function RoomScreen() {
 		position: centerOf(layout),
 	}));
 	const [wardrobeOpen, setWardrobeOpen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 	const [eating, setEating] = useState(false);
 	const [sleepyFlash, setSleepyFlash] = useState(false);
 	const [effect, setEffect] = useState<RoomEffect | null>(null);
 	const [petting, setPetting] = useState(false);
 	const closeWardrobeRef = useRef<HTMLButtonElement>(null);
+	const closeMenuRef = useRef<HTMLButtonElement>(null);
 	const walkTimer = useRef<number | undefined>(undefined);
 	const stepTimer = useRef<number | undefined>(undefined);
 	const effectTimer = useRef<number | undefined>(undefined);
-	const navTimer = useRef<number | undefined>(undefined);
 	const effectSeq = useRef(0);
 
 	const stats = save?.stats;
@@ -110,22 +98,26 @@ export default function RoomScreen() {
 			window.clearTimeout(walkTimer.current);
 			window.clearInterval(stepTimer.current);
 			window.clearTimeout(effectTimer.current);
-			window.clearTimeout(navTimer.current);
 		},
 		[],
 	);
 
-	// The wardrobe is a modal dialog: focus lands on Close when it opens,
-	// and Escape closes it — kindness for keyboard and switch users.
+	// The wardrobe and the mini-game menu are modal dialogs: focus lands on
+	// Close when either opens, and Escape closes it — kindness for keyboard
+	// and switch users.
 	useEffect(() => {
-		if (!wardrobeOpen) return;
-		closeWardrobeRef.current?.focus();
+		if (!wardrobeOpen && !menuOpen) return;
+		const closeRef = wardrobeOpen ? closeWardrobeRef : closeMenuRef;
+		closeRef.current?.focus();
 		const onKey = (event: KeyboardEvent) => {
-			if (event.key === "Escape") setWardrobeOpen(false);
+			if (event.key === "Escape") {
+				setWardrobeOpen(false);
+				setMenuOpen(false);
+			}
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [wardrobeOpen]);
+	}, [wardrobeOpen, menuOpen]);
 
 	/** Signature feedback per POI, plus rug/window easter eggs (FR6). */
 	const showEffect = useCallback(
@@ -159,17 +151,16 @@ export default function RoomScreen() {
 			} else if (action.kind === "runner") {
 				showEffect("sparkle", at.x, at.y - 25);
 				playStar(settings);
-				// Let the sparkle land before handing over to the runner. The
-				// timer is tracked: a retap or unmount cancels the handoff.
-				window.clearTimeout(navTimer.current);
-				navTimer.current = window.setTimeout(() => navigate("/runner"), 900);
+				// The toy box now opens the mini-game menu — the sparkle lands
+				// while the chooser pops up over the room.
+				setMenuOpen(true);
 			} else {
 				showEffect("sparkle", at.x, at.y - 25);
 				playGiggle(settings);
 				setWardrobeOpen(true);
 			}
 		},
-		[act, navigate, settings, showEffect],
+		[act, settings, showEffect],
 	);
 
 	/** Consume an arrival: settle Teddy, fire the waiting action. */
@@ -187,7 +178,6 @@ export default function RoomScreen() {
 		(tap: TapResult) => {
 			window.clearTimeout(walkTimer.current);
 			window.clearInterval(stepTimer.current);
-			window.clearTimeout(navTimer.current);
 			const next = startWalk(walk, tap, reducedMotion);
 			setWalk(next);
 			if (next.phase === "walking" && next.target) {
@@ -322,6 +312,40 @@ export default function RoomScreen() {
 						ref={closeWardrobeRef}
 						onClick={() => setWardrobeOpen(false)}
 						aria-label="Close wardrobe"
+					>
+						Close
+					</button>
+				</div>
+			)}
+			{menuOpen && (
+				<div
+					className="mini-menu-panel"
+					role="dialog"
+					aria-modal="true"
+					aria-label="Teddy's games"
+				>
+					<button
+						type="button"
+						className="mini-menu-btn"
+						onClick={() => navigate("/runner")}
+						aria-label="Play the running game"
+					>
+						<span aria-hidden="true">🏃</span> Run!
+					</button>
+					<button
+						type="button"
+						className="mini-menu-btn"
+						onClick={() => navigate("/bubbles")}
+						aria-label="Play the bubble popping game"
+					>
+						<span aria-hidden="true">🫧</span> Bubbles!
+					</button>
+					<button
+						type="button"
+						className="care-btn"
+						ref={closeMenuRef}
+						onClick={() => setMenuOpen(false)}
+						aria-label="Close game menu"
 					>
 						Close
 					</button>

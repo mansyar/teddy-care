@@ -1,16 +1,16 @@
 # Technology Stack — Teddy Care
 
 ## Architecture: Hybrid
-**React PWA shell + embedded Phaser mini-games.** React owns care UI, stats,
-persistence, parent panel; Phaser mounts inside mini-game routes for the
-runner (tap + puzzle can be pure React/DOM).
+**React PWA shell + embedded mini-games.** React owns care UI, stats,
+persistence, parent panel; Phaser mounts inside the runner route, while
+the Bubble Pop tap mini-game is pure React/DOM (2026-10-08, Track 3).
 
 > Versions: use the latest mutually-compatible releases at scaffold time
 > (recorded in Track 1's plan). No pinned versions in this doc.
 
 ## Frontend
 - **React + Vite + TypeScript** — shell, care screen, parent panel
-- **Phaser 3** — runner/platformer (consumes `side-run` strip + WebP)
+- **Phaser 4** — runner/platformer (consumes `side-run` strip + WebP)
 - **CSS:** plain CSS + custom properties (no framework — tiny payload, pastel
   theme); squash/stretch, crossfades, ambient float in CSS/React
 - **Idle breathing:** JS mirror of the breathe envelope (`breathe.js`

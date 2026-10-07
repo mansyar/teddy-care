@@ -146,6 +146,30 @@ describe("room sound gating", () => {
 	});
 });
 
+describe("bubble pop sound", () => {
+	it("playPopBubble exists as a function", async () => {
+		const s = await load();
+		expect(typeof s.playPopBubble).toBe("function");
+	});
+
+	it("playPopBubble stays silent under mute and bedtime — no context is created", async () => {
+		installAudioStub();
+		const { playPopBubble } = await load();
+		playPopBubble(MUTED);
+		playPopBubble(BEDTIME);
+		expect(constructed).toBe(0);
+		expect(oscillators).toBe(0);
+	});
+
+	it("audible playPopBubble schedules one bright blip", async () => {
+		installAudioStub();
+		const { playPopBubble } = await load();
+		playPopBubble(AUDIBLE);
+		expect(constructed).toBe(1);
+		expect(oscillators).toBe(1);
+	});
+});
+
 describe("placeholder sounds and music loop", () => {
 	it("giggle, star and fanfare schedule their notes when audible", async () => {
 		installAudioStub();
