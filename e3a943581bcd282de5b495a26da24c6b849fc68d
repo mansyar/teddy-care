@@ -4,3 +4,11 @@ Payload: teddy-walk.webp re-encoded lossless -> lossy q90 (method 6, PIL): 2299K
 Perf: rAF sampling probe at 4x CPU throttling (CDP Emulation.setCPUThrottlingRate) measured 182fps average frame cadence in the room - far above the 60fps target; room animation load is one CSS transition + one rAF breathe transform.
 Manual 360px verified via Playwright viewport (portrait + landscape); real-phone pass pending user.
 Deviations: none.
+
+Phase 6 Verification & Checkpoint (Refer to workflow.md)
+
+Scope: c8f1812..e3a9435 (bcfe716 e2e + precache, e3a9435 webp re-encode)
+Automated: 10/10 e2e specs pass (room-care x5, room-offline airplane-mode, care-star, settings-persist, runner x2); 98/98 unit tests; pnpm check clean (45 files). No logic-bearing src changes in this phase (e2e specs + manifest.ts entry list covered by pwa/manifest.test.ts).
+Manual/live: 360px portrait + 800x360 landscape screenshots and e2e aspect assertions; payload 6.9MB dist; 182fps average rAF cadence at 4x CPU throttle; q90 walk strip vision-QA'd artifact-free.
+Real-phone pass: user approved checkpoint now, will install and playtest on phone separately (track's final install check).
+User approval: Approve, continue (via question tool).
