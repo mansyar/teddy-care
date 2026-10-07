@@ -27,12 +27,14 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 
 ## Phase 3 — Bubble Sprite Art (asset pipeline)
 
-- [ ] Task: Generate bubble sprite via the sprite-gen pipeline →
+- [x] Task: Generate bubble sprite via the sprite-gen pipeline →
   `assets/teddy/` → `public/teddy/` (presentational; verification: file
-  exists, payload stays lean)
-- [ ] Task: Add sprite to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
-  precache existence check — Red then Green (TDD on the manifest test)
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  exists, payload stays lean) `22efdf2`
+  - grok chroma-key gen, 612x618 RGBA, 0 fringe px, vision-QA clean;
+    `public/teddy/bubble.webp` 17KB.
+- [x] Task: Add sprite to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
+  precache existence check — Red then Green (TDD on the manifest test) `22efdf2`
+- [x] Task: Commit code changes + attach git note + update plan task status `22efdf2`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4 — Toy Box Mini-Menu (presentational + e2e)
