@@ -81,3 +81,9 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Commit code changes + attach git note + update plan task status
   `0dfb2e6`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions `09b493e` (spec header grammar in
+  `room-care.spec.ts`, stale `App.tsx` module doc, dead `.bubble-parked`
+  CSS rule → comment-only hook, `--rise-to` assertion justification
+  comment; verified: check clean, 121/121 unit, room-care e2e 6/6)
