@@ -55,13 +55,17 @@
 
 ## Phase 4 — Filter Catalog Revision (TDD)
 
-- [ ] Task: Update `src/pet/costume.test.ts` first — catalog becomes
+- [x] Task: Update `src/pet/costume.test.ts` first — catalog becomes
   `sunset-onesie` 10⭐, `mint-dream` 20⭐, `berry-night` 30⭐, all
-  `kind: "filter"`; drop the overlay variant from the interface
-- [ ] Task: Implement the new catalog entries + filters in `costume.ts`
+  `kind: "filter"`; drop the overlay variant from the interface <6f5087e>
+  (interface simplified to required `filter`; TDD red 6/14)
+- [x] Task: Implement the new catalog entries + filters in `costume.ts`
   (Mint Dream / Berry Night filter values; tune visually at the phase
-  checkpoint); keep prices centralized in `stars.ts`
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  checkpoint); keep prices centralized in `stars.ts` <6f5087e>
+  (Mint Dream `hue-rotate(-60deg) saturate(0.9) brightness(1.05)`,
+  Berry Night `hue-rotate(60deg) saturate(1.2) brightness(0.85)`)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  <6f5087e>
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5 — Wardrobe UI (presentational)
