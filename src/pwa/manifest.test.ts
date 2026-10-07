@@ -33,6 +33,21 @@ describe("PWA manifest", () => {
 		expect(PRECACHE_ART).toContain("teddy/puzzle-bed.webp");
 	});
 
+	it("precaches the wardrobe accessory overlays and companion strips", () => {
+		// Idle overlays (1024 canvases aligned to every emotion still) and the
+		// walk/run companion strips that keep accessories on Teddy in motion.
+		for (const art of [
+			"teddy/teddy-hat.png",
+			"teddy/teddy-scarf.png",
+			"teddy/teddy-hat-walk.webp",
+			"teddy/teddy-scarf-walk.webp",
+			"teddy/teddy-hat-run.webp",
+			"teddy/teddy-scarf-run.webp",
+		]) {
+			expect(PRECACHE_ART).toContain(art);
+		}
+	});
+
 	it("keeps the offline payload lean: no raw exports or preview GIFs", () => {
 		for (const art of PRECACHE_ART) {
 			expect(art).not.toContain(".raw.png");

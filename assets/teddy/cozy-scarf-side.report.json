@@ -1,0 +1,46 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "prompt": "2D cartoon scarf accessory for a kids pet game, seen exactly from the side in profile, centered and drawn large: a cozy coral-red knitted scarf wrapped in a ring around an invisible neck, with one short cream-fringed end hanging down the chest side and a small tip poking up behind the neck. The knit texture is a simple pattern of small V-shaped stitch lines in slightly darker coral red, like a children's picture-book scarf, NOT dots, NOT bubbles, NOT hearts. Thick navy outlines, flat colors, gentle rounded shapes. The scarf is drawn completely alone, no character, no bear, no face, no neck, no body, no shadow. The entire background is one solid flat bright green #00FF00 color covering the whole canvas, with no gradients and no other colors in the background.",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\cozy-scarf-side.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\cozy-scarf-side.png.raw.png",
+  "raw_bytes": 591722,
+  "elapsed_seconds": 12.267,
+  "model": "grok-imagine-image-2.0",
+  "session_id": null,
+  "refs": [],
+  "transparent": true,
+  "alpha": {
+    "strategy": "chroma",
+    "strategy_source": "provider-default",
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\cozy-scarf-side.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1280x720",
+    "key": "green",
+    "keyed_pixels": 767205,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 4514,
+    "alpha_zero_pct": 83.25,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "chroma": {
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\cozy-scarf-side.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1280x720",
+    "key": "green",
+    "keyed_pixels": 767205,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 4514,
+    "alpha_zero_pct": 83.25,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "extra": {
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "endpoint": "/images/generations",
+    "aspect_ratio_source": "request-or-auto"
+  },
+  "provider_resolved_from": "explicit"
+}
