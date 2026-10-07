@@ -114,6 +114,13 @@ h1 {
  * Teddy's Room
  * ------------------------------------------------------------------------- */
 
+.room-page {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
 /* The room fills the main area; art aspect matches the generated layouts. */
 .room-scene {
 	position: relative;
@@ -169,15 +176,18 @@ h1 {
 	outline-offset: 2px;
 }
 
-/* Teddy stands with his feet at his scene position. */
+/* Teddy stands with his feet at his scene position. Height is a plain
+ * percentage: absolute positioning makes the scene the containing block, so
+ * it resolves definitely and children can hang 100% off it. */
 .room-teddy {
 	position: absolute;
 	transform: translate(-50%, -100%);
-	--teddy-h: clamp(96px, 30%, 190px);
+	height: 30%;
 }
 
 .room-teddy-idle {
 	display: block;
+	height: 100%;
 	background: none;
 	border: none;
 	padding: 0;
@@ -187,21 +197,23 @@ h1 {
 
 .room-teddy-sprite {
 	display: block;
-	height: var(--teddy-h);
+	height: 100%;
 	width: auto;
 	transform-origin: bottom center;
 	user-select: none;
 	-webkit-user-drag: none;
 }
 
-/* Walk strip: 34 cells of 417x520, one full cycle per 1.4167s. */
+/* Walk strip: 34 cells; background-size auto keeps the natural strip ratio
+ * (34 cells of 417x520), so position-x sweeping 0→100% in 33 steps lands
+ * exactly on each cell. */
 .room-teddy-walk {
-	height: var(--teddy-h);
-	width: calc(var(--teddy-h) * (417 / 520));
+	height: 100%;
+	aspect-ratio: 417 / 520;
 	background-image: url("/teddy/teddy-walk.webp");
-	background-size: calc(var(--teddy-h) * (417 / 520) * 34) var(--teddy-h);
+	background-size: auto 100%;
 	background-repeat: no-repeat;
-	animation: room-walk 1.4167s steps(34) infinite;
+	animation: room-walk 1.4167s steps(33) infinite;
 }
 
 .room-teddy-walk.flipped {
@@ -210,10 +222,10 @@ h1 {
 
 @keyframes room-walk {
 	from {
-		background-position-x: 0;
+		background-position-x: 0%;
 	}
 	to {
-		background-position-x: calc(-1 * var(--teddy-h) * (417 / 520) * 34);
+		background-position-x: 100%;
 	}
 }
 
@@ -223,6 +235,7 @@ h1 {
 		max-width: 960px;
 	}
 	.room-scene {
+		flex: none;
 		aspect-ratio: 16 / 9;
 		width: min(100%, calc((100dvh - 120px) * (16 / 9)));
 		margin: 0 auto;
