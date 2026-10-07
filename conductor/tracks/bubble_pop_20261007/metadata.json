@@ -1,0 +1,10 @@
+{
+  "id": "bubble_pop_20261007",
+  "title": "Bubble Pop — tap mini-game with toy box mini-menu",
+  "type": "feature",
+  "status": "new",
+  "created": "2026-10-07",
+  "branch": "track/tap-minigame",
+  "spec": "./spec.md",
+  "plan": "./plan.md"
+}

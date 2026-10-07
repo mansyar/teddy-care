@@ -1,0 +1,67 @@
+# Implementation Plan: Bubble Pop — Tap Mini-Game
+
+Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
+(TDD for logic-bearing code, phase checkpoints, git notes per task).
+
+## Phase 1 — Game Logic Core (TDD)
+
+- [ ] Task: Create pure bubble game module `src/pet/bubbles.ts` — Red phase
+  - [ ] Write failing Vitest tests: reward math (`1 + floor(pops/8)`, clamp
+    max 5, guarantee min 1), gentle ramp pacing (spawn interval/speed curve
+    over the 30s round), round timer expiry behavior
+- [ ] Task: Implement bubble logic module — Green phase
+- [ ] Task: Refactor + coverage check (>80% on `bubbles.ts`)
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 2 — Sound (TDD)
+
+- [ ] Task: Add `popBubble` WebAudio SFX to `src/audio/sound.ts` — Red phase
+  - [ ] Write failing tests: oscillator scheduling; gated by parent
+    mute/bedtime via existing `isAudible` pattern
+- [ ] Task: Implement pop SFX — Green phase
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 3 — Bubble Sprite Art (asset pipeline)
+
+- [ ] Task: Generate bubble sprite via the sprite-gen pipeline →
+  `assets/teddy/` → `public/teddy/` (presentational; verification: file
+  exists, payload stays lean)
+- [ ] Task: Add sprite to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
+  precache existence check — Red then Green (TDD on the manifest test)
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 4 — Toy Box Mini-Menu (presentational + e2e)
+
+- [ ] Task: Build icon-only mini-game chooser modal on toy box tap (Runner +
+  Bubble Pop), replacing direct runner navigation; aria-modal + focus
+  handling matching the wardrobe pattern
+- [ ] Task: Note Playwright/manual verification plan in task
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 5 — Bubbles Screen & Route (presentational + e2e)
+
+- [ ] Task: Create `/bubbles` route + `BubblesScreen`: 30s round, rising
+  sprite bubbles (CSS transform animation, gentle ramp), tap-to-pop with
+  full juice (pop sound, star burst at pop point, corner counter),
+  no-lose overflow, "All done!" summary card + "Again!" replay
+- [ ] Task: Reduced-motion parity (bubbles appear in place) + keyboard
+  parity (Tab-focusable buttons, Enter/Space pops, ≥48px targets)
+- [ ] Task: Wire reward: round end → `bubblesReward()` → `award()`
+  (+10 happiness)
+- [ ] Task: Note Playwright/manual verification plan in task
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 6 — E2E, Offline & Docs
+
+- [ ] Task: Playwright e2e `bubble-pop.spec.ts`: menu entry → full round →
+  stars banked in room star chip; muted path; reduced-motion mode
+- [ ] Task: Extend offline coverage: bubble sprite precached, `/bubbles`
+  renders after offline reload
+- [ ] Task: Update README + `product.md` (Shipped section)
+- [ ] Task: Commit code changes + attach git note + update plan task status
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
