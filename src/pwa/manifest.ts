@@ -55,13 +55,4 @@ export const PRECACHE_ART: string[] = [
 	"teddy/puzzle-ball.webp",
 	"teddy/puzzle-tub.webp",
 	"teddy/puzzle-bed.webp",
-
-	// Wardrobe: accessory overlays (idle, 1024 canvas aligned to the emotion
-	// stills) plus walk/run companion strips that track Teddy in motion.
-	"teddy/teddy-hat.png",
-	"teddy/teddy-scarf.png",
-	"teddy/teddy-hat-walk.webp",
-	"teddy/teddy-scarf-walk.webp",
-	"teddy/teddy-hat-run.webp",
-	"teddy/teddy-scarf-run.webp",
 ];
