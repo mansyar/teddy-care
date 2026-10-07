@@ -1,8 +1,7 @@
 /**
  * Teddy's Room e2e proof: care POIs boost the right stats after Teddy
- * walks there, petting is a tap on Teddy himself, the toy box hands off
- * opens the mini-game menu, the closet opens the wardrobe, bedtime stages
- * the room,
+ * walks there, petting is a tap on Teddy himself, the toy box opens the
+ * mini-game menu, the closet opens the wardrobe, bedtime stages the room,
  * and both orientations render.
  */
 import { expect, test, type Page } from "@playwright/test";

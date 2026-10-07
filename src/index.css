@@ -394,9 +394,7 @@ h1 {
 	}
 }
 
-.bubble-parked {
-	top: 40%;
-}
+/* .bubble-parked is a TSX-only hook; parked position is set inline. */
 
 .bubble-burst {
 	position: absolute;

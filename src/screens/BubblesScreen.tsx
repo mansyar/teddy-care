@@ -183,6 +183,8 @@ export default function BubblesScreen() {
 						style.top = `${(bubble as ParkedBubble).y}%`;
 					} else {
 						style.animationDuration = `${bubble.durationS}s`;
+						// React CSSProperties doesn't model custom properties; this
+						// assertion is the escape hatch for the --rise-to var.
 						(style as CSSProperties & Record<string, string>)["--rise-to"] =
 							RISE_TO;
 					}
