@@ -3,12 +3,12 @@
  *
  * Screen-level glue over the tested layout model and walk→act controller:
  * picks the layout for the live viewport, runs the walk timer, and fires
- * POI actions on arrival (care boosts, runner navigation, wardrobe panel).
- * Signature feedback visuals land with the feedback task.
+ * POI actions on arrival (care boosts, runner navigation, wardrobe panel)
+ * with signature feedback per POI plus rug/window easter eggs.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { playGiggle } from "../audio/sound";
+import { playGiggle, playPop, playStar } from "../audio/sound";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
 import { usePetSave } from "../pet/usePetSave";
@@ -20,8 +20,14 @@ import {
 	resolveTap,
 	type TapResult,
 } from "../room/layout";
-import RoomScene from "../room/RoomScene";
-import { arrive, startWalk, type WalkState, walkDuration } from "../room/walk";
+import RoomScene, { type RoomEffect } from "../room/RoomScene";
+import {
+	arrive,
+	startWalk,
+	type Vec2,
+	type WalkState,
+	walkDuration,
+} from "../room/walk";
 
 /** Track `prefers-reduced-motion` live. */
 function usePrefersReducedMotion() {
@@ -71,33 +77,68 @@ export default function RoomScreen() {
 	}));
 	const [wardrobeOpen, setWardrobeOpen] = useState(false);
 	const [eating, setEating] = useState(false);
+	const [sleepyFlash, setSleepyFlash] = useState(false);
+	const [effect, setEffect] = useState<RoomEffect | null>(null);
+	const [petting, setPetting] = useState(false);
 	const walkTimer = useRef<number | undefined>(undefined);
+	const effectTimer = useRef<number | undefined>(undefined);
 
 	const stats = save?.stats;
 	const mood = stats
 		? deriveMood(stats, { eating, bedtime: settings.bedtime })
 		: "idle";
+	const face = sleepyFlash ? FACE_FOR_MOOD.sleepy : FACE_FOR_MOOD[mood];
 	const costumeFilter =
 		COSTUMES.find((c) => c.id === save?.costume)?.filter ?? "none";
 
-	useEffect(() => () => window.clearTimeout(walkTimer.current), []);
+	useEffect(
+		() => () => {
+			window.clearTimeout(walkTimer.current);
+			window.clearTimeout(effectTimer.current);
+		},
+		[],
+	);
+
+	/** Signature feedback per POI, plus rug/window easter eggs (FR6). */
+	const showEffect = useCallback(
+		(kind: RoomEffect["kind"], x: number, y: number) => {
+			window.clearTimeout(effectTimer.current);
+			setEffect({ kind, x, y });
+			effectTimer.current = window.setTimeout(() => setEffect(null), 1600);
+		},
+		[],
+	);
 
 	/** Fire a POI action once Teddy arrives (or immediately, reduced motion). */
 	const performAction = useCallback(
-		(action: Poi["action"]) => {
+		(action: Poi["action"], at: Vec2) => {
 			if (action.kind === "care") {
 				if (action.action === "feed") {
 					setEating(true);
 					window.setTimeout(() => setEating(false), 1500);
+					playPop(settings);
+				} else if (action.action === "wash") {
+					showEffect("bubbles", at.x, at.y - 12);
+					playPop(settings);
+				} else {
+					setSleepyFlash(true);
+					window.setTimeout(() => setSleepyFlash(false), 1800);
+					showEffect("zzz", at.x, at.y - 22);
+					playPop(settings);
 				}
 				act(action.action);
 			} else if (action.kind === "runner") {
-				navigate("/runner");
+				showEffect("sparkle", at.x, at.y - 25);
+				playStar(settings);
+				// Let the sparkle land before handing over to the runner.
+				window.setTimeout(() => navigate("/runner"), 900);
 			} else {
+				showEffect("sparkle", at.x, at.y - 25);
+				playGiggle(settings);
 				setWardrobeOpen(true);
 			}
 		},
-		[act, navigate],
+		[act, navigate, settings, showEffect],
 	);
 
 	/** Consume an arrival: settle Teddy, fire the waiting action. */
@@ -111,7 +152,7 @@ export default function RoomScreen() {
 				facing: state.facing,
 				position,
 			});
-			if (action) performAction(action);
+			if (action) performAction(action, position);
 		},
 		[performAction],
 	);
@@ -132,8 +173,25 @@ export default function RoomScreen() {
 	);
 
 	const handleFloorTap = useCallback(
-		(x: number, y: number) => beginWalk(resolveTap(layout, x, y)),
-		[beginWalk, layout],
+		(x: number, y: number) => {
+			const tap = resolveTap(layout, x, y);
+			if (tap) {
+				beginWalk(tap);
+				return;
+			}
+			// Easter eggs: the rug and the window answer taps with delight.
+			const rug =
+				layout.orientation === "portrait" ? { x: 46, y: 67 } : { x: 48, y: 80 };
+			const win = { x: 50, y: layout.orientation === "portrait" ? 10 : 22 };
+			if (Math.hypot(rug.x - x, rug.y - y) < 10) {
+				showEffect("hearts", x, y);
+				playPop(settings);
+			} else if (Math.hypot(win.x - x, win.y - y) < 10) {
+				showEffect("sun", x, y);
+				playStar(settings);
+			}
+		},
+		[beginWalk, layout, settings, showEffect],
 	);
 
 	const handlePoiTap = useCallback(
@@ -144,6 +202,8 @@ export default function RoomScreen() {
 	const handleTeddyTap = useCallback(() => {
 		act("pet");
 		playGiggle(settings);
+		setPetting(true);
+		window.setTimeout(() => setPetting(false), 420);
 	}, [act, settings]);
 
 	// While walking Teddy heads for the target; idle he stands where he arrived.
@@ -160,7 +220,7 @@ export default function RoomScreen() {
 				teddyY={displayY}
 				walking={walking}
 				facing={walk.facing}
-				face={FACE_FOR_MOOD[mood]}
+				face={face}
 				costumeFilter={costumeFilter}
 				onRoomTap={handleFloorTap}
 				onPoiTap={handlePoiTap}
@@ -170,7 +230,18 @@ export default function RoomScreen() {
 						? walkDuration(walk.position ?? target, target)
 						: undefined
 				}
+				effect={effect}
+				petting={petting}
 			/>
+			{save && (
+				<div
+					className="star-chip room-star-chip"
+					role="status"
+					aria-label={`${save.stars} stars`}
+				>
+					<span aria-hidden="true">⭐</span> {save.stars}
+				</div>
+			)}
 			{wardrobeOpen && (
 				<div
 					className="wardrobe-panel"

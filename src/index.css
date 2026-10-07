@@ -115,6 +115,7 @@ h1 {
  * ------------------------------------------------------------------------- */
 
 .room-page {
+	position: relative;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -234,6 +235,59 @@ h1 {
 	}
 }
 
+/* Floating feedback bursts (FR6): rise gently and fade. */
+.room-fx {
+	position: absolute;
+	transform: translate(-50%, -100%);
+	font-size: clamp(1.6rem, 9cqh, 3rem);
+	pointer-events: none;
+	animation: room-fx-rise 1.6s ease-out forwards;
+	z-index: 3;
+}
+
+@keyframes room-fx-rise {
+	from {
+		opacity: 0;
+		translate: 0 12%;
+	}
+	25% {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		translate: 0 -60%;
+	}
+}
+
+/* Star chip floats in the room's top corner. */
+.room-star-chip {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 4;
+	margin: 0;
+}
+
+/* Squash-and-stretch when Teddy is petted. */
+.room-teddy-sprite.petting {
+	animation: room-pet-squash 420ms ease-out;
+}
+
+@keyframes room-pet-squash {
+	0% {
+		transform: scale(1, 1);
+	}
+	35% {
+		transform: scale(1.15, 0.8);
+	}
+	70% {
+		transform: scale(0.95, 1.05);
+	}
+	100% {
+		transform: scale(1, 1);
+	}
+}
+
 /* Wardrobe panel: the closet POI opens a cozy overlay. */
 .wardrobe-panel {
 	position: fixed;
@@ -273,6 +327,13 @@ h1 {
 	}
 	.room-teddy-walk {
 		background-position: center bottom;
+	}
+	.room-fx {
+		animation: none;
+		opacity: 1;
+	}
+	.room-teddy-sprite.petting {
+		animation: none;
 	}
 }
 

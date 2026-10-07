@@ -13,6 +13,13 @@ import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { breathScaleAt } from "../pet/breathe";
 import type { Poi, RoomLayout } from "./layout";
 
+/** A floating feedback burst on the room (FR6 signature feedback). */
+export interface RoomEffect {
+	kind: "bubbles" | "zzz" | "sparkle" | "hearts" | "sun";
+	x: number;
+	y: number;
+}
+
 const BLINK_FACE = "/teddy/teddy-blink.png";
 /** How long the blink face stays visible (ms). */
 const BLINK_DURATION_MS = 180;
@@ -44,6 +51,10 @@ export interface RoomSceneProps {
 	onTeddyTap?: () => void;
 	/** Walk duration for the current leg; drives the CSS transition. */
 	walkMs?: number;
+	/** Floating feedback burst (bubbles, Zzz, sparkles…). */
+	effect?: RoomEffect | null;
+	/** Brief squash-and-stretch when Teddy is petted. */
+	petting?: boolean;
 }
 
 export default function RoomScene({
@@ -58,6 +69,8 @@ export default function RoomScene({
 	onRoomTap,
 	onTeddyTap,
 	walkMs,
+	effect,
+	petting = false,
 }: RoomSceneProps) {
 	const [blinking, setBlinking] = useState(false);
 	const spriteRef = useRef<HTMLImageElement>(null);
@@ -190,7 +203,7 @@ export default function RoomScene({
 					>
 						<img
 							ref={spriteRef}
-							className="room-teddy-sprite"
+							className={`room-teddy-sprite${petting ? " petting" : ""}`}
 							src={blinking ? BLINK_FACE : face}
 							alt=""
 							draggable={false}
@@ -199,6 +212,16 @@ export default function RoomScene({
 					</button>
 				)}
 			</div>
+			{effect && (
+				<span
+					key={`${effect.kind}-${effect.x}-${effect.y}`}
+					className={`room-fx room-fx-${effect.kind}`}
+					style={{ left: `${effect.x}%`, top: `${effect.y}%` }}
+					aria-hidden="true"
+				>
+					{EFFECT_EMOJI[effect.kind]}
+				</span>
+			)}
 		</div>
 	);
 }
@@ -209,4 +232,12 @@ const POI_LABELS: Record<Poi["id"], string> = {
 	tub: "Teddy's bathtub",
 	toybox: "Teddy's toy box",
 	closet: "Teddy's wardrobe",
+};
+
+const EFFECT_EMOJI: Record<RoomEffect["kind"], string> = {
+	bubbles: "🫧",
+	zzz: "💤",
+	sparkle: "✨",
+	hearts: "💕",
+	sun: "☀️",
 };
