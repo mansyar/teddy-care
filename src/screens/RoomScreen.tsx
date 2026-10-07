@@ -8,7 +8,15 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { playGiggle, playPop, playStar } from "../audio/sound";
+import {
+	playFizz,
+	playFootsteps,
+	playGiggle,
+	playMunch,
+	playPop,
+	playStar,
+	playYawn,
+} from "../audio/sound";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
 import { usePetSave } from "../pet/usePetSave";
@@ -81,6 +89,7 @@ export default function RoomScreen() {
 	const [effect, setEffect] = useState<RoomEffect | null>(null);
 	const [petting, setPetting] = useState(false);
 	const walkTimer = useRef<number | undefined>(undefined);
+	const stepTimer = useRef<number | undefined>(undefined);
 	const effectTimer = useRef<number | undefined>(undefined);
 
 	const stats = save?.stats;
@@ -94,6 +103,7 @@ export default function RoomScreen() {
 	useEffect(
 		() => () => {
 			window.clearTimeout(walkTimer.current);
+			window.clearInterval(stepTimer.current);
 			window.clearTimeout(effectTimer.current);
 		},
 		[],
@@ -116,15 +126,15 @@ export default function RoomScreen() {
 				if (action.action === "feed") {
 					setEating(true);
 					window.setTimeout(() => setEating(false), 1500);
-					playPop(settings);
+					playMunch(settings);
 				} else if (action.action === "wash") {
 					showEffect("bubbles", at.x, at.y - 12);
-					playPop(settings);
+					playFizz(settings);
 				} else {
 					setSleepyFlash(true);
 					window.setTimeout(() => setSleepyFlash(false), 1800);
 					showEffect("zzz", at.x, at.y - 22);
-					playPop(settings);
+					playYawn(settings);
 				}
 				act(action.action);
 			} else if (action.kind === "runner") {
@@ -144,6 +154,7 @@ export default function RoomScreen() {
 	/** Consume an arrival: settle Teddy, fire the waiting action. */
 	const finishWalk = useCallback(
 		(state: WalkState) => {
+			window.clearInterval(stepTimer.current);
 			const { action, position } = arrive(state);
 			setWalk({
 				phase: "idle",
@@ -160,16 +171,22 @@ export default function RoomScreen() {
 	const beginWalk = useCallback(
 		(tap: TapResult) => {
 			window.clearTimeout(walkTimer.current);
+			window.clearInterval(stepTimer.current);
 			const next = startWalk(walk, layout, tap, reducedMotion);
 			setWalk(next);
 			if (next.phase === "walking" && next.target) {
+				// Soft footstep ticks for as long as the stroll lasts.
+				stepTimer.current = window.setInterval(
+					() => playFootsteps(settings),
+					500,
+				);
 				const ms = walkDuration(walk.position ?? next.target, next.target);
 				walkTimer.current = window.setTimeout(() => finishWalk(next), ms);
 			} else if (next.pendingAction) {
 				finishWalk(next);
 			}
 		},
-		[walk, layout, reducedMotion, finishWalk],
+		[walk, layout, reducedMotion, settings, finishWalk],
 	);
 
 	const handleFloorTap = useCallback(
