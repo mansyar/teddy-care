@@ -20,7 +20,7 @@
   `9380764`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2 — Purchase Sound (TDD)
+## Phase 2 — Purchase Sound (TDD) [checkpoint: 7558d1c]
 
 - [x] Task: Write failing tests in `src/audio/sound.test.ts` — buy-celebration
   sparkle sound (silent under MUTED/BEDTIME fixtures); reuse existing boop for
