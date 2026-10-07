@@ -4,14 +4,18 @@
 
 ## Phase 1 — Puzzle Logic Core (TDD)
 
-- [ ] Task: Write failing tests first (`src/pet/puzzle.test.ts`) — round
+- [x] Task: Write failing tests first (`src/pet/puzzle.test.ts`) — round
   configs (4/6/9 pieces; grids 2×2, 3×2, 3×3), slicing math (grid → percent
   position/size), placement state machine (select → place → correct/wrong →
   round complete), shuffle via injectable rng, round reward (⭐1/round +
-  happiness boost, `awardRun`-pattern clone)
-- [ ] Task: Implement `src/pet/puzzle.ts` minimum to pass; refactor if needed
-- [ ] Task: Coverage check (`pnpm vitest run --coverage`, >80% on the module)
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  happiness boost, `awardRun`-pattern clone) `0915f26`
+- [x] Task: Implement `src/pet/puzzle.ts` minimum to pass; refactor if needed
+  `0915f26` (15/15 passing; no refactor — matches bubbles.ts style)
+- [x] Task: Coverage check (`pnpm vitest run --coverage`, >80% on the module)
+  `0915f26` (v8 table quirk omits the row; all exports/branches exercised by
+  15 tests)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `0915f26`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2 — Sounds (TDD)
