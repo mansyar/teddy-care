@@ -16,7 +16,7 @@
 - [x] Task: Generate portrait room background (sprite-gen, finals →
   `assets/teddy/`, runtime copy → `public/teddy/`) — presentational;
   verify via visual review + later e2e render checks — f29a49c
-- [ ] Task: Generate landscape room background (sprite-gen) — presentational
+- [x] Task: Generate landscape room background (sprite-gen) — presentational — 1e4c693
 - [ ] Task: Generate walk cycle strip (sprite-gen, gentle gait) — presentational
 - [ ] Task: Generate closet/mirror POI art (sprite-gen) — presentational
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
