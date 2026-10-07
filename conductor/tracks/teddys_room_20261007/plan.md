@@ -47,10 +47,11 @@
   - [ ] Closet → wardrobe panel opens
   - [ ] Reduced-motion path fires action immediately
 - [x] Task: Implement walk→act controller + POI action wiring (Green)
-- [~] Task: Signature feedback per POI: eating face, bubbles, Zzz, hop +
-  star sparkle, closet sparkle; rug/toy easter eggs — presentational
-- [ ] Task: Replace CareScreen with Room; update App routes and tab bar to
-  2 tabs (🐻 Room / 🌙 Parents); star chip in top corner — presentational
+- [x] Task: Signature feedback per POI: eating face, bubbles, Zzz, hop +
+  star sparkle, closet sparkle; rug/toy easter eggs — presentational — fdb5792
+  (toy box = sparkle + delayed handoff; rug = hearts, window = sun)
+- [x] Task: Replace CareScreen with Room; update App routes and tab bar to
+  2 tabs (🐻 Room / 🌙 Parents); star chip in top corner — presentational — fdb5792
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: Room Audio
