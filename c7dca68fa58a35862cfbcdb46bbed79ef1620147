@@ -1,0 +1,1 @@
+fix(puzzle): Regenerate tub picture on green chroma key — user spotted the tub teddy partially keyed away (vision QA had missed it); regen on bright green key: fringe 21883 -> 56 px, vision-QA confirms complete bear + intact tub, no residue.
