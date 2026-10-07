@@ -39,13 +39,13 @@
 ## Phase 3: Interaction — Walk→Act Controller [checkpoint: fdb5792]
 
 - [x] Task: Write failing tests for interaction controller (Red)
-  - [ ] Tap floor → walk target, no action
-  - [ ] Tap POI → walk → action fires on arrival (feed/rest/wash boosts via
+  - [x] Tap floor → walk target, no action
+  - [x] Tap POI → walk → action fires on arrival (feed/rest/wash boosts via
     existing `stats.ts` semantics)
-  - [ ] Tap Teddy → pet action (happiness +25, squash/giggle)
-  - [ ] Toy box → navigation to `/runner`
-  - [ ] Closet → wardrobe panel opens
-  - [ ] Reduced-motion path fires action immediately
+  - [x] Tap Teddy → pet action (happiness +25, squash/giggle)
+  - [x] Toy box → navigation to `/runner`
+  - [x] Closet → wardrobe panel opens
+  - [x] Reduced-motion path fires action immediately
 - [x] Task: Implement walk→act controller + POI action wiring (Green)
 - [x] Task: Signature feedback per POI: eating face, bubbles, Zzz, hop +
   star sparkle, closet sparkle; rug/toy easter eggs — presentational — fdb5792
