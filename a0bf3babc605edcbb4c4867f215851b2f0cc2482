@@ -1,0 +1,7 @@
+Task: Implement object-state visuals + bedtime staging (Green) — a0bf3ba
+
+Wiring: RoomScene gains objectState/bedtime props; RoomScreen computes roomObjectState(save.stats) and passes settings.bedtime.
+Visuals: night tint overlay (.room-scene.night::after, pointer-events none), warm bed glow via .room-poi[data-poi=bed] box-shadow at night, sleeping Zzz span over idle Teddy at bedtime, bowl hint emoji when low/empty (gentle wobble when empty), scruffy/messy sepia tint merged into sprite filter, droop via independent rotate/scale CSS properties (no conflict with breathe rAF transform).
+Reduced motion: sleep drift + bowl wobble animations disabled.
+Live verification: injected low-stats save via IndexedDB (hunger 30, energy 25, cleanliness 20) with bedtime on/off; screenshots confirm night tint + glow + Zzz at bedtime, scruffy tint + droop + bowl hint in day view.
+Deviations: none.
