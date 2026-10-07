@@ -62,7 +62,7 @@
 - [x] Task: Implement synthesized sounds in `src/audio/sound.ts` (Green) — 620232c, 6544220
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5: Object-State Visuals & Bedtime Staging
+## Phase 5: Object-State Visuals & Bedtime Staging [checkpoint: a0bf3ba]
 
 - [x] Task: Write failing tests for stat→object-state mapping (Red):
   bowl fill level vs hunger, scruffiness vs cleanliness, droop vs energy
@@ -70,7 +70,7 @@
 - [x] Task: Implement object-state visuals + bedtime staging: room dim,
   glowing bed, sleeping Teddy (Green) — visuals themselves verified via
   Playwright/manual — a0bf3ba
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6: E2E, Offline & Polish
 
