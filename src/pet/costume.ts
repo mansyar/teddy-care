@@ -1,18 +1,17 @@
 /**
- * The wardrobe: a small, joyful set of costumes in two render styles.
+ * The wardrobe: a small, joyful set of filter-recolor costumes.
  *
- * "filter" costumes recolor the sprite with a CSS filter — they equip over
- * every face and animation by construction. "overlay" accessories are real
- * art drawn over base Teddy, so they need companion strips to follow the
- * walk and run. Buying spends stars, records ownership, and equips; owned
- * items can be re-equipped at any time (free switching, including back to
- * the default onesie).
+ * Every costume tints Teddy's sprite with a CSS filter — the same mechanism
+ * scene-wide, so each look is automatically consistent across the idle room,
+ * the walk cycle, and the runner with no extra art. Buying spends stars,
+ * records ownership, and equips; owned items can be re-equipped at any time
+ * (free switching, including back to the default onesie).
  */
 import type { SaveData } from "../save/store";
 import {
-	COZY_SCARF_PRICE,
+	BERRY_NIGHT_PRICE,
 	FIRST_COSTUME_PRICE,
-	PARTY_HAT_PRICE,
+	MINT_DREAM_PRICE,
 	spendStars,
 } from "./stars";
 
@@ -21,10 +20,8 @@ export interface Costume {
 	name: string;
 	icon: string;
 	price: number;
-	/** Render style: "filter" recolors the sprite, "overlay" draws accessory art. */
-	kind: "filter" | "overlay";
-	/** CSS filter applied to the sprite while equipped (filter kind only). */
-	filter?: string;
+	/** CSS filter applied to the sprite while equipped. */
+	filter: string;
 }
 
 export const COSTUMES: Costume[] = [
@@ -33,22 +30,21 @@ export const COSTUMES: Costume[] = [
 		name: "Sunset Onesie",
 		icon: "🌅",
 		price: FIRST_COSTUME_PRICE,
-		kind: "filter",
 		filter: "hue-rotate(-35deg) saturate(1.25)",
 	},
 	{
-		id: "party-hat",
-		name: "Party Hat",
-		icon: "🎉",
-		price: PARTY_HAT_PRICE,
-		kind: "overlay",
+		id: "mint-dream",
+		name: "Mint Dream",
+		icon: "🌿",
+		price: MINT_DREAM_PRICE,
+		filter: "hue-rotate(-60deg) saturate(0.9) brightness(1.05)",
 	},
 	{
-		id: "cozy-scarf",
-		name: "Cozy Scarf",
-		icon: "🧣",
-		price: COZY_SCARF_PRICE,
-		kind: "overlay",
+		id: "berry-night",
+		name: "Berry Night",
+		icon: "🫐",
+		price: BERRY_NIGHT_PRICE,
+		filter: "hue-rotate(60deg) saturate(1.2) brightness(0.85)",
 	},
 ];
 

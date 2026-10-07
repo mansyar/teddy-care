@@ -40,8 +40,8 @@ describe("save/load round-trip", () => {
 			...DEFAULT_SAVE,
 			stats: { hunger: 40, happiness: 55, energy: 70, cleanliness: 90 },
 			stars: 7,
-			costume: "party-hat",
-			owned: ["party-hat", "cozy-scarf"],
+			costume: "mint-dream",
+			owned: ["mint-dream", "berry-night"],
 			settings: { muted: true, bedtime: false },
 			lastSeen: 1234567890,
 		};
@@ -166,7 +166,7 @@ describe("v1 → v2 migration", () => {
 			migrateSave({
 				...DEFAULT_SAVE,
 				owned: [],
-				costume: "party-hat",
+				costume: "sunset-onesie",
 			}),
 		).toEqual(DEFAULT_SAVE);
 	});

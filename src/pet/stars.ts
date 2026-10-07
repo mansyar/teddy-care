@@ -12,10 +12,10 @@ import type { SaveData } from "../save/store";
 export const STARS_PER_CARE = 1;
 /** Price of the first (MVP) unlockable costume. */
 export const FIRST_COSTUME_PRICE = 10;
-/** Price of the mid-tier accessory. */
-export const PARTY_HAT_PRICE = 20;
-/** Price of the top-tier accessory. */
-export const COZY_SCARF_PRICE = 30;
+/** Price of the mid-tier costume. */
+export const MINT_DREAM_PRICE = 20;
+/** Price of the top-tier costume. */
+export const BERRY_NIGHT_PRICE = 30;
 
 /** Add the care-action reward to a save's star balance. */
 export function earnCareStar(save: SaveData): SaveData {
