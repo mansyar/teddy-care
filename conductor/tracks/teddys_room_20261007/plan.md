@@ -72,7 +72,7 @@
   Playwright/manual — a0bf3ba
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 6: E2E, Offline & Polish
+## Phase 6: E2E, Offline & Polish [checkpoint: e3a9435]
 
 - [x] Task: Playwright e2e additions: bowl→hunger boost, bed→energy,
   tub→cleanliness, pet boost, toy box→runner opens, wardrobe opens,
@@ -84,4 +84,4 @@
   mid-range device profile; manual 360px + real-phone pass — e3a9435
   (walk strip q90: 2.24MB→667KB; 182fps at 4x CPU throttle; 360px verified;
   real-phone pass = final install check)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
