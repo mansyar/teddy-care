@@ -14,6 +14,7 @@ import {
 	placeSelected,
 	selectPiece,
 	sliceBoard,
+	slotBackgroundPosition,
 } from "./puzzle";
 
 /** Build a save fixture by spreading the defaults. */
@@ -161,6 +162,26 @@ describe("isRoundComplete", () => {
 			state = placeSelected(selectPiece(state, piece.id), piece.slot).state;
 		}
 		expect(isRoundComplete(state)).toBe(true);
+	});
+});
+
+describe("slot background position", () => {
+	it("maps grid columns and rows to percentage stops", () => {
+		// 2x2: stops at 0% and 100%.
+		const two = sliceBoard(0);
+		expect(slotBackgroundPosition(two[0])).toBe("0% 0%");
+		expect(slotBackgroundPosition(two[1])).toBe("100% 0%");
+		expect(slotBackgroundPosition(two[2])).toBe("0% 100%");
+		// 3x2 means 3 rows of 2 columns: top-right corner, middle-left row.
+		const six = sliceBoard(1);
+		expect(slotBackgroundPosition(six[1])).toBe("100% 0%");
+		expect(slotBackgroundPosition(six[2])).toBe("0% 50%");
+		expect(slotBackgroundPosition(six[5])).toBe("100% 100%");
+	});
+
+	it("maps the 3x3 grid center to 50% 50%", () => {
+		const nine = sliceBoard(2);
+		expect(slotBackgroundPosition(nine[4])).toBe("50% 50%");
 	});
 });
 

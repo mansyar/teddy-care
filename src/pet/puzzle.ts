@@ -72,6 +72,19 @@ export function sliceBoard(roundIndex: number): BoardSlot[] {
 	return slots;
 }
 
+/**
+ * CSS background-position that shows one grid cell of the full picture:
+ * the picture is stretched to rows×cols tiles, so each cell's origin sits
+ * at left / (100 − width). Zero denominator never happens (grids ≥ 2×2).
+ */
+export function slotBackgroundPosition(slot: BoardSlot): string {
+	const x = slot.leftPct / (100 - slot.widthPct);
+	const y = slot.topPct / (100 - slot.heightPct);
+	// Round away float noise so positions stay clean CSS percentages.
+	const pct = (ratio: number) => Math.round(ratio * 100_000) / 1000;
+	return `${pct(x)}% ${pct(y)}%`;
+}
+
 /** Deal a shuffled tray: each piece's home slot is its own id. */
 export function createRound(
 	roundIndex: number,
