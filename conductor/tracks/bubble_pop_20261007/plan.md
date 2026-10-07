@@ -25,7 +25,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Commit code changes + attach git note + update plan task status `8d1e979`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3 — Bubble Sprite Art (asset pipeline)
+## Phase 3 — Bubble Sprite Art (asset pipeline) `[checkpoint: 22efdf2]`
 
 - [x] Task: Generate bubble sprite via the sprite-gen pipeline →
   `assets/teddy/` → `public/teddy/` (presentational; verification: file
@@ -35,7 +35,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Add sprite to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
   precache existence check — Red then Green (TDD on the manifest test) `22efdf2`
 - [x] Task: Commit code changes + attach git note + update plan task status `22efdf2`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4 — Toy Box Mini-Menu (presentational + e2e)
 
