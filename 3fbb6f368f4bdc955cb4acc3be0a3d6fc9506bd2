@@ -1,0 +1,22 @@
+Task: Build icon-only mini-game chooser modal on toy box tap (Phase 4)
+
+Toy box POI (action.kind === 'runner') now opens a modal mini-game menu
+instead of the 900ms-delayed navigate('/runner'): sparkle effect + star
+chime land as the chooser pops up over the room. Chooser lists
+'Run!' (/runner) and 'Bubbles!' (/bubbles) as big 72px icon-first
+buttons with descriptive aria-labels, plus a Close button.
+
+A11y: role=dialog aria-modal 'Teddy's games', focus lands on Close on
+open, Escape closes (shared effect with wardrobe, now handling both
+dialogs). Removed the orphaned navTimer ref/cleanup; dropped unused
+navigate from performAction deps (Biome useExhaustiveDependencies).
+
+CSS: .mini-menu-panel + .mini-menu-btn matching wardrobe-panel look,
+var(--color-navy) house borders, 3px outline, pill buttons.
+
+E2E: room-care 'toy box opens the runner' rewritten to expect the menu
+then reach the runner through it; added Escape-closes-menu test; header
+comment updated.
+
+Files: src/screens/RoomScreen.tsx, src/index.css,
+e2e/room-care.spec.ts.
