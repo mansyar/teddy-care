@@ -52,3 +52,6 @@
 - [x] Task: Real-phone build + install + airplane-mode pass
 - [x] Task: Son playtest gate (feed→happy→star + runner run unaided)
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [checkpoint: 938bdaa]
+
+## Review Fixes (conductor-review, 2026-10-07)
+- [x] Task: Single Phaser mount per run + e2e harness hardening (91dda4b)
