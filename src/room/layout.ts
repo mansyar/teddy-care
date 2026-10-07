@@ -50,26 +50,26 @@ export const HOTSPOT_RADIUS_PCT = 8;
 const PORTRAIT: RoomLayout = {
 	orientation: "portrait",
 	pois: [
-		{ id: "bed", action: { kind: "care", action: "rest" }, x: 25, y: 20 },
-		{ id: "closet", action: { kind: "wardrobe" }, x: 75, y: 18 },
-		{ id: "tub", action: { kind: "care", action: "wash" }, x: 78, y: 45 },
-		{ id: "bowl", action: { kind: "care", action: "feed" }, x: 22, y: 58 },
-		{ id: "toybox", action: { kind: "runner" }, x: 72, y: 68 },
+		{ id: "bed", action: { kind: "care", action: "rest" }, x: 24, y: 38 },
+		{ id: "closet", action: { kind: "wardrobe" }, x: 83, y: 31 },
+		{ id: "tub", action: { kind: "care", action: "wash" }, x: 81, y: 52 },
+		{ id: "bowl", action: { kind: "care", action: "feed" }, x: 14, y: 83 },
+		{ id: "toybox", action: { kind: "runner" }, x: 81, y: 79 },
 	],
-	floor: { x: 0, y: 35, w: 100, h: 65 },
+	floor: { x: 0, y: 55, w: 100, h: 45 },
 };
 
 /** Landscape composition: the same room spread wide. */
 const LANDSCAPE: RoomLayout = {
 	orientation: "landscape",
 	pois: [
-		{ id: "bed", action: { kind: "care", action: "rest" }, x: 12, y: 30 },
-		{ id: "closet", action: { kind: "wardrobe" }, x: 32, y: 25 },
-		{ id: "tub", action: { kind: "care", action: "wash" }, x: 55, y: 30 },
-		{ id: "bowl", action: { kind: "care", action: "feed" }, x: 75, y: 45 },
-		{ id: "toybox", action: { kind: "runner" }, x: 90, y: 40 },
+		{ id: "bed", action: { kind: "care", action: "rest" }, x: 16, y: 58 },
+		{ id: "closet", action: { kind: "wardrobe" }, x: 30, y: 38 },
+		{ id: "tub", action: { kind: "care", action: "wash" }, x: 69, y: 53 },
+		{ id: "bowl", action: { kind: "care", action: "feed" }, x: 73, y: 78 },
+		{ id: "toybox", action: { kind: "runner" }, x: 88, y: 65 },
 	],
-	floor: { x: 0, y: 20, w: 100, h: 80 },
+	floor: { x: 0, y: 40, w: 100, h: 60 },
 };
 
 /**
