@@ -12,3 +12,14 @@ branch on mute/bedtime.
 Result: 17/17 sound tests passing, pnpm check clean. Files:
 src/audio/sound.ts (popBubble added), src/audio/sound.test.ts
 (bubble pop sound describe block added).
+
+Phase Verification Report: Phase 2 — Sound (TDD)
+
+Automated tests: CI=true pnpm test — 120/120 passing (17 audio tests,
+including the 3 new popBubble tests: existence, mute/bedtime silence with
+no AudioContext created, audible pop schedules exactly one oscillator).
+Quality gates: pnpm check clean.
+
+Manual verification steps presented: pnpm dev, confirm no visible change
+(popBubble has no call site until Phase 5; oscillator scheduling and
+gating proven by unit tests). User confirmed: yes.
