@@ -11,5 +11,5 @@
 - [x] **Track: Bubble Pop — tap mini-game with toy box mini-menu**
   *Link: [bubble_pop_20261007](../archive/bubble_pop_20261007/index.md) — archived 2026-10-08 (reviewed, fixes applied, approved)*
 
-- [~] **Track: Puzzle Pieces — tap-to-place jigsaw mini-game with three-round climb**
+- [x] **Track: Puzzle Pieces — tap-to-place jigsaw mini-game with three-round climb**
   *Link: [puzzle_20261008](./tracks/puzzle_20261008/index.md)*
