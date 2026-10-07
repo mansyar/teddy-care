@@ -59,7 +59,7 @@
 - [x] Task: Write failing tests for new sound gating (Red): footsteps,
   munch, water fizz, yawn all silent under mute/bedtime via `isAudible`
   (RED confirmed before implementation; tests committed with Green — 620232c)
-- [x] Task: Implement synthesized sounds in `src/audio/sound.ts` (Green) — 620232c
+- [x] Task: Implement synthesized sounds in `src/audio/sound.ts` (Green) — 620232c, 6544220
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Object-State Visuals & Bedtime Staging
