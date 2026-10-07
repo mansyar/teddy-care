@@ -37,7 +37,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Commit code changes + attach git note + update plan task status `22efdf2`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4 — Toy Box Mini-Menu (presentational + e2e)
+## Phase 4 — Toy Box Mini-Menu (presentational + e2e) `[checkpoint: 3fbb6f3]`
 
 - [x] Task: Build icon-only mini-game chooser modal on toy box tap (Runner +
   Bubble Pop), replacing direct runner navigation; aria-modal + focus
@@ -47,7 +47,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
     Escape-closes test; manual: tap toy box → chooser pops with sparkle,
     both buttons navigate, Close/Escape return to room
 - [x] Task: Commit code changes + attach git note + update plan task status `3fbb6f3`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5 — Bubbles Screen & Route (presentational + e2e)
 
