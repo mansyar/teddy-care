@@ -147,24 +147,24 @@ describe("room sound gating", () => {
 });
 
 describe("bubble pop sound", () => {
-	it("popBubble exists as a function", async () => {
+	it("playPopBubble exists as a function", async () => {
 		const s = await load();
-		expect(typeof s.popBubble).toBe("function");
+		expect(typeof s.playPopBubble).toBe("function");
 	});
 
-	it("popBubble stays silent under mute and bedtime — no context is created", async () => {
+	it("playPopBubble stays silent under mute and bedtime — no context is created", async () => {
 		installAudioStub();
-		const { popBubble } = await load();
-		popBubble(MUTED);
-		popBubble(BEDTIME);
+		const { playPopBubble } = await load();
+		playPopBubble(MUTED);
+		playPopBubble(BEDTIME);
 		expect(constructed).toBe(0);
 		expect(oscillators).toBe(0);
 	});
 
-	it("audible popBubble schedules one bright blip", async () => {
+	it("audible playPopBubble schedules one bright blip", async () => {
 		installAudioStub();
-		const { popBubble } = await load();
-		popBubble(AUDIBLE);
+		const { playPopBubble } = await load();
+		playPopBubble(AUDIBLE);
 		expect(constructed).toBe(1);
 		expect(oscillators).toBe(1);
 	});

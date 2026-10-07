@@ -135,7 +135,7 @@ export function playFanfare(settings: ParentSettings): void {
 }
 
 /** Bright short blip for popping a bubble in the tap game. */
-export function popBubble(settings: ParentSettings): void {
+export function playPopBubble(settings: ParentSettings): void {
 	play(settings, [{ frequency: 1150, delayS: 0, durationS: 0.08 }]);
 }
 

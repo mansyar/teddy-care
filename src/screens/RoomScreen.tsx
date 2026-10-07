@@ -19,6 +19,7 @@ import {
 } from "../audio/sound";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
+import { usePrefersReducedMotion } from "../pet/useMotion";
 import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 import {
@@ -37,20 +38,6 @@ import {
 	type WalkState,
 	walkDuration,
 } from "../room/walk";
-
-/** Track `prefers-reduced-motion` live. */
-function usePrefersReducedMotion() {
-	const [reduced, setReduced] = useState(
-		() => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-	);
-	useEffect(() => {
-		const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-		const onChange = () => setReduced(mq.matches);
-		mq.addEventListener("change", onChange);
-		return () => mq.removeEventListener("change", onChange);
-	}, []);
-	return reduced;
-}
 
 /** Orientation-tracked room layout. */
 function useRoomLayout(): RoomLayout {
