@@ -66,20 +66,32 @@
   Berry Night `hue-rotate(60deg) saturate(1.2) brightness(0.85)`)
 - [x] Task: Commit code changes + attach git note + update plan task status
   <6f5087e>
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) <6f5087e>
 
 ## Phase 5 — Wardrobe UI (presentational)
 
-- [ ] Task: Closet modal → live preview strip: card per costume +
+- [x] Task: Closet modal → live preview strip: card per costume +
   default-onesie card; owned = tap-to-equip (worn card highlighted);
   unowned+affordable = buy + sparkle celebration + equip; unowned+unaffordable
   = gentle wiggle + soft boop, nothing else; Escape-close + focus management
   preserved; ≥48px targets; card thumbnails preview the filter live
-- [ ] Task: RoomScene shows the equipped filter as today (scene-wide);
+  <e3b6514> (panel became a bottom sheet so Teddy stays visible behind for
+  the live preview; new `.wardrobe-strip`/`.wardrobe-item` classes keep the
+  shared `.wardrobe-card` card untouched for other screens)
+- [x] Task: RoomScene shows the equipped filter as today (scene-wide);
   reduced-motion path keeps equip + sound, skips wiggle/celebration motion
-- [ ] Task: Verify at 360px portrait and desktop; tune Mint Dream / Berry
-  Night filter values live with the user
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  <e3b6514> (wiggle gated in JS on `usePrefersReducedMotion` and disabled
+  in CSS)
+- [x] Task: Verify at 360px portrait and desktop; tune Mint Dream / Berry
+  Night filter values live with the user <e3b6514> (verified in a driven
+  browser: strip renders, worn highlight, tap-to-wear recolors Teddy live;
+  user approved the look as-is)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  <e3b6514> (also `fix(save)`: openDb now opens at SAVE_VERSION and its
+  upgrade handler no longer re-creates an existing store — caught live when
+  a v2 schema DB rejected the app's v1 connection; plus `fix(wardrobe)`
+  4761491 top-aligning the sheet after a 360px vision check caught clipped
+  card rows)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6 — E2E, Offline & Docs
