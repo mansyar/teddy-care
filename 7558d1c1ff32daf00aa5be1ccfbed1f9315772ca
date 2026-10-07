@@ -1,0 +1,1 @@
+Phase 2 — Purchase Sound (TDD): red 3 failing -> green 157/157; playSparkle (4-note ascending shimmer 880->1760Hz) gated via shared play()/isAudible, silent under MUTED/BEDTIME; unaffordable wiggle reuses existing playBoop; pnpm check clean.
