@@ -27,9 +27,18 @@ tracking.
 - 3 mini-games, parent panel + bedtime mode, music + SFX with parent mute
 - Full offline, IndexedDB persistence, installable PWA, responsive 360px → desktop
 
+## Shipped (Track 2: Teddy's Room)
+- Care happens in a wander-around room: tap a POI (bowl, bed, tub, toy box,
+  closet) or the floor and Teddy walks there, then the care action fires on
+  arrival — no buttons
+- Tap Teddy himself to pet; room reads as object state (bowl fill, scruffy
+  fur, droopy posture, mood face), not numeric bars; star chip in the corner
+- Portrait + landscape room layouts; bedtime stages the room (night tint,
+  glowing bed, sleeping Teddy); reduced-motion skips walks but keeps feedback
+- New gentle walk cycle + room art via the sprite-gen pipeline; new room
+  sounds (footsteps, munch, fizz, yawn) behind the same parent mute/bedtime
+
 ## Deferred (Post-MVP)
-- **Teddy's Room** (Track 2): wander-around room with tappable POIs
-  (bowl, bed, tub, toy box) replacing buttons; needs walk loop + room art
 - Costume system (accessories + palette recolor, not per-face redraws)
 - Pet collection metagame
 
