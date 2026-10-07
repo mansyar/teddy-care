@@ -68,3 +68,10 @@
 - [x] Task: Commit code changes + attach git note + update plan task status
   `ebb5671`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase: Review Fixes
+
+- [x] Task: Apply review suggestions `90220f2` (conductor-review, 3 Low
+  findings: wrong navy in board shadow/slot outline rgba → 43,58,103;
+  `.pip.done-pip` #ffd9c0 → var(--color-peach); note-only: `.puzzle-slot`
+  #eef3f7 one-off color, no change)
