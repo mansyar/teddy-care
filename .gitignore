@@ -40,3 +40,4 @@ assets/teddy/walk-set/*/frames/
 assets/teddy/walk-set/*/clip*.mp4
 assets/teddy/walk-set/*/probe/
 assets/teddy/walk-set/rejected/
+.playwright-cli/

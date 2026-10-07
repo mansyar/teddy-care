@@ -42,9 +42,7 @@ export const PRECACHE_ART: string[] = [
 	"teddy/teddy-sad.png",
 	"teddy/teddy-sleepy.png",
 	"teddy/teddy-eating.png",
-	"teddy/teddy-side-right.png",
 	"teddy/side-run-asfilmed.strip.png",
-	"teddy/side-run-asfilmed.strip.json",
 	// Teddy's Room: backgrounds, walk cycle, wardrobe panel art (WebP).
 	"teddy/room-portrait.webp",
 	"teddy/room-landscape.webp",

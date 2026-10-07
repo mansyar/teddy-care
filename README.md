@@ -40,7 +40,8 @@ pnpm test:e2e   # Playwright flows (care, runner, offline, settings)
 
 ```
 src/
-  screens/    CareScreen, RunnerScreen, ParentScreen (React glue)
+  screens/    RoomScreen, RunnerScreen, ParentScreen (React glue)
+  room/      layout, walk→act controller, object-state mapping
   pet/        Pure game logic: stats, mood, breathe, stars, costume, settings
   save/       IndexedDB persistence
   game/       Phaser runner mounting (runGame.ts)

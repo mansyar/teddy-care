@@ -66,13 +66,18 @@ describe("resolveLayout", () => {
 	});
 
 	it("defines a walkable floor zone inside the scene bounds", () => {
-		const floor = resolveLayout(360, 640).floor;
-		expect(floor.x).toBeGreaterThanOrEqual(0);
-		expect(floor.y).toBeGreaterThanOrEqual(0);
-		expect(floor.x + floor.w).toBeLessThanOrEqual(100);
-		expect(floor.y + floor.h).toBeLessThanOrEqual(100);
-		expect(floor.w).toBeGreaterThan(0);
-		expect(floor.h).toBeGreaterThan(0);
+		for (const [w, h] of [
+			[360, 640],
+			[640, 360],
+		]) {
+			const floor = resolveLayout(w, h).floor;
+			expect(floor.x).toBeGreaterThanOrEqual(0);
+			expect(floor.y).toBeGreaterThanOrEqual(0);
+			expect(floor.x + floor.w).toBeLessThanOrEqual(100);
+			expect(floor.y + floor.h).toBeLessThanOrEqual(100);
+			expect(floor.w).toBeGreaterThan(0);
+			expect(floor.h).toBeGreaterThan(0);
+		}
 	});
 });
 
@@ -106,6 +111,15 @@ describe("resolveTap", () => {
 
 	it("ignores taps outside both POIs and the floor", () => {
 		expect(resolveTap(layout, 50, 0.5)).toBeNull();
+	});
+
+	it("POI hotspots win over the floor where they overlap", () => {
+		// The portrait tub dips below the floor's top edge; a tap there is
+		// still the tub, never bare floor.
+		const tub = layout.pois.find((p) => p.id === "tub");
+		if (!tub) throw new Error("missing tub");
+		const y = Math.max(tub.y + 4, layout.floor.y + 1);
+		expect(resolveTap(layout, tub.x, y)?.kind).toBe("poi");
 	});
 });
 

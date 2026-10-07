@@ -17,6 +17,8 @@ export default function App() {
 						<Route path="/" element={<RoomScreen />} />
 						<Route path="/runner" element={<RunnerScreen />} />
 						<Route path="/parents" element={<ParentScreen />} />
+						{/* Unknown hashes land back home — never an empty room. */}
+						<Route path="*" element={<RoomScreen />} />
 					</Routes>
 				</main>
 				<nav className="app-nav" aria-label="Main">

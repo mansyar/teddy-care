@@ -16,6 +16,8 @@ import type { RoomObjectState } from "./state";
 
 /** A floating feedback burst on the room (FR6 signature feedback). */
 export interface RoomEffect {
+	/** Monotonic id so repeat taps restart the animation. */
+	id: number;
 	kind: "bubbles" | "zzz" | "sparkle" | "hearts" | "sun";
 	x: number;
 	y: number;
@@ -48,6 +50,8 @@ export interface RoomSceneProps {
 	objectState?: RoomObjectState;
 	/** Bedtime staging: night tint, glowing bed, sleeping Teddy. */
 	bedtime?: boolean;
+	/** Live `prefers-reduced-motion` state from the screen (gates breathe). */
+	reducedMotion?: boolean;
 	/** POI tap (fired by the real hotspot buttons, for a11y + keyboard). */
 	onPoiTap?: (poi: Poi) => void;
 	/** Raw room tap in scene percentages (floor, walls, everything). */
@@ -72,6 +76,7 @@ export default function RoomScene({
 	costumeFilter = "none",
 	objectState,
 	bedtime = false,
+	reducedMotion = false,
 	onPoiTap,
 	onRoomTap,
 	onTeddyTap,
@@ -118,7 +123,7 @@ export default function RoomScene({
 
 	// Runtime breathe mirror: scaleY oscillation, feet planted.
 	useEffect(() => {
-		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		if (reducedMotion) return;
 		if (walking) return;
 		let frame = 0;
 		const start = performance.now();
@@ -131,7 +136,7 @@ export default function RoomScene({
 		};
 		frame = requestAnimationFrame(tick);
 		return () => cancelAnimationFrame(frame);
-	}, [walking]);
+	}, [reducedMotion, walking]);
 
 	const background =
 		layout.orientation === "portrait"
@@ -185,7 +190,20 @@ export default function RoomScene({
 				: null;
 
 	return (
-		<div className={`room-scene${bedtime ? " night" : ""}`} ref={sceneRef}>
+		// Backdrop tap catch-all (window/walls). Pointer-only by design:
+		// keyboard users navigate via the floor, POI, and Teddy buttons.
+		// biome-ignore lint/a11y/noStaticElementInteractions: pointer-only backdrop target
+		// biome-ignore lint/a11y/useKeyWithClickEvents: keyboard users have the floor button
+		<div
+			className={`room-scene${bedtime ? " night" : ""}`}
+			ref={sceneRef}
+			onClick={(event) => {
+				// Taps on the bare backdrop (walls, window) bubble here; POIs,
+				// floor, and Teddy stop propagation below.
+				const coords = sceneCoords(event);
+				if (coords) onRoomTap?.(coords.x, coords.y);
+			}}
+		>
 			{" "}
 			<img className="room-bg" src={background} alt="" draggable={false} />
 			<button
@@ -199,7 +217,16 @@ export default function RoomScene({
 				}}
 				aria-label="Room floor"
 				onClick={(event) => {
-					const coords = sceneCoords(event);
+					event.stopPropagation();
+					// Keyboard activation has no pointer position — head for the
+					// middle of the floor so Enter still walks Teddy somewhere.
+					const coords =
+						event.detail === 0
+							? {
+									x: layout.floor.x + layout.floor.w / 2,
+									y: layout.floor.y + layout.floor.h / 2,
+								}
+							: sceneCoords(event);
 					if (coords) onRoomTap?.(coords.x, coords.y);
 				}}
 			/>
@@ -264,7 +291,7 @@ export default function RoomScene({
 			)}
 			{effect && (
 				<span
-					key={`${effect.kind}-${effect.x}-${effect.y}`}
+					key={effect.id}
 					className={`room-fx room-fx-${effect.kind}`}
 					style={{ left: `${effect.x}%`, top: `${effect.y}%` }}
 					aria-hidden="true"

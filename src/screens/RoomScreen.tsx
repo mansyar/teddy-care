@@ -31,7 +31,7 @@ import {
 import RoomScene, { type RoomEffect } from "../room/RoomScene";
 import { roomObjectState } from "../room/state";
 import {
-	arrive,
+	completeWalk,
 	startWalk,
 	type Vec2,
 	type WalkState,
@@ -89,9 +89,12 @@ export default function RoomScreen() {
 	const [sleepyFlash, setSleepyFlash] = useState(false);
 	const [effect, setEffect] = useState<RoomEffect | null>(null);
 	const [petting, setPetting] = useState(false);
+	const closeWardrobeRef = useRef<HTMLButtonElement>(null);
 	const walkTimer = useRef<number | undefined>(undefined);
 	const stepTimer = useRef<number | undefined>(undefined);
 	const effectTimer = useRef<number | undefined>(undefined);
+	const navTimer = useRef<number | undefined>(undefined);
+	const effectSeq = useRef(0);
 
 	const stats = save?.stats;
 	const mood = stats
@@ -107,15 +110,29 @@ export default function RoomScreen() {
 			window.clearTimeout(walkTimer.current);
 			window.clearInterval(stepTimer.current);
 			window.clearTimeout(effectTimer.current);
+			window.clearTimeout(navTimer.current);
 		},
 		[],
 	);
+
+	// The wardrobe is a modal dialog: focus lands on Close when it opens,
+	// and Escape closes it — kindness for keyboard and switch users.
+	useEffect(() => {
+		if (!wardrobeOpen) return;
+		closeWardrobeRef.current?.focus();
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setWardrobeOpen(false);
+		};
+		window.addEventListener("keydown", onKey);
+		return () => window.removeEventListener("keydown", onKey);
+	}, [wardrobeOpen]);
 
 	/** Signature feedback per POI, plus rug/window easter eggs (FR6). */
 	const showEffect = useCallback(
 		(kind: RoomEffect["kind"], x: number, y: number) => {
 			window.clearTimeout(effectTimer.current);
-			setEffect({ kind, x, y });
+			effectSeq.current += 1;
+			setEffect({ id: effectSeq.current, kind, x, y });
 			effectTimer.current = window.setTimeout(() => setEffect(null), 1600);
 		},
 		[],
@@ -142,8 +159,10 @@ export default function RoomScreen() {
 			} else if (action.kind === "runner") {
 				showEffect("sparkle", at.x, at.y - 25);
 				playStar(settings);
-				// Let the sparkle land before handing over to the runner.
-				window.setTimeout(() => navigate("/runner"), 900);
+				// Let the sparkle land before handing over to the runner. The
+				// timer is tracked: a retap or unmount cancels the handoff.
+				window.clearTimeout(navTimer.current);
+				navTimer.current = window.setTimeout(() => navigate("/runner"), 900);
 			} else {
 				showEffect("sparkle", at.x, at.y - 25);
 				playGiggle(settings);
@@ -157,15 +176,9 @@ export default function RoomScreen() {
 	const finishWalk = useCallback(
 		(state: WalkState) => {
 			window.clearInterval(stepTimer.current);
-			const { action, position } = arrive(state);
-			setWalk({
-				phase: "idle",
-				target: null,
-				pendingAction: null,
-				facing: state.facing,
-				position,
-			});
-			if (action) performAction(action, position);
+			const { state: settled, arrival } = completeWalk(state);
+			setWalk(settled);
+			if (arrival.action) performAction(arrival.action, arrival.position);
 		},
 		[performAction],
 	);
@@ -174,7 +187,8 @@ export default function RoomScreen() {
 		(tap: TapResult) => {
 			window.clearTimeout(walkTimer.current);
 			window.clearInterval(stepTimer.current);
-			const next = startWalk(walk, layout, tap, reducedMotion);
+			window.clearTimeout(navTimer.current);
+			const next = startWalk(walk, tap, reducedMotion);
 			setWalk(next);
 			if (next.phase === "walking" && next.target) {
 				// Soft footstep ticks for as long as the stroll lasts.
@@ -188,27 +202,28 @@ export default function RoomScreen() {
 				finishWalk(next);
 			}
 		},
-		[walk, layout, reducedMotion, settings, finishWalk],
+		[walk, reducedMotion, settings, finishWalk],
 	);
 
-	const handleFloorTap = useCallback(
+	const handleRoomTap = useCallback(
 		(x: number, y: number) => {
-			const tap = resolveTap(layout, x, y);
-			if (tap) {
-				beginWalk(tap);
-				return;
-			}
-			// Easter eggs: the rug and the window answer taps with delight.
+			// Easter eggs first: the rug and the window answer taps with
+			// delight, even though the rug lies inside the walkable floor.
 			const rug =
 				layout.orientation === "portrait" ? { x: 46, y: 67 } : { x: 48, y: 80 };
 			const win = { x: 50, y: layout.orientation === "portrait" ? 10 : 22 };
 			if (Math.hypot(rug.x - x, rug.y - y) < 10) {
 				showEffect("hearts", x, y);
 				playPop(settings);
-			} else if (Math.hypot(win.x - x, win.y - y) < 10) {
+				return;
+			}
+			if (Math.hypot(win.x - x, win.y - y) < 10) {
 				showEffect("sun", x, y);
 				playStar(settings);
+				return;
 			}
+			const tap = resolveTap(layout, x, y);
+			if (tap) beginWalk(tap);
 		},
 		[beginWalk, layout, settings, showEffect],
 	);
@@ -243,7 +258,8 @@ export default function RoomScreen() {
 				costumeFilter={costumeFilter}
 				objectState={objectState}
 				bedtime={settings.bedtime}
-				onRoomTap={handleFloorTap}
+				reducedMotion={reducedMotion}
+				onRoomTap={handleRoomTap}
 				onPoiTap={handlePoiTap}
 				onTeddyTap={handleTeddyTap}
 				walkMs={
@@ -267,6 +283,7 @@ export default function RoomScreen() {
 				<div
 					className="wardrobe-panel"
 					role="dialog"
+					aria-modal="true"
 					aria-label="Teddy's wardrobe"
 				>
 					<img src="/teddy/closet.webp" alt="" className="wardrobe-art" />
@@ -302,6 +319,7 @@ export default function RoomScreen() {
 					<button
 						type="button"
 						className="care-btn"
+						ref={closeWardrobeRef}
 						onClick={() => setWardrobeOpen(false)}
 						aria-label="Close wardrobe"
 					>

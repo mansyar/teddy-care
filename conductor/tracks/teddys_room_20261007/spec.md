@@ -42,7 +42,7 @@ This is the "Track 2" envisioned in `product.md`.
 
 ### FR5 — The room shows state (mood is the UI)
 - Objects reflect stats instead of numeric meters: the bowl visibly empties
-  as hunger rises, Teddy looks scruffy when cleanliness is low, droops when
+  as hunger falls, Teddy looks scruffy when cleanliness is low, droops when
   tired.
 - A small star-count chip stays in the top corner (visible progression,
   zero reading).

@@ -17,7 +17,13 @@ import {
 	resolveTap,
 	type TapResult,
 } from "./layout";
-import { arrive, startWalk, walkDuration, walkTargetFor } from "./walk";
+import {
+	arrive,
+	completeWalk,
+	startWalk,
+	walkDuration,
+	walkTargetFor,
+} from "./walk";
 
 const LAYOUT = PORTRAIT;
 const BOWL = poiOrThrow(LAYOUT, "bowl");
@@ -50,7 +56,6 @@ describe("startWalk — animated path", () => {
 		expect(tap?.kind).toBe("floor");
 		const state = startWalk(
 			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
@@ -66,7 +71,6 @@ describe("startWalk — animated path", () => {
 		expect(tap?.kind).toBe("poi");
 		const state = startWalk(
 			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
@@ -89,7 +93,6 @@ describe("startWalk — animated path", () => {
 				facing: "right",
 				position: { x: BOWL.x, y: BOWL.y + 6 },
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
@@ -108,7 +111,6 @@ describe("startWalk — animated path", () => {
 				facing: "right",
 				position: CENTER,
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
@@ -125,11 +127,38 @@ describe("startWalk — animated path", () => {
 				facing: "right",
 				position: CENTER,
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
 		expect(state.facing).toBe("right");
+	});
+
+	it("facing is preserved for near-vertical hops (dead zone)", () => {
+		const tap = resolveTap(LAYOUT, CENTER.x - 0.4, CENTER.y);
+		expect(tap?.kind).toBe("floor");
+		const state = startWalk(
+			{
+				phase: "idle",
+				target: null,
+				pendingAction: null,
+				facing: "left",
+				position: CENTER,
+			},
+			tapOrThrow(tap),
+			false,
+		);
+		expect(state.facing).toBe("left");
+	});
+
+	it("retargeting mid-walk replaces the pending action", () => {
+		const bed = poiOrThrow(LAYOUT, "bed");
+		const walking = startWalk(
+			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
+			{ kind: "poi", poi: BOWL },
+			false,
+		);
+		const retargeted = startWalk(walking, { kind: "poi", poi: bed }, false);
+		expect(retargeted.pendingAction).toBe(bed.action);
 	});
 });
 
@@ -144,7 +173,6 @@ describe("startWalk — reduced motion", () => {
 				facing: "right",
 				position: CENTER,
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			true,
 		);
@@ -164,7 +192,6 @@ describe("startWalk — reduced motion", () => {
 				facing: "right",
 				position: CENTER,
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			true,
 		);
@@ -172,6 +199,38 @@ describe("startWalk — reduced motion", () => {
 		const done = arrive(state);
 		expect(done.action).toBeNull();
 		expect(done.position).toEqual({ x: CENTER.x + 5, y: CENTER.y });
+	});
+
+	it("tap floor under reduced motion: still turns toward the destination", () => {
+		const tap = resolveTap(LAYOUT, CENTER.x + 5, CENTER.y);
+		const state = startWalk(
+			{
+				phase: "idle",
+				target: null,
+				pendingAction: null,
+				facing: "right",
+				position: CENTER,
+			},
+			tapOrThrow(tap),
+			true,
+		);
+		expect(state.facing).toBe("right");
+	});
+
+	it("tap floor left under reduced motion: flips to face left", () => {
+		const tap = resolveTap(LAYOUT, CENTER.x - 5, CENTER.y);
+		const state = startWalk(
+			{
+				phase: "idle",
+				target: null,
+				pendingAction: null,
+				facing: "right",
+				position: CENTER,
+			},
+			tapOrThrow(tap),
+			true,
+		);
+		expect(state.facing).toBe("left");
 	});
 });
 
@@ -204,7 +263,6 @@ describe("arrive", () => {
 				facing: "right",
 				position: CENTER,
 			},
-			LAYOUT,
 			tapOrThrow(tap),
 			false,
 		);
@@ -224,13 +282,52 @@ describe("arrive", () => {
 				facing: "right",
 				position: target,
 			},
-			LAYOUT,
 			{ kind: "poi", poi },
 			false,
 		);
 		const done = arrive(state);
 		expect(done.position).toEqual(target);
 		expect(done.action).toBe(poi.action);
+	});
+});
+
+describe("completeWalk", () => {
+	it("settles an animated walk: idle at the target, action surfaced once", () => {
+		const tap = resolveTap(LAYOUT, BOWL.x, BOWL.y);
+		const state = startWalk(
+			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
+			tapOrThrow(tap),
+			false,
+		);
+		const { state: settled, arrival } = completeWalk(state);
+		expect(settled.phase).toBe("idle");
+		expect(settled.target).toBeNull();
+		expect(settled.pendingAction).toBeNull();
+		expect(settled.position).toEqual(walkTargetFor(BOWL));
+		expect(arrival.action).toEqual(BOWL.action);
+	});
+
+	it("settles a plain floor roam with no action", () => {
+		const tap = resolveTap(LAYOUT, CENTER.x + 5, CENTER.y);
+		const state = startWalk(
+			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
+			tapOrThrow(tap),
+			false,
+		);
+		const { state: settled, arrival } = completeWalk(state);
+		expect(arrival.action).toBeNull();
+		expect(settled.position).toEqual({ x: CENTER.x + 5, y: CENTER.y });
+	});
+});
+
+describe("walkTargetFor — wall POIs", () => {
+	it("wall-mounted POIs sit just below their anchors (Teddy stands against the wall)", () => {
+		// Portrait bed/closet anchors sit above the floor line by design;
+		// the target overlaps the wall art deliberately.
+		for (const id of ["bed", "closet"] as const) {
+			const poi = poiOrThrow(LAYOUT, id);
+			expect(walkTargetFor(poi)).toEqual({ x: poi.x, y: poi.y + 6 });
+		}
 	});
 });
 
