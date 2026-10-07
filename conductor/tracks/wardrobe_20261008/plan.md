@@ -31,7 +31,11 @@
   `7558d1c`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3 — Accessory Art (asset pipeline)
+## Phase 3 — Accessory Art (asset pipeline) — SUPERSEDED
+
+> Rev 2 re-scoped the track to filter recolors after the user rejected the
+> generated overlay art at this phase's checkpoint. Work was reverted in
+> `c653d77`; the tasks below are historical record, not pending work.
 
 - [x] Task: sprite-gen the Party Hat 🎉 and Cozy Scarf 🧣 overlay PNGs
   (navy-outline style, anchored to head/neck) → `assets/teddy/` + runtime
@@ -46,39 +50,41 @@
 - [x] Task: Add all new assets to `PRECACHE_ART` + extend
   `src/pwa/manifest.test.ts` (TDD: extend the test first) <fb13195>
 - [x] Task: Commit assets + attach git note + update plan task status <fb13195>
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) — REJECTED
+  by user; track re-scoped (Rev 2)
+
+## Phase 4 — Filter Catalog Revision (TDD)
+
+- [ ] Task: Update `src/pet/costume.test.ts` first — catalog becomes
+  `sunset-onesie` 10⭐, `mint-dream` 20⭐, `berry-night` 30⭐, all
+  `kind: "filter"`; drop the overlay variant from the interface
+- [ ] Task: Implement the new catalog entries + filters in `costume.ts`
+  (Mint Dream / Berry Night filter values; tune visually at the phase
+  checkpoint); keep prices centralized in `stars.ts`
+- [ ] Task: Commit code changes + attach git note + update plan task status
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4 — Wardrobe UI & Room Overlay (presentational)
+## Phase 5 — Wardrobe UI (presentational)
 
 - [ ] Task: Closet modal → live preview strip: card per costume +
   default-onesie card; owned = tap-to-equip (worn card highlighted);
   unowned+affordable = buy + sparkle celebration + equip; unowned+unaffordable
   = gentle wiggle + soft boop, nothing else; Escape-close + focus management
-  preserved; ≥48px targets
-- [ ] Task: RoomScene overlay rendering — accessory PNG inside Teddy's
-  transformed container so breathe scale + blink carry it; reduced-motion path
-  keeps equip + sound, skips wiggle/celebration motion
-- [ ] Task: Walk-strip sync — companion strip animated with identical
-  `steps()` timing and facing mirroring alongside the walk strip
-- [ ] Task: Commit code changes + attach git note + update plan task status
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
-
-## Phase 5 — Runner Overlay (Phaser)
-
-- [ ] Task: `src/game/runGame.ts` — layer accessory sprite over Teddy,
-  frame-synced to the run animation via the accessory run strip; no overlay
-  for default/filter costumes (filter applies scene-wide as today)
-- [ ] Task: Verify at 360px and desktop; frame-walk the run loop for alignment
+  preserved; ≥48px targets; card thumbnails preview the filter live
+- [ ] Task: RoomScene shows the equipped filter as today (scene-wide);
+  reduced-motion path keeps equip + sound, skips wiggle/celebration motion
+- [ ] Task: Verify at 360px portrait and desktop; tune Mint Dream / Berry
+  Night filter values live with the user
 - [ ] Task: Commit code changes + attach git note + update plan task status
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6 — E2E, Offline & Docs
 
-- [ ] Task: Playwright `wardrobe.spec.ts` — open closet → buy hat at enough
-  stars → sparkle + worn; unaffordable scarf → wiggle, stars unchanged;
-  switch to default and back; persists across reload
-- [ ] Task: Offline coverage — accessory stills + strips precached; wardrobe +
-  accessory-visible room boots after offline reload (`wardrobe-offline.spec.ts`)
+- [ ] Task: Playwright `wardrobe.spec.ts` — open closet → buy Mint Dream at
+  enough stars → sparkle + worn; unaffordable Berry Night → wiggle, stars
+  unchanged; switch to default and back; persists across reload
+- [ ] Task: Offline coverage — wardrobe + room boot after offline reload
+  (`wardrobe-offline.spec.ts`); confirm precache list unchanged
 - [ ] Task: Update README + `product.md` (Shipped section: Wardrobe Expansion)
   + docs sync
 - [ ] Task: Commit code changes + attach git note + update plan task status
