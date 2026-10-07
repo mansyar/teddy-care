@@ -38,6 +38,18 @@ tracking.
 - New gentle walk cycle + room art via the sprite-gen pipeline; new room
   sounds (footsteps, munch, fizz, yawn) behind the same parent mute/bedtime
 
+## Shipped (Track 3: Bubble Pop)
+- The toy box now opens an icon-only mini-game menu (Runner 🏃 / Bubbles 🫧)
+  instead of jumping straight into the runner — room to grow the arcade
+- Bubble Pop mini-game at `/bubbles`: 30s round of soap bubbles rising with
+  a gentle ramp (faster, smaller), tap to pop with a bright blip, star
+  burst at the tap point, and a corner counter — no missing, no losing
+- Round end always celebrates: "All done!" card banks stars via the shared
+  reward math (guaranteed ≥1, capped at 5) plus a happiness boost
+- Full parity: bubbles are real buttons (Tab + Enter/Space pop), reduced
+  motion parks them in place instead of rising, sounds follow parent mute
+  and bedtime; sprite + pop sound work fully offline via precache
+
 ## Deferred (Post-MVP)
 - Costume system (accessories + palette recolor, not per-face redraws)
 - Pet collection metagame
