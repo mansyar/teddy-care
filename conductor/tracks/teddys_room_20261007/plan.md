@@ -8,11 +8,11 @@
 
 ## Phase 1: Room Foundation — Layout Logic & Art Assets
 
-- [ ] Task: Write failing tests for room layout module (Red)
-  - [ ] POI registry: ids, action mapping, per-orientation anchor positions
-  - [ ] Orientation layout selection (portrait vs landscape breakpoint)
-  - [ ] Walk-target resolution (tap → floor point or POI anchor)
-- [ ] Task: Implement `src/room/layout.ts` to pass tests (Green)
+- [x] Task: Write failing tests for room layout module (Red) — baaa4cd
+  - [x] POI registry: ids, action mapping, per-orientation anchor positions
+  - [x] Orientation layout selection (portrait vs landscape breakpoint)
+  - [x] Walk-target resolution (tap → floor point or POI anchor)
+- [x] Task: Implement `src/room/layout.ts` to pass tests (Green) — baaa4cd
 - [ ] Task: Generate portrait room background (sprite-gen, finals →
   `assets/teddy/`, runtime copy → `public/teddy/`) — presentational;
   verify via visual review + later e2e render checks
