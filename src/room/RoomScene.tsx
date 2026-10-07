@@ -12,6 +12,7 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { breathScaleAt } from "../pet/breathe";
 import type { Poi, RoomLayout } from "./layout";
+import type { RoomObjectState } from "./state";
 
 /** A floating feedback burst on the room (FR6 signature feedback). */
 export interface RoomEffect {
@@ -43,6 +44,10 @@ export interface RoomSceneProps {
 	face: string;
 	/** CSS filter for the equipped costume. */
 	costumeFilter?: string;
+	/** Stat-driven object states (bowl fill, groom, droop). */
+	objectState?: RoomObjectState;
+	/** Bedtime staging: night tint, glowing bed, sleeping Teddy. */
+	bedtime?: boolean;
 	/** POI tap (fired by the real hotspot buttons, for a11y + keyboard). */
 	onPoiTap?: (poi: Poi) => void;
 	/** Raw room tap in scene percentages (floor, walls, everything). */
@@ -65,6 +70,8 @@ export default function RoomScene({
 	facing,
 	face,
 	costumeFilter = "none",
+	objectState,
+	bedtime = false,
 	onPoiTap,
 	onRoomTap,
 	onTeddyTap,
@@ -150,8 +157,36 @@ export default function RoomScene({
 		transitionDuration: walkMs !== undefined ? `${walkMs}ms` : undefined,
 	};
 
+	// Object-state look: a subtle scruffy tint joins the costume filter, and
+	// tired Teddy droops (via the independent `rotate`/`scale` properties so
+	// the breathe rAF transform keeps working).
+	const groomTint =
+		objectState?.groom === "messy"
+			? " sepia(0.3) saturate(0.8)"
+			: objectState?.groom === "scruffy"
+				? " sepia(0.18) saturate(0.9)"
+				: "";
+	const spriteFilter =
+		`${costumeFilter === "none" ? "" : costumeFilter}${groomTint}`.trim();
+	const droopClass =
+		objectState?.droop === "exhausted"
+			? " exhausted"
+			: objectState?.droop === "droopy"
+				? " droopy"
+				: "";
+
+	// The bowl hints when it needs care — gently, never alarmingly.
+	const bowl = layout.pois.find((poi) => poi.id === "bowl");
+	const bowlHint =
+		objectState?.bowl === "empty"
+			? "empty"
+			: objectState?.bowl === "low"
+				? "low"
+				: null;
+
 	return (
-		<div className="room-scene" ref={sceneRef}>
+		<div className={`room-scene${bedtime ? " night" : ""}`} ref={sceneRef}>
+			{" "}
 			<img className="room-bg" src={background} alt="" draggable={false} />
 			<button
 				type="button"
@@ -174,6 +209,7 @@ export default function RoomScene({
 					type="button"
 					className="room-poi"
 					style={{ left: `${poi.x}%`, top: `${poi.y}%` }}
+					data-poi={poi.id}
 					aria-label={POI_LABELS[poi.id]}
 					onClick={(event) => {
 						event.stopPropagation();
@@ -182,7 +218,7 @@ export default function RoomScene({
 				/>
 			))}
 			<div
-				className={`room-teddy${walking ? " walking" : ""}`}
+				className={`room-teddy${walking ? " walking" : ""}${droopClass}`}
 				style={teddyStyle}
 			>
 				{walking ? (
@@ -207,11 +243,25 @@ export default function RoomScene({
 							src={blinking ? BLINK_FACE : face}
 							alt=""
 							draggable={false}
-							style={{ filter: costumeFilter }}
+							style={{ filter: spriteFilter }}
 						/>
 					</button>
 				)}
+				{bedtime && (
+					<span className="room-sleep" aria-hidden="true">
+						💤
+					</span>
+				)}
 			</div>
+			{bowlHint && bowl && (
+				<span
+					className={`room-bowl-hint ${bowlHint}`}
+					style={{ left: `${bowl.x}%`, top: `${bowl.y}%` }}
+					aria-hidden="true"
+				>
+					🥣
+				</span>
+			)}
 			{effect && (
 				<span
 					key={`${effect.kind}-${effect.x}-${effect.y}`}

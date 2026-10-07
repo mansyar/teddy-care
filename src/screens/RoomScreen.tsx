@@ -29,6 +29,7 @@ import {
 	type TapResult,
 } from "../room/layout";
 import RoomScene, { type RoomEffect } from "../room/RoomScene";
+import { roomObjectState } from "../room/state";
 import {
 	arrive,
 	startWalk,
@@ -99,6 +100,7 @@ export default function RoomScreen() {
 	const face = sleepyFlash ? FACE_FOR_MOOD.sleepy : FACE_FOR_MOOD[mood];
 	const costumeFilter =
 		COSTUMES.find((c) => c.id === save?.costume)?.filter ?? "none";
+	const objectState = stats ? roomObjectState(stats) : undefined;
 
 	useEffect(
 		() => () => {
@@ -239,6 +241,8 @@ export default function RoomScreen() {
 				facing={walk.facing}
 				face={face}
 				costumeFilter={costumeFilter}
+				objectState={objectState}
+				bedtime={settings.bedtime}
 				onRoomTap={handleFloorTap}
 				onPoiTap={handlePoiTap}
 				onTeddyTap={handleTeddyTap}
