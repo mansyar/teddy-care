@@ -58,11 +58,13 @@
 
 ## Phase 5 — E2E, Offline & Docs
 
-- [ ] Task: Playwright `puzzle.spec.ts` — menu entry → full climb → 3 stars
+- [x] Task: Playwright `puzzle.spec.ts` — menu entry → full climb → 3 stars
   banked; wrong-slot bounce-back; quit after round 1 keeps ⭐1; muted path;
-  reduced-motion mode
-- [ ] Task: Extend offline coverage — all three pictures precached, `/puzzle`
-  boots after offline reload
-- [ ] Task: Update README + `product.md` (Shipped section)
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  reduced-motion mode `ebb5671` (4 tests)
+- [x] Task: Extend offline coverage — all three pictures precached, `/puzzle`
+  boots after offline reload `ebb5671` (`puzzle-offline.spec.ts`, decode via
+  `new Image()` since pieces are background-images)
+- [x] Task: Update README + `product.md` (Shipped section) `ebb5671`
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `ebb5671`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
