@@ -18,7 +18,7 @@
   verify via visual review + later e2e render checks — f29a49c
 - [x] Task: Generate landscape room background (sprite-gen) — presentational — 1e4c693
 - [x] Task: Generate walk cycle strip (sprite-gen, gentle gait) — presentational — 7949363
-- [ ] Task: Generate closet/mirror POI art (sprite-gen) — presentational
+- [x] Task: Generate closet/mirror POI art (sprite-gen) — presentational — 05d8ee8
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Room Scene UI (Presentational)
