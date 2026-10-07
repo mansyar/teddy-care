@@ -50,6 +50,18 @@ tracking.
   motion parks them in place instead of rising, sounds follow parent mute
   and bedtime; sprite + pop sound work fully offline via precache
 
+## Shipped (Track 4: Puzzle Pieces)
+- Third mini-game at `/puzzle`: a tap-to-place jigsaw — tap a piece (lift +
+  wiggle + tick), tap its shadow outline (pop + snap); wrong outlines get a
+  gentle shake + boop and bounce back with no penalty
+- Three-round climb across three generated Teddy pictures (ball 2×2, tub
+  3×2, bed 3×3), pictures sliced at runtime via CSS background math
+- Every finished round banks exactly ⭐1 immediately (+ happiness boost);
+  "Done for now" between rounds keeps earned stars — quitting is safe
+- Full parity: pieces and outlines are real buttons (Tab + Enter/Space),
+  reduced motion drops the animations, sounds follow parent mute/bedtime,
+  all three pictures precached for offline play
+
 ## Deferred (Post-MVP)
 - Costume system (accessories + palette recolor, not per-face redraws)
 - Pet collection metagame
