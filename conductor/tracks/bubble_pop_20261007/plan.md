@@ -39,11 +39,14 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 
 ## Phase 4 — Toy Box Mini-Menu (presentational + e2e)
 
-- [ ] Task: Build icon-only mini-game chooser modal on toy box tap (Runner +
+- [x] Task: Build icon-only mini-game chooser modal on toy box tap (Runner +
   Bubble Pop), replacing direct runner navigation; aria-modal + focus
-  handling matching the wardrobe pattern
-- [ ] Task: Note Playwright/manual verification plan in task
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  handling matching the wardrobe pattern `3fbb6f3`
+- [x] Task: Note Playwright/manual verification plan in task `3fbb6f3`
+  - e2e: room-care toy-box test rewritten (menu → Run! → /runner) + new
+    Escape-closes test; manual: tap toy box → chooser pops with sparkle,
+    both buttons navigate, Close/Escape return to room
+- [x] Task: Commit code changes + attach git note + update plan task status `3fbb6f3`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5 — Bubbles Screen & Route (presentational + e2e)
