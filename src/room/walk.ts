@@ -38,12 +38,15 @@ const MIN_WALK_MS = 300;
 const MAX_WALK_MS = 2200;
 
 /**
- * The point Teddy walks to for a POI: the object's own anchor (his feet
- * land right in front of it).
+ * The point Teddy walks to for a POI: just in front of the object (a bit
+ * below its anchor) so his body doesn't cover it.
  */
 export function walkTargetFor(poi: Poi): Vec2 {
-	return { x: poi.x, y: poi.y };
+	return { x: poi.x, y: poi.y + STAND_OFFSET_Y };
 }
+
+/** How far in front of an object Teddy plants his feet (scene %). */
+const STAND_OFFSET_Y = 6;
 
 /** Straight-line scene distance between two points. */
 function distance(a: Vec2, b: Vec2): number {
@@ -109,7 +112,12 @@ export function startWalk(
 	}
 	// Already standing at the object? Act on the spot.
 	if (state.position && distance(state.position, target) < 0.5) {
-		return { ...state, phase: "idle", target: null, pendingAction: tap.poi.action };
+		return {
+			...state,
+			phase: "idle",
+			target: null,
+			pendingAction: tap.poi.action,
+		};
 	}
 	return {
 		...state,

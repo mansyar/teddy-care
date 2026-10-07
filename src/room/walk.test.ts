@@ -8,17 +8,39 @@
  * duration model (distance-scaled, clamped) and Teddy's facing.
  */
 import { describe, expect, it } from "vitest";
-import { LANDSCAPE, PORTRAIT, resolveTap } from "./layout";
+import {
+	LANDSCAPE,
+	PORTRAIT,
+	type Poi,
+	type PoiId,
+	type RoomLayout,
+	resolveTap,
+	type TapResult,
+} from "./layout";
 import { arrive, startWalk, walkDuration, walkTargetFor } from "./walk";
 
 const LAYOUT = PORTRAIT;
-const BOWL = LAYOUT.pois.find((p) => p.id === "bowl")!;
-const TOYBOX = LAYOUT.pois.find((p) => p.id === "toybox")!;
-const CENTER = { x: LAYOUT.floor.x + LAYOUT.floor.w / 2, y: LAYOUT.floor.y + LAYOUT.floor.h / 2 };
+const BOWL = poiOrThrow(LAYOUT, "bowl");
+const TOYBOX = poiOrThrow(LAYOUT, "toybox");
+const CENTER = {
+	x: LAYOUT.floor.x + LAYOUT.floor.w / 2,
+	y: LAYOUT.floor.y + LAYOUT.floor.h / 2,
+};
+
+function poiOrThrow(layout: RoomLayout, id: PoiId): Poi {
+	const found = layout.pois.find((p) => p.id === id);
+	if (!found) throw new Error(`missing POI ${id}`);
+	return found;
+}
+
+function tapOrThrow(tap: TapResult | null): TapResult {
+	if (!tap) throw new Error("tap resolved to nothing");
+	return tap;
+}
 
 describe("walkTargetFor", () => {
-	it("targets the POI anchor itself", () => {
-		expect(walkTargetFor(BOWL)).toEqual({ x: BOWL.x, y: BOWL.y });
+	it("targets a point just in front of the POI anchor", () => {
+		expect(walkTargetFor(BOWL)).toEqual({ x: BOWL.x, y: BOWL.y + 6 });
 	});
 });
 
@@ -29,7 +51,7 @@ describe("startWalk — animated path", () => {
 		const state = startWalk(
 			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			false,
 		);
 		expect(state.phase).toBe("walking");
@@ -45,7 +67,7 @@ describe("startWalk — animated path", () => {
 		const state = startWalk(
 			{ phase: "idle", target: null, pendingAction: null, facing: "right" },
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			false,
 		);
 		expect(state.phase).toBe("walking");
@@ -65,10 +87,10 @@ describe("startWalk — animated path", () => {
 				target: null,
 				pendingAction: null,
 				facing: "right",
-				position: { x: BOWL.x, y: BOWL.y },
+				position: { x: BOWL.x, y: BOWL.y + 6 },
 			},
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			false,
 		);
 		expect(state.phase).toBe("idle");
@@ -87,7 +109,7 @@ describe("startWalk — animated path", () => {
 				position: CENTER,
 			},
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			false,
 		);
 		expect(state.facing).toBe("left");
@@ -104,7 +126,7 @@ describe("startWalk — animated path", () => {
 				position: CENTER,
 			},
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			false,
 		);
 		expect(state.facing).toBe("right");
@@ -123,13 +145,13 @@ describe("startWalk — reduced motion", () => {
 				position: CENTER,
 			},
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			true,
 		);
 		expect(state.phase).toBe("idle");
 		const done = arrive(state);
 		expect(done.action).toEqual(BOWL.action);
-		expect(done.position).toEqual({ x: BOWL.x, y: BOWL.y });
+		expect(done.position).toEqual({ x: BOWL.x, y: BOWL.y + 6 });
 	});
 
 	it("tap floor: repositions instantly, no action", () => {
@@ -143,7 +165,7 @@ describe("startWalk — reduced motion", () => {
 				position: CENTER,
 			},
 			LAYOUT,
-			tap!,
+			tapOrThrow(tap),
 			true,
 		);
 		expect(state.phase).toBe("idle");
@@ -161,10 +183,12 @@ describe("walkDuration", () => {
 	});
 
 	it("clamps to a gentle minimum and maximum", () => {
-		expect(walkDuration({ x: 50, y: 60 }, { x: 50.01, y: 60 })).toBeGreaterThanOrEqual(
-			300,
-		);
-		expect(walkDuration({ x: 0, y: 0 }, { x: 100, y: 100 })).toBeLessThanOrEqual(2200);
+		expect(
+			walkDuration({ x: 50, y: 60 }, { x: 50.01, y: 60 }),
+		).toBeGreaterThanOrEqual(300);
+		expect(
+			walkDuration({ x: 0, y: 0 }, { x: 100, y: 100 }),
+		).toBeLessThanOrEqual(2200);
 	});
 });
 

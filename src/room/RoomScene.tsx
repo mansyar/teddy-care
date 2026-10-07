@@ -40,6 +40,10 @@ export interface RoomSceneProps {
 	onPoiTap?: (poi: Poi) => void;
 	/** Raw room tap in scene percentages (floor, walls, everything). */
 	onRoomTap?: (x: number, y: number) => void;
+	/** Tap on Teddy himself: pet action. */
+	onTeddyTap?: () => void;
+	/** Walk duration for the current leg; drives the CSS transition. */
+	walkMs?: number;
 }
 
 export default function RoomScene({
@@ -52,6 +56,8 @@ export default function RoomScene({
 	costumeFilter = "none",
 	onPoiTap,
 	onRoomTap,
+	onTeddyTap,
+	walkMs,
 }: RoomSceneProps) {
 	const [blinking, setBlinking] = useState(false);
 	const spriteRef = useRef<HTMLImageElement>(null);
@@ -128,6 +134,7 @@ export default function RoomScene({
 	const teddyStyle: CSSProperties = {
 		left: `${teddyX}%`,
 		top: `${teddyY}%`,
+		transitionDuration: walkMs !== undefined ? `${walkMs}ms` : undefined,
 	};
 
 	return (
@@ -172,7 +179,15 @@ export default function RoomScene({
 						aria-label="Teddy walking"
 					/>
 				) : (
-					<button type="button" className="room-teddy-idle" aria-label="Teddy">
+					<button
+						type="button"
+						className="room-teddy-idle"
+						aria-label="Teddy"
+						onClick={(event) => {
+							event.stopPropagation();
+							onTeddyTap?.();
+						}}
+					>
 						<img
 							ref={spriteRef}
 							className="room-teddy-sprite"
