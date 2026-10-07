@@ -38,7 +38,7 @@
 
 ## Phase 3: Interaction — Walk → Act Controller
 
-- [~] Task: Write failing tests for interaction controller (Red)
+- [x] Task: Write failing tests for interaction controller (Red)
   - [ ] Tap floor → walk target, no action
   - [ ] Tap POI → walk → action fires on arrival (feed/rest/wash boosts via
     existing `stats.ts` semantics)
@@ -46,8 +46,8 @@
   - [ ] Toy box → navigation to `/runner`
   - [ ] Closet → wardrobe panel opens
   - [ ] Reduced-motion path fires action immediately
-- [ ] Task: Implement walk→act controller + POI action wiring (Green)
-- [ ] Task: Signature feedback per POI: eating face, bubbles, Zzz, hop +
+- [x] Task: Implement walk→act controller + POI action wiring (Green)
+- [~] Task: Signature feedback per POI: eating face, bubbles, Zzz, hop +
   star sparkle, closet sparkle; rug/toy easter eggs — presentational
 - [ ] Task: Replace CareScreen with Room; update App routes and tab bar to
   2 tabs (🐻 Room / 🌙 Parents); star chip in top corner — presentational
