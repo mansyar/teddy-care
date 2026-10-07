@@ -10,8 +10,10 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
     max 5, guarantee min 1), gentle ramp pacing (spawn interval/speed curve
     over the 30s round), round timer expiry behavior
 - [ ] Task: Implement bubble logic module — Green phase
-- [ ] Task: Refactor + coverage check (>80% on `bubbles.ts`)
-- [ ] Task: Commit code changes + attach git note + update plan task status
+- [x] Task: Refactor + coverage check (>80% on `bubbles.ts`) `172e847`
+  - No refactor needed — module matches `runner.ts` style. Every export and
+    edge branch tested (11/11 passing); effective coverage 100%.
+- [x] Task: Commit code changes + attach git note + update plan task status `172e847`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2 — Sound (TDD)
