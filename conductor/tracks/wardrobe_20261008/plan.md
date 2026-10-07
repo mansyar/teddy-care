@@ -4,18 +4,20 @@
 
 ## Phase 1 — Wardrobe Logic Core (TDD)
 
-- [ ] Task: Write failing tests first — costume catalog (3 items:
+- [x] Task: Write failing tests first — costume catalog (3 items:
   `sunset-onesie` 10⭐ filter, `party-hat` 20⭐ overlay, `cozy-scarf` 30⭐
   overlay; `kind: "filter" | "overlay"`), ownership model (`buy` →
   owned+equipped, `equip` among owned + default `null`, no negative/no
   double-charge), save **v2** schema (`owned: string[]`) and v1→v2 migration
   (v1 `costume` implies ownership; `costume: null` → `owned: []`; corrupted
-  saves → fresh defaults)
-- [ ] Task: Implement `src/pet/costume.ts` + `src/save/store.ts` minimum to
-  pass; refactor if needed
-- [ ] Task: Coverage check (`pnpm vitest run --coverage`, >80% on touched
-  modules)
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  saves → fresh defaults) `9380764`
+- [x] Task: Implement `src/pet/costume.ts` + `src/save/store.ts` minimum to
+  pass; refactor if needed `9380764` (prices centralized in `stars.ts`;
+  migration via exported `migrateSave`)
+- [x] Task: Coverage check (`pnpm vitest run --coverage`, >80% on touched
+  modules) `9380764` (store.ts 83.8% stmts; full suite 154/154)
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `9380764`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2 — Purchase Sound (TDD)
