@@ -52,7 +52,7 @@
   (toy box = sparkle + delayed handoff; rug = hearts, window = sun)
 - [x] Task: Replace CareScreen with Room; update App routes and tab bar to
   2 tabs (🐻 Room / 🌙 Parents); star chip in top corner — presentational — fdb5792
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: Room Audio [checkpoint: bba73fb]
 
@@ -60,7 +60,7 @@
   munch, water fizz, yawn all silent under mute/bedtime via `isAudible`
   (RED confirmed before implementation; tests committed with Green — 620232c)
 - [x] Task: Implement synthesized sounds in `src/audio/sound.ts` (Green) — 620232c, 6544220
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Object-State Visuals & Bedtime Staging [checkpoint: a0bf3ba]
 
@@ -74,11 +74,12 @@
 
 ## Phase 6: E2E, Offline & Polish
 
-- [ ] Task: Playwright e2e additions: bowl→hunger boost, bed→energy,
+- [x] Task: Playwright e2e additions: bowl→hunger boost, bed→energy,
   tub→cleanliness, pet boost, toy box→runner opens, wardrobe opens,
-  bedtime dims room, both orientations render
-- [ ] Task: PWA precache includes new art; verify full offline
-  (airplane-mode flow still passes)
+  bedtime dims room, both orientations render — bcfe716
+- [x] Task: PWA precache includes new art; verify full offline
+  (airplane-mode flow still passes) — bcfe716 (4 room webps added to
+  PRECACHE_ART; new room-offline.spec proves airplane-mode room)
 - [ ] Task: Payload/perf check: WebP where sensible, 60fps room on
   mid-range device profile; manual 360px + real-phone pass
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
