@@ -31,11 +31,13 @@
 
 ## Phase 3 — Puzzle Art (asset pipeline)
 
-- [ ] Task: sprite-gen three simple Teddy pictures (navy-outline picture-book
+- [x] Task: sprite-gen three simple Teddy pictures (navy-outline picture-book
   style) → `assets/teddy/` + WebP → `public/teddy/`; vision-QA each
-- [ ] Task: Add all three to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
-  (TDD: extend the test first)
-- [ ] Task: Commit assets + attach git note + update plan task status
+  `d4689b0` (bed regen'd on green key after magenta keyed the purple blanket)
+- [x] Task: Add all three to `PRECACHE_ART` + extend `src/pwa/manifest.test.ts`
+  (TDD: extend the test first) `d4689b0`
+- [x] Task: Commit assets + attach git note + update plan task status
+  `d4689b0`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4 — Puzzle Screen & Route (presentational + e2e)
