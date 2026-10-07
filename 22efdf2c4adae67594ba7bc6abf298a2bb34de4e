@@ -1,0 +1,17 @@
+Task: Generate bubble sprite via sprite-gen and precache it (Phase 3)
+
+Art: grok-imagine-image-2.0, magenta chroma key, YCbCr matte. Prompt
+followed house style (2D flat cartoon, thick navy outline, pastel
+blue/teal body, white highlight, picture-book style, no text). Raw
+1024x1024, alpha keyed 71.68% (0 fringe pixels), trimmed to 612x618
+RGBA. Vision QA: single bubble, navy outline, pastel body, white
+highlight, sparkles, fully transparent background, no fringing/water-
+marks/artifacts. Published public/teddy/bubble.webp (17KB, q90) via
+sprite-gen venv Pillow.
+
+Precache: Red — manifest.test.ts asserts 'teddy/bubble.webp' in
+PRECACHE_ART (1 failed). Green — added teddy/bubble.webp to
+PRECACHE_ART with comment. 4/4 manifest tests pass.
+
+Files: assets/teddy/bubble.png, bubble.png.raw.png, bubble.report.json,
+public/teddy/bubble.webp, src/pwa/manifest.ts, src/pwa/manifest.test.ts.
