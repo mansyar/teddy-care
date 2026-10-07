@@ -80,6 +80,8 @@
 - [x] Task: PWA precache includes new art; verify full offline
   (airplane-mode flow still passes) — bcfe716 (4 room webps added to
   PRECACHE_ART; new room-offline.spec proves airplane-mode room)
-- [ ] Task: Payload/perf check: WebP where sensible, 60fps room on
-  mid-range device profile; manual 360px + real-phone pass
+- [x] Task: Payload/perf check: WebP where sensible, 60fps room on
+  mid-range device profile; manual 360px + real-phone pass — e3a9435
+  (walk strip q90: 2.24MB→667KB; 182fps at 4x CPU throttle; 360px verified;
+  real-phone pass = final install check)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
