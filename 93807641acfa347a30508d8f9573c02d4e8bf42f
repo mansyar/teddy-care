@@ -1,1 +1,3 @@
 Phase 1 — Wardrobe Logic Core (TDD): red 16 failing -> green 22/22 in costume+store suites; 3-costume catalog (sunset-onesie 10 filter / party-hat 20 overlay / cozy-scarf 30 overlay); buyCostume ownership + free equipCostume incl. default null; save v2 (owned: string[]) with v1->v2 migration via migrateSave (v1 costume implies ownership; unowned-equipped v2 -> fresh defaults); prices centralized in stars.ts; pnpm check clean, 154/154, store.ts 83.8% stmts.
+
+Checkpoint verification (user-confirmed): pnpm check clean; CI=true pnpm test 154/154; store.ts 83.8% stmts (>80% gate). Diff d8860b4..de87153: costume.ts/stars.ts/store.ts + tests + plan. Manual regression deferred by user (pure-logic phase; UI unchanged).
