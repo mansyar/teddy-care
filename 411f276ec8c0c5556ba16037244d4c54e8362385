@@ -4,3 +4,9 @@ Phase 5 tasks 1-3: route, screen, parity, reward wiring.
 - Rewards: bubblesReward math via bubbleReward(pops) -> awardBubbles added to usePetSave (awardRun-pattern clone); fanfare on finish; 'All done!' summary card + 'Again!' replays roundId.
 - Sounds renamed popBubble->playPopBubble per play* convention (tests updated).
 - Verification: pnpm check clean, 121/121 unit tests, pnpm build ok. E2E note: full round asserted in Phase 6 spec.
+
+Phase 5 verification checkpoint:
+- pnpm check: clean (49 files, Biome + strict tsc).
+- pnpm test: 121/121 passing (bubble logic, sound incl. playPopBubble gating, manifest precache).
+- pnpm build: ok (service worker + precache regenerated, bubble.webp included).
+- Manual plan (user confirmed yes): dev -> toy box -> Bubbles! -> pop feedback/counter -> All done! card with star reward -> Again!; reduced-motion parked bubbles still poppable; keyboard Tab+Enter pops; mute silences pops.
