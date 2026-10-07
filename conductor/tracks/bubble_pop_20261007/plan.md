@@ -49,7 +49,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 - [x] Task: Commit code changes + attach git note + update plan task status `3fbb6f3`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5 — Bubbles Screen & Route (presentational + e2e)
+## Phase 5 — Bubbles Screen & Route (presentational + e2e) [checkpoint: 411f276]
 
 - [x] Task: Create `/bubbles` route + `BubblesScreen`: 30s round, rising
   sprite bubbles (CSS transform animation, gentle ramp), tap-to-pop with
@@ -69,7 +69,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
   ok, plus manual run of `pnpm dev` → toy box → Bubbles!)
 - [x] Task: Commit code changes + attach git note + update plan task status
   `411f276`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6 — E2E, Offline & Docs
 
