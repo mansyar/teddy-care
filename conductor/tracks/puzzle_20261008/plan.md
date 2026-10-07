@@ -20,11 +20,13 @@
 
 ## Phase 2 — Sounds (TDD)
 
-- [ ] Task: Write failing tests in `src/audio/sound.test.ts` (piece pick-up
+- [x] Task: Write failing tests in `src/audio/sound.test.ts` (piece pick-up
   tick, place click, wrong-slot boop — silent under MUTED/BEDTIME fixtures)
-- [ ] Task: Implement the three SFX in `src/audio/sound.ts` gated via shared
-  `play()`/`isAudible`
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  `c58da95`
+- [x] Task: Implement the three SFX in `src/audio/sound.ts` gated via shared
+  `play()`/`isAudible` `c58da95`
+- [x] Task: Commit code changes + attach git note + update plan task status
+  `c58da95`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3 — Puzzle Art (asset pipeline)
