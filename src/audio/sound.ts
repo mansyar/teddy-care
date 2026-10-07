@@ -49,19 +49,62 @@ function tone(
 
 function play(
 	settings: ParentSettings,
-	notes: { frequency: number; delayS: number; durationS: number }[],
+	notes: {
+		frequency: number;
+		delayS: number;
+		durationS: number;
+		volume?: number;
+	}[],
 ): void {
 	if (!isAudible(settings)) return;
 	const context = audio();
 	if (context === null) return;
 	for (const note of notes) {
-		tone(context, note.frequency, note.delayS, note.durationS);
+		tone(context, note.frequency, note.delayS, note.durationS, note.volume);
 	}
 }
 
 /** Soft pop for care buttons. */
 export function playPop(settings: ParentSettings): void {
 	play(settings, [{ frequency: 520, delayS: 0, durationS: 0.12 }]);
+}
+
+/** Gentle alternating footstep ticks while Teddy walks. */
+export function playFootsteps(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 180, delayS: 0, durationS: 0.07, volume: 0.06 },
+		{ frequency: 150, delayS: 0.18, durationS: 0.07, volume: 0.06 },
+		{ frequency: 180, delayS: 0.36, durationS: 0.07, volume: 0.05 },
+		{ frequency: 150, delayS: 0.54, durationS: 0.07, volume: 0.05 },
+	]);
+}
+
+/** Three low crunches for a meal at the bowl. */
+export function playMunch(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 220, delayS: 0, durationS: 0.09, volume: 0.1 },
+		{ frequency: 180, delayS: 0.14, durationS: 0.09, volume: 0.1 },
+		{ frequency: 220, delayS: 0.28, durationS: 0.12, volume: 0.09 },
+	]);
+}
+
+/** Bubbly water fizz for the bathtub. */
+export function playFizz(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 740, delayS: 0, durationS: 0.09, volume: 0.07 },
+		{ frequency: 980, delayS: 0.09, durationS: 0.09, volume: 0.07 },
+		{ frequency: 820, delayS: 0.18, durationS: 0.09, volume: 0.06 },
+		{ frequency: 1100, delayS: 0.27, durationS: 0.12, volume: 0.06 },
+	]);
+}
+
+/** Sleepy descending yawn for tucking in. */
+export function playYawn(settings: ParentSettings): void {
+	play(settings, [
+		{ frequency: 420, delayS: 0, durationS: 0.25, volume: 0.08 },
+		{ frequency: 330, delayS: 0.22, durationS: 0.3, volume: 0.08 },
+		{ frequency: 260, delayS: 0.45, durationS: 0.4, volume: 0.07 },
+	]);
 }
 
 /** Happy three-note giggle for taps and petting. */
