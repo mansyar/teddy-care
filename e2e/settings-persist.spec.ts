@@ -22,7 +22,7 @@ test("mute and bedtime persist; reset starts over", async ({ page }) => {
 	await page.getByRole("button", { name: "Turn bedtime on" }).click();
 	await expect(page.locator("body")).toHaveClass(/bedtime/);
 	await page.goto("/#/");
-	await expect(page.locator(".teddy-sprite")).toHaveAttribute(
+	await expect(page.locator(".room-teddy-sprite")).toHaveAttribute(
 		"src",
 		/teddy-sleepy/,
 	);
