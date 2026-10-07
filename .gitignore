@@ -12,6 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Test & build artifacts
+coverage
+test-results
+playwright-report
+
+# Agent tooling (skills, venvs) — local only
+.agents/
+
+# Sprite-gen intermediates: finals + accepted set are tracked, working frames are not
+assets/teddy/run-set/side-run/
+*.raw.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

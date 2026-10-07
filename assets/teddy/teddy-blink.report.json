@@ -1,0 +1,48 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "prompt": "front-facing full-body 2D cartoon teddy bear for a kids pet game, white fur, thick navy outlines, flat colors, pink inner ears, wearing a blue-and-white striped sleeveless onesie with a red heart on the chest, eyes gently closed in a content blink, calm small stitched smile, relaxed arms at sides",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-blink.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-blink.png.raw.png",
+  "raw_bytes": 474172,
+  "elapsed_seconds": 11.881,
+  "model": "grok-imagine-image-2.0",
+  "session_id": null,
+  "refs": [
+    "D:\\Projects\\raise-the-pet\\teddy-base.png"
+  ],
+  "transparent": true,
+  "alpha": {
+    "strategy": "chroma",
+    "strategy_source": "provider-default",
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-blink.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1024x1024",
+    "key": "magenta",
+    "keyed_pixels": 1048576,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 110895,
+    "alpha_zero_pct": 100.0,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "chroma": {
+    "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-blink.png",
+    "mode": "RGBA",
+    "method": "ycbcr",
+    "size": "1024x1024",
+    "key": "magenta",
+    "keyed_pixels": 1048576,
+    "fringe_pixels": 0,
+    "cleaned_transparent_rgb_pixels": 110895,
+    "alpha_zero_pct": 100.0,
+    "stale_transparent_rgb_pixels": 0
+  },
+  "extra": {
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "endpoint": "/images/edits",
+    "aspect_ratio_source": "reference"
+  },
+  "provider_resolved_from": "explicit"
+}

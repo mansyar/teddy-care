@@ -1,0 +1,105 @@
+{
+  "kind": "sprite-gen-video-set-report",
+  "root": "D:\\Projects\\raise-the-pet\\assets\\teddy\\run-set",
+  "states": [
+    "run"
+  ],
+  "facing": "right",
+  "facing_fix": "none",
+  "directions": [
+    "side@right"
+  ],
+  "body_height": null,
+  "ok": 1,
+  "failed": [],
+  "warnings": [],
+  "items": [
+    {
+      "item": "side-run",
+      "direction": "side",
+      "state": "run",
+      "dir": "D:\\Projects\\raise-the-pet\\assets\\teddy\\run-set\\side-run",
+      "turned": "right",
+      "canvas": {
+        "fit": "state",
+        "shape": "square",
+        "canvas": [
+          1024,
+          1024
+        ],
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "facing": {
+        "model": "grok-4.6",
+        "usage": {
+          "input_tokens": 1108,
+          "input_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "output_tokens": 681,
+          "output_tokens_details": {
+            "reasoning_tokens": 667
+          },
+          "total_tokens": 1789,
+          "num_sources_used": 0,
+          "num_server_side_tools_used": 0,
+          "cost_in_usd_ticks": 16204400,
+          "context_details": {
+            "input_tokens": 1108,
+            "output_tokens": 688
+          }
+        },
+        "response_status": "completed",
+        "auth_source": "grok-login",
+        "transport": "xai-api",
+        "direction": "right",
+        "confidence": 0.98,
+        "confidence_source": "model-self-report",
+        "requested": "right",
+        "fix": "none",
+        "action": "none",
+        "source": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-side-right.png",
+        "source_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9",
+        "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\run-set\\side.facing.png",
+        "final_direction": "right",
+        "final_direction_source": "observation",
+        "output_sha256": "3267a636a4c69fc9cc19989b76885cee843fe824dae5fb27670d22b6ce492db9"
+      },
+      "clip": {
+        "attempts": [
+          0
+        ],
+        "duration": 3,
+        "last_frame": false
+      },
+      "frames": {
+        "fps": 24.0,
+        "frames": 73,
+        "alpha_zero_pct_min": 72.93,
+        "alpha_zero_pct_max": 79.65,
+        "spill": "small"
+      },
+      "loop": {
+        "kind": "periodic",
+        "cycle": 15,
+        "period": null,
+        "cycle_ratio": 0.986,
+        "seam_ratio": 0.9735,
+        "n_out": 15,
+        "drift_px": 0,
+        "gif": "side-run.gif",
+        "webp": "side-run.webp",
+        "strip": "D:\\Projects\\raise-the-pet\\assets\\teddy\\run-set\\side-run\\loop\\side-run.strip.png",
+        "review_recommended": true,
+        "half_period_guard": {
+          "applied": false
+        }
+      },
+      "ok": true
+    }
+  ],
+  "cycle_align": {}
+}

@@ -1,0 +1,62 @@
+{
+  "kind": "sprite-gen-image-report",
+  "provider": "grok",
+  "prompt": "same white teddy bear in strict side profile, thick navy outlines, flat colors, pink inner ear, blue-and-white striped sleeveless onesie with red heart on the chest, arms relaxed at sides, legs straight, standing at rest\n\nSeen from the exact side, facing right.\n\nThe subject must be facing right (toward the right edge of the image), regardless of the reference image's orientation. Preserve the subject's design.",
+  "out": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-side-right.still.png",
+  "raw": "D:\\Projects\\raise-the-pet\\assets\\teddy\\teddy-side-right.still.png.raw.png",
+  "raw_bytes": 263203,
+  "elapsed_seconds": 9.727,
+  "model": "grok-imagine-image-2.0",
+  "session_id": null,
+  "refs": [
+    "D:\\Projects\\raise-the-pet\\teddy-base.png"
+  ],
+  "transparent": false,
+  "alpha": null,
+  "chroma": null,
+  "extra": {
+    "auth_source": "grok-login",
+    "transport": "xai-api",
+    "endpoint": "/images/edits",
+    "aspect_ratio_source": "reference",
+    "facing": {
+      "model": "grok-4.6",
+      "usage": {
+        "input_tokens": 1108,
+        "input_tokens_details": {
+          "cached_tokens": 512
+        },
+        "output_tokens": 1140,
+        "output_tokens_details": {
+          "reasoning_tokens": 1126
+        },
+        "total_tokens": 2248,
+        "num_sources_used": 0,
+        "num_server_side_tools_used": 0,
+        "cost_in_usd_ticks": 28179200,
+        "context_details": {
+          "input_tokens": 1108,
+          "output_tokens": 1147
+        }
+      },
+      "response_status": "completed",
+      "auth_source": "grok-login",
+      "transport": "xai-api",
+      "direction": "right",
+      "confidence": 0.95,
+      "confidence_source": "model-self-report",
+      "requested": "right",
+      "fix": "none",
+      "action": "none",
+      "final_direction": "right",
+      "final_direction_source": "observation",
+      "reason": "already-matched"
+    },
+    "view": {
+      "direction": "side",
+      "facing": "right",
+      "handed": []
+    }
+  },
+  "provider_resolved_from": "explicit"
+}
