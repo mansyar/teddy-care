@@ -21,7 +21,7 @@
 - [x] Task: Generate closet/mirror POI art (sprite-gen) — presentational — 05d8ee8
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2: Room Scene UI (Presentational)
+## Phase 2: Room Scene UI (Presentational) [checkpoint: d97c493]
 
 - [x] Task: Build `RoomScene` component: layered background, POI hotspots
   (≥48px targets), floor tap zones, Teddy sprite staging reusing
