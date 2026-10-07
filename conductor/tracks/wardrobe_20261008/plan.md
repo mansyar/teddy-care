@@ -53,7 +53,7 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) — REJECTED
   by user; track re-scoped (Rev 2)
 
-## Phase 4 — Filter Catalog Revision (TDD)
+## Phase 4 — Filter Catalog Revision (TDD) [checkpoint: 6f5087e]
 
 - [x] Task: Update `src/pet/costume.test.ts` first — catalog becomes
   `sunset-onesie` 10⭐, `mint-dream` 20⭐, `berry-night` 30⭐, all
