@@ -38,7 +38,7 @@
 
 ## Phase 3: Interaction — Walk → Act Controller
 
-- [ ] Task: Write failing tests for interaction controller (Red)
+- [~] Task: Write failing tests for interaction controller (Red)
   - [ ] Tap floor → walk target, no action
   - [ ] Tap POI → walk → action fires on arrival (feed/rest/wash boosts via
     existing `stats.ts` semantics)

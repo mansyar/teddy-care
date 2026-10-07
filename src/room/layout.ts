@@ -47,7 +47,7 @@ export interface RoomLayout {
 export const HOTSPOT_RADIUS_PCT = 8;
 
 /** Portrait composition: a cozy vertical room (360px baseline). */
-const PORTRAIT: RoomLayout = {
+export const PORTRAIT: RoomLayout = {
 	orientation: "portrait",
 	pois: [
 		{ id: "bed", action: { kind: "care", action: "rest" }, x: 24, y: 38 },
@@ -60,7 +60,7 @@ const PORTRAIT: RoomLayout = {
 };
 
 /** Landscape composition: the same room spread wide. */
-const LANDSCAPE: RoomLayout = {
+export const LANDSCAPE: RoomLayout = {
 	orientation: "landscape",
 	pois: [
 		{ id: "bed", action: { kind: "care", action: "rest" }, x: 16, y: 58 },
