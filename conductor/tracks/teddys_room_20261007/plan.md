@@ -19,7 +19,7 @@
 - [x] Task: Generate landscape room background (sprite-gen) — presentational — 1e4c693
 - [x] Task: Generate walk cycle strip (sprite-gen, gentle gait) — presentational — 7949363, 9e39631 (take 3 accepted after gait review)
 - [x] Task: Generate closet/mirror POI art (sprite-gen) — presentational — 05d8ee8
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Room Scene UI (Presentational) [checkpoint: d97c493]
 
@@ -34,7 +34,7 @@
   reposition, keep feedback - presentational; verify via Playwright
   reduced-motion emulation — d97c493 (walk anim + breathe verified off; the
   instant-reposition path itself is the Phase 3 controller test)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Interaction — Walk→Act Controller [checkpoint: fdb5792]
 
