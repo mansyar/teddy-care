@@ -20,3 +20,5 @@ comment updated.
 
 Files: src/screens/RoomScreen.tsx, src/index.css,
 e2e/room-care.spec.ts.
+
+Phase 4 verification report (checkpoint): room-care e2e 6/6 passing including rewritten toy-box-menu test and new Escape-closes test; unit 121/121; pnpm check clean (Biome + strict tsc). Manual plan presented (menu pops with sparkle, both buttons navigate, Close/Escape return, wardrobe unaffected) — user confirmed yes.
