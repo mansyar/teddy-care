@@ -3,7 +3,7 @@
 Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
 (TDD for logic-bearing code, phase checkpoints, git notes per task).
 
-## Phase 1 — Game Logic Core (TDD)
+## Phase 1 — Game Logic Core (TDD) `[checkpoint: 2b3d92a]`
 
 - [x] Task: Create pure bubble game module `src/pet/bubbles.ts` — Red phase `172e847`
   - [ ] Write failing Vitest tests: reward math (`1 + floor(pops/8)`, clamp
@@ -14,7 +14,7 @@ Track: `bubble_pop_20261007` · Follows `conductor/workflow.md`
   - No refactor needed — module matches `runner.ts` style. Every export and
     edge branch tested (11/11 passing); effective coverage 100%.
 - [x] Task: Commit code changes + attach git note + update plan task status `172e847`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2 — Sound (TDD)
 
