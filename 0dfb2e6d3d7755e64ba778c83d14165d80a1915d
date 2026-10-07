@@ -1,0 +1,5 @@
+Phase 6 tasks 1-3: e2e, offline, docs.
+- e2e/bubble-pop.spec.ts (4 tests total incl. bubbles-offline): menu entry -> full 30s round -> pops counted -> 'All done!' card with guaranteed star -> room star-chip banks it; muted round still finishes; reduced-motion parks bubbles and pops still count (emulateMedia).
+- e2e/bubbles-offline.spec.ts: SW ready -> /teddy/bubble.webp precached -> offline reload stages the game and a bubble img decodes with naturalWidth > 0.
+- Docs: product.md 'Shipped (Track 3: Bubble Pop)' section (mini-menu, gentle ramp, no-lose, parity); README screens/stack/structure updated.
+- Verification: pnpm check clean; 121/121 unit tests; new e2e 4/4 passed (1.1m) incl. offline; full suite green at checkpoint.
