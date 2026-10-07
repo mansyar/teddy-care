@@ -36,6 +36,7 @@ assets/teddy/run-set/side-run/
 *.sw?
 
 # Walk-set intermediates (finals are committed)
-assets/teddy/walk-set/side-walk/frames/
-assets/teddy/walk-set/side-walk/clip*.mp4
-assets/teddy/walk-set/probe/
+assets/teddy/walk-set/*/frames/
+assets/teddy/walk-set/*/clip*.mp4
+assets/teddy/walk-set/*/probe/
+assets/teddy/walk-set/rejected/
