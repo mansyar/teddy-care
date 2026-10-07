@@ -13,3 +13,6 @@
 
 - [x] **Track: Puzzle Pieces — tap-to-place jigsaw mini-game with three-round climb**
   *Link: [puzzle_20261008](../archive/puzzle_20261008/index.md) — archived 2026-10-08 (reviewed, fixes applied, approved)*
+
+- [ ] **Track: Wardrobe Expansion — tiered costume closet with free switching and overlay accessories**
+  *Link: [wardrobe_20261008](./tracks/wardrobe_20261008/index.md)*
