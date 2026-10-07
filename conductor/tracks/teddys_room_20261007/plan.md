@@ -85,3 +85,11 @@
   (walk strip q90: 2.24MB→667KB; 182fps at 4x CPU throttle; 360px verified;
   real-phone pass = final install check)
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase: Review Fixes
+
+- [~] Task: Apply review suggestions (8 Medium + cheap Low findings from
+  conductor-review): FR10 easter-egg reachability, toy-box nav timer,
+  repeat-tap effect key, wardrobe dialog semantics, portrait walk-target
+  invariant, completeWalk structural helper, deterministic e2e waits,
+  dead precache entries, misc Low polish
