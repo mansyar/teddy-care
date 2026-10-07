@@ -1,7 +1,8 @@
 /**
  * Teddy's Room e2e proof: care POIs boost the right stats after Teddy
  * walks there, petting is a tap on Teddy himself, the toy box hands off
- * to the runner, the closet opens the wardrobe, bedtime stages the room,
+ * opens the mini-game menu, the closet opens the wardrobe, bedtime stages
+ * the room,
  * and both orientations render.
  */
 import { expect, test, type Page } from "@playwright/test";
@@ -99,10 +100,25 @@ test("care POIs boost the matching stats", async ({ page }) => {
 		.toBeGreaterThanOrEqual(35);
 });
 
-test("toy box opens the runner", async ({ page }) => {
+test("toy box opens the mini-game menu, runner still reachable", async ({
+	page,
+}) => {
 	await page.goto("/#/");
 	await tapPoi(page, "Teddy's toy box");
+	const menu = page.getByRole("dialog", { name: "Teddy's games" });
+	await expect(menu).toBeVisible();
+	await menu.getByRole("button", { name: "Play the running game" }).click();
 	await expect(page).toHaveURL(/#\/runner/);
+});
+
+test("toy box menu Escape closes back to the room", async ({ page }) => {
+	await page.goto("/#/");
+	await tapPoi(page, "Teddy's toy box");
+	const menu = page.getByRole("dialog", { name: "Teddy's games" });
+	await expect(menu).toBeVisible();
+	await page.keyboard.press("Escape");
+	await expect(menu).toBeHidden();
+	await expect(page).not.toHaveURL(/#\/runner/);
 });
 
 test("closet opens the wardrobe panel", async ({ page }) => {
