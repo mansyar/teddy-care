@@ -1,1 +1,0 @@
-Task: portrait room background. Generated via sprite-gen gen (grok-imagine, 9:16, quality medium, resolution 2k -> 1584x2816). Grok watermark in bottom-right patched deterministically with a cloned neighboring strip (PIL), re-verified seamless by vision QA. Runtime copy public/teddy/room-portrait.webp (0.21MB, q85). Finals + report committed under assets/teddy/. Deviations: none.
