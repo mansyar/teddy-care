@@ -2,7 +2,7 @@
 	"id": "save_integrity_20261008",
 	"title": "Save Integrity — single source of truth for pet state",
 	"type": "bug",
-	"status": "new",
+	"status": "complete",
 	"created": "2026-10-08",
 	"updated": "2026-10-08",
 	"branch": "save-integrity"
