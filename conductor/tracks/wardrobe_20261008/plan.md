@@ -94,7 +94,7 @@
   card rows)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 6 — E2E, Offline & Docs
+## Phase 6 — E2E, Offline & Docs [checkpoint: 4b070ed]
 
 - [x] Task: Playwright `wardrobe.spec.ts` — open closet → buy Mint Dream at
   enough stars → sparkle + worn; unaffordable Berry Night → wiggle, stars
