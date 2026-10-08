@@ -6,11 +6,11 @@
 
 ## Phase 1: Audio Engine Core (scheduler + switching state)
 
-- [ ] Task: Write failing tests for the pure music scheduler (Red)
+- [x] Task: Write failing tests for the pure music scheduler (Red) (3c17871)
   - Scheduler starts/stops loops; rapid theme switches never stack two loops
   - Fade-in/fade-out state machine (~1s crossfade, no gap)
   - Suspend/clean-restart behavior (mute → unmute resumes in sync)
-- [ ] Task: Implement the pure `MusicScheduler` engine (Green) — clock-agnostic, callbacks injected, no WebAudio dependency
+- [x] Task: Implement the pure `MusicScheduler` engine (Green) — clock-agnostic, callbacks injected, no WebAudio dependency (3c17871)
 - [ ] Task: Wire the engine into WebAudio (`startMusic`/`stopMusic` preserve their signatures; lookahead scheduling on the AudioContext clock, no `setInterval` timing loop)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
