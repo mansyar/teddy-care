@@ -1,0 +1,1 @@
+TDD: breathe.test.ts (6 tests: neutral/quarter/half/three-quarter/periodicity/envelope) red on missing module, green after breathe.ts (depth 0.06, period 1000ms). CareScreen rAF wiring + float wrapper presentational. 30/30 suite green, check clean, build green.
