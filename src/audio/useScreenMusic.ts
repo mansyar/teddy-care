@@ -23,6 +23,12 @@ export interface MusicDecision {
 	command: "play" | "stop" | "none";
 }
 
+/** The engine surface `applyDecision` drives — `sound.ts` in production. */
+export interface MusicEngine {
+	start: (settings: ParentSettings, themeId: string) => void;
+	stop: () => void;
+}
+
 /**
  * Resolve exactly one active theme. `previous` is the desired theme id
  * (kept even while muted); `playing` is whether the engine is actually
@@ -53,6 +59,24 @@ export function decideMusic(
 	return { themeId: theme.id, command: "play" };
 }
 
+/**
+ * Execute a decision against the engine: `play` starts the wanted theme
+ * with a bedtime-neutral settings copy (bedtime steers the THEME, not
+ * the gate — `isAudible` stays the single authoritative gate), `stop`
+ * silences it, `none` does nothing.
+ */
+export function applyDecision(
+	decision: MusicDecision,
+	settings: ParentSettings,
+	engine: MusicEngine,
+): void {
+	if (decision.command === "play") {
+		engine.start({ ...settings, bedtime: false }, decision.themeId);
+	} else if (decision.command === "stop") {
+		engine.stop();
+	}
+}
+
 /** Keep exactly one theme playing across routes, settings, and gestures. */
 export function useScreenMusic(settings: ParentSettings, route: string): void {
 	const themeId = useRef<string | null>(null);
@@ -60,23 +84,27 @@ export function useScreenMusic(settings: ParentSettings, route: string): void {
 	const unlocked = useRef(false);
 
 	const evaluate = useCallback(() => {
-		const decision = decideMusic(
-			themeId.current,
-			playing.current,
+		applyDecision(
+			decideMusic(
+				themeId.current,
+				playing.current,
+				settings,
+				route,
+				unlocked.current,
+			),
 			settings,
-			route,
-			unlocked.current,
+			{
+				start: (next, themeId_) => {
+					startMusic(next, THEMES[themeId_]);
+					themeId.current = themeId_;
+					playing.current = true;
+				},
+				stop: () => {
+					stopMusic();
+					playing.current = false;
+				},
+			},
 		);
-		if (decision.command === "play") {
-			// Bedtime steers the theme, not the gate: `isAudible` stays the
-			// single authoritative gate, so hand it a bedtime-neutral copy.
-			startMusic({ ...settings, bedtime: false }, THEMES[decision.themeId]);
-			themeId.current = decision.themeId;
-			playing.current = true;
-		} else if (decision.command === "stop") {
-			stopMusic();
-			playing.current = false;
-		}
 	}, [settings, route]);
 
 	useEffect(() => {

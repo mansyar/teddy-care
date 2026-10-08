@@ -6,8 +6,9 @@
  * exactly one active theme — or a clean stop that keeps the desired
  * theme so unmuting restores the right music. Pure logic, plain node.
  */
-import { describe, expect, it } from "vitest";
-import { decideMusic } from "./useScreenMusic";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { applyDecision, decideMusic } from "./useScreenMusic";
 
 const AUDIBLE = { muted: false, bedtime: false };
 const MUTED = { muted: true, bedtime: false };
@@ -96,5 +97,37 @@ describe("decideMusic", () => {
 			themeId: "room",
 			command: "play",
 		});
+	});
+});
+
+describe("applyDecision drives the engine", () => {
+	const start = vi.fn();
+	const stop = vi.fn();
+	const engine = { start, stop };
+
+	beforeEach(() => {
+		start.mockClear();
+		stop.mockClear();
+	});
+
+	it("play starts the wanted theme with a bedtime-neutral settings copy", () => {
+		applyDecision({ themeId: "lullaby", command: "play" }, BEDTIME, engine);
+		expect(start).toHaveBeenCalledExactlyOnceWith(
+			{ muted: false, bedtime: false },
+			"lullaby",
+		);
+		expect(stop).not.toHaveBeenCalled();
+	});
+
+	it("stop silences without starting anything", () => {
+		applyDecision({ themeId: "room", command: "stop" }, AUDIBLE, engine);
+		expect(stop).toHaveBeenCalledExactlyOnceWith();
+		expect(start).not.toHaveBeenCalled();
+	});
+
+	it("none touches nothing", () => {
+		applyDecision({ themeId: "room", command: "none" }, AUDIBLE, engine);
+		expect(start).not.toHaveBeenCalled();
+		expect(stop).not.toHaveBeenCalled();
 	});
 });
