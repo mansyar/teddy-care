@@ -51,5 +51,22 @@ Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
 - Asset pipeline: sprite-gen outputs land in `assets/teddy/` (strips, WebP,
   stills)
 
+## Deployment
+- **Hosting:** Cloudflare Pages (project `teddy-care` →
+  https://teddy-care.pages.dev), deployed via wrangler direct upload — the
+  only deploy path (duplicate Cloudflare Git integration disconnected
+  2026-10-08)
+- **CI/CD:** GitHub Actions (`.github/workflows/ci-deploy.yml`, repo
+  github.com/mansyar/teddy-care) — every push/PR runs the full gate
+  (`pnpm check`, unit, build, Playwright e2e serving the fresh `dist/`);
+  a green `main` push auto-deploys; `main` is protected (PR + `verify`
+  check required)
+- **Secrets:** repo secrets `CLOUDFLARE_API_TOKEN` (Pages: Edit) +
+  `CLOUDFLARE_ACCOUNT_ID`; the deploy step fails loudly if either is
+  missing
+- **pnpm 12 builds:** `pnpm-workspace.yaml` `allowBuilds` approves the
+  `esbuild`/`workerd` install scripts (wrangler deps) — otherwise pnpm 12
+  fails installs with `ERR_PNPM_IGNORED_BUILDS`
+
 ## Explicit Non-Goals
 No backend, no accounts, no analytics, no ads/IAP SDKs, no server push.
