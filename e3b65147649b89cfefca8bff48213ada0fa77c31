@@ -1,1 +1,3 @@
 Phase 5: wardrobe bottom sheet + live preview strip (tap-to-wear free switching, buy = sparkle + playSparkle, unaffordable = wiggle + playBoop, reduced-motion respected); .wardrobe-strip/.wardrobe-item keep shared .wardrobe-card untouched; verified in driven browser incl. 360px (sheet top-align fix); gate: check clean, 159/159.
+
+Phase 5 checkpoint verification: pnpm check clean; CI=true pnpm test 15 files / 159 passed; driven-browser verification (strip render, worn highlight, live tap-to-wear recolor, 360px portrait no-clip via DOM geometry); user approved. Phase heading stamped e3b6514.
