@@ -1,1 +1,0 @@
-Screen-level wiring over tested units (no new Vitest: usePetSave is thin glue over store+stats, both covered). usePetSave: load+wall-clock decay on mount, sync render with background persist (<300ms feedback). StatBar uses native meter. CareScreen: 4 action buttons (64px), eating flash 1.5s, all faces preloaded. 30/30 green, check clean, build green.
