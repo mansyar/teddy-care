@@ -1,0 +1,27 @@
+Task 2.3: Synthesis voices (Red + Green)
+
+What: src/audio/voices.ts - six voice specs as pure data (pluck:
+fast triangle music box; pad: slow-swell sine, low-passed; arpeggio:
+tamed square staccato; shimmer: noise band via looped white-noise
+buffer, high low-pass; percussion: near-instant strike; marimba:
+soft sine) plus envelopeFor(), a pure envelope function that clamps
+attack+release to fit any note duration (short notes shrink
+proportionally, hold goes to zero, never negative). sound.ts
+musicHost now routes every scheduled note through its voice spec:
+oscillator or noise source, envelope gain, optional low-pass filter,
+into the theme bus. SFX (tone()) untouched; call sites unchanged.
+
+Tests: 10 voices cases written first (Red: unresolved module) -
+spec existence for all six names, unknown-name fallback to pluck,
+per-voice character assertions (fast pluck, slow pad, noise shimmer,
+instant percussion), envelope natural/clamped/near-zero cases; 2
+wiring cases in sound.test.ts (shimmer note -> buffer source not
+oscillator; pluck note -> oscillator); StubAudioContext extended
+with sampleRate, createBufferSource, createBuffer, createBiquadFilter.
+Whole unit suite: 191/191. voices.ts coverage 100% across the board.
+
+Why: per-screen moods need distinct timbres; keeping voices pure
+lets compositions be tuned as data and keeps the WebAudio wiring thin.
+
+Files: src/audio/voices.ts, src/audio/voices.test.ts, src/audio/sound.ts, src/audio/sound.test.ts
+Gates: pnpm check clean; CI=true pnpm test 191/191.
