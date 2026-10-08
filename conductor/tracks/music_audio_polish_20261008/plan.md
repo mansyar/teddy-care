@@ -31,7 +31,7 @@
 ## Phase 4: SFX Richness & Docs
 
 - [x] Task: Layer richer textures into existing SFX (call sites untouched; recognizable signatures kept; mute/bedtime gating unchanged) (4dced8b)
-- [ ] Task: Sync docs — `product.md` shipped section, `tech-stack.md` audio note
+- [x] Task: Sync docs — `product.md` shipped section, `tech-stack.md` audio note (6ab6e11)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: E2E, Quality Gates & Polish
