@@ -34,7 +34,7 @@
 - [x] Task: Sync docs — `product.md` shipped section, `tech-stack.md` audio note (6ab6e11)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5: E2E, Quality Gates & Polish
+## Phase 5: E2E, Quality Gates & Polish [checkpoint: 23ea7cc]
 
 - [x] Task: Playwright e2e — mute silences all + persists; bedtime plays soft lullaby; theme continuity across navigation; offline parity (23ea7cc)
 - [~] Task: Full quality gates — `pnpm check`, `CI=true pnpm test`, coverage >80% on new logic modules, 360px portrait manual pass
