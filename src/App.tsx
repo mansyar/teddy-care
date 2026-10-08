@@ -20,7 +20,10 @@ import RoomScreen from "./screens/RoomScreen.tsx";
 import RunnerScreen from "./screens/RunnerScreen.tsx";
 
 function Shell() {
-	const { settings } = useSettings();
+	// Shell owns the settings so the music hook and the parent panel see
+	// the same state — a second usePetSave instance here would fork the
+	// truth and the panel's toggles would never reach the music.
+	const { settings, updateSettings } = useSettings();
 	const { pathname } = useLocation();
 	useScreenMusic(settings, pathname);
 	return (
@@ -31,7 +34,15 @@ function Shell() {
 					<Route path="/runner" element={<RunnerScreen />} />
 					<Route path="/bubbles" element={<BubblesScreen />} />
 					<Route path="/puzzle" element={<PuzzleScreen />} />
-					<Route path="/parents" element={<ParentScreen />} />
+					<Route
+						path="/parents"
+						element={
+							<ParentScreen
+								settings={settings}
+								updateSettings={updateSettings}
+							/>
+						}
+					/>
 					{/* Unknown hashes land back home — never an empty room. */}
 					<Route path="*" element={<RoomScreen />} />
 				</Routes>
