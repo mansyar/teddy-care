@@ -1,1 +1,0 @@
-fix(runner) cd864ae: Jump button used onClick; mobile browsers hold click ~300ms for double-tap-zoom. Now fires on pointerdown (click kept for keyboard; double-fire harmless via grounded guard) + global touch-action: manipulation on buttons. Phaser-side jump was already instant (pointerdown sets velocity). Check clean, build green.
