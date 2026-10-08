@@ -1,0 +1,67 @@
+# Teddy Care CI & deploy pipeline.
+#
+# One `verify` job runs the full quality gate on every push and PR:
+# lint/typecheck, unit tests, production build, e2e (which serves the
+# freshly built dist/ — e2e must run AFTER build or it tests stale output).
+#
+# Deploys to Cloudflare Pages only on pushes to main, via wrangler direct
+# upload. Missing secrets fail the deploy step loudly (by design): set
+# CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository secrets.
+
+name: CI & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.4.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint & typecheck
+        run: pnpm check
+
+      - name: Unit tests
+        run: CI=true pnpm test
+
+      - name: Production build
+        run: pnpm build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E tests
+        run: CI=true pnpm test:e2e
+
+      - name: Deploy to Cloudflare Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=teddy-care --branch=main
