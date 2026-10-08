@@ -11,7 +11,7 @@
   - Fade-in/fade-out state machine (~1s crossfade, no gap)
   - Suspend/clean-restart behavior (mute → unmute resumes in sync)
 - [x] Task: Implement the pure `MusicScheduler` engine (Green) — clock-agnostic, callbacks injected, no WebAudio dependency (3c17871)
-- [ ] Task: Wire the engine into WebAudio (`startMusic`/`stopMusic` preserve their signatures; lookahead scheduling on the AudioContext clock, no `setInterval` timing loop)
+- [x] Task: Wire the engine into WebAudio (`startMusic`/`stopMusic` preserve their signatures; lookahead scheduling on the AudioContext clock, no `setInterval` timing loop) (fc9540d)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Theme Library (five composed loops)
