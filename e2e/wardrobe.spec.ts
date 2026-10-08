@@ -53,6 +53,32 @@ test("buying Mint Dream celebrates, wiggle guards the pricey one", async ({
 	await mint.click();
 	await expect(mint).toHaveAttribute("aria-pressed", "true");
 
+	// The save write is backgrounded — wait until it has actually landed in
+	// IndexedDB before reloading, or the reload reads the pre-switch save.
+	await expect
+		.poll(async () =>
+			page.evaluate(async () => {
+				const db = await new Promise<IDBDatabase>((resolve, reject) => {
+					const req = indexedDB.open("teddy-care");
+					req.onsuccess = () => resolve(req.result);
+					req.onerror = () => reject(req.error);
+				});
+				const value = await new Promise<{ costume: string | null }>(
+					(resolve, reject) => {
+						const req = db
+							.transaction("saves", "readonly")
+							.objectStore("saves")
+							.get("save");
+						req.onsuccess = () => resolve(req.result);
+						req.onerror = () => reject(req.error);
+					},
+				);
+				db.close();
+				return value.costume;
+			}),
+		)
+		.toBe("mint-dream");
+
 	// Reload: the wardrobe choice survives the session.
 	await page.reload();
 	await expect(page.locator(".room-teddy-sprite")).toHaveCSS(
