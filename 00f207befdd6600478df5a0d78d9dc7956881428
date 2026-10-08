@@ -1,0 +1,24 @@
+Task 3.1: useScreenMusic decision logic tests (Red) + implementation (Green)
+
+What: src/audio/useScreenMusic.ts. Pure decideMusic(previous, playing,
+settings, route, unlocked) resolves exactly one active theme: nothing
+before the first gesture; route -> its theme; bedtime overrides every
+route with the lullaby; playing the wanted theme is a no-op (no
+doubles); mute stops the engine but KEEPS the desired theme id so
+unmuting restarts the right music (state survives mute). The hook is
+thin wiring: first-gesture unlock via one-time pointerdown/keydown
+listeners, re-evaluation on settings/route changes, startMusic/
+stopMusic calls. Bedtime steers the THEME, not the gate - the hook
+hands startMusic a bedtime-neutral settings copy so isAudible remains
+the single authoritative gate (FR7) while the lullaby plays.
+
+Tests: 8 Vitest cases written first (Red: unresolved module) covering
+gesture lock, route start, exactly-one-theme idempotence, route
+switch, bedtime override, mute-keeps-state, unmute-restarts, mute
+no-op. Whole unit suite: 199/199. pnpm check clean.
+
+Why: the hook's branching is policy worth unit-testing; React glue
+stays presentational and gets verified by Playwright in Phase 5.
+
+Files: src/audio/useScreenMusic.ts, src/audio/useScreenMusic.test.ts
+Gates: pnpm check clean; CI=true pnpm test 199/199.
