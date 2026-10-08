@@ -60,4 +60,10 @@
     proven settle pattern); re-run green; merged with --admin; deploy run
     37751461593 success; site returns 200 with Teddy Care + sw.js
 - [x] Task: README — document pipeline + live URL
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  [checkpoint: 77cbd41]
+  - Automated: run 37751461593 all steps success (check, 217 unit, 28 e2e,
+    build, deploy); site 200 + sw.js served
+  - Manual: user confirmed live game plays (care/mini-games/wardrobe), PWA
+    installs, offline reload works; duplicate Cloudflare Git integration
+    disconnected — Actions+wrangler is the single deploy path
