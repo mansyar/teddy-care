@@ -22,6 +22,10 @@ Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
   worn costumes, settings; versioned save schema with migration on load;
   no backend, no login
 - Timers computed from wall-clock deltas on load (kind offline progression)
+- Single save owner: one `PetSaveProvider` React context owns the sole
+  `usePetSave()` instance for the whole tree (screens + settings consume
+  context — no per-screen forks); stars clamped to non-negative integers
+  at the persistence boundary (added 2026-10-08, Save Integrity track)
 
 ## PWA
 - **vite-plugin-pwa** — installable, full offline via precached shell +
