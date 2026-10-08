@@ -1,0 +1,5 @@
+Task: Coverage top-up for usePetSave award mutators (Phase 3)
+
+- Added contract test driving award/awardBubbles/awardPuzzleRound through PetSaveProvider: worst run (1) + capped bubbles (5) + puzzle round (1) = 7 stars, both consumers agree, persisted save holds 7.
+- Coverage: usePetSave.ts 52.8% -> 81.1% lines (gate >80%); buy/equip bodies remain covered by e2e/care-star.spec.ts in a real browser.
+- Files: src/pet/PetSaveProvider.test.tsx
