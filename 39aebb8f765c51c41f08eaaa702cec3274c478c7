@@ -1,0 +1,21 @@
+Task 3.2 refinement: applyDecision extracted from the hook
+
+What: the imperative engine execution moved out of the hook's
+evaluate() into exported pure applyDecision(decision, settings,
+engine) - play starts the wanted theme with the bedtime-neutral
+settings copy, stop silences, none no-ops. The hook keeps only refs,
+effect re-evaluation, and first-gesture listeners (React glue).
+
+Why: no RTL/jsdom is installed (the plan kept hook logic as pure
+functions); with the hook body unrenderable in node, v8 showed
+useScreenMusic.ts at 30% statements. applyDecision puts the play/
+stop/none semantics back under unit test; the remaining uncovered
+lines are pure React wiring verified by Playwright e2e in Phase 5
+(presentational-style exemption per workflow.md).
+
+Tests: 3 new applyDecision cases (12 total in the file); full suite
+203/203; pnpm check clean. Branch coverage on useScreenMusic.ts:
+92.9%.
+
+Files: src/audio/useScreenMusic.ts, src/audio/useScreenMusic.test.ts
+Gates: pnpm check clean; CI=true pnpm test 203/203.
