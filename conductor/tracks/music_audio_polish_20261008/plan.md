@@ -4,7 +4,7 @@
 > TDD for all logic-bearing tasks (Red → Green → Refactor). Presentational
 > composition details verified via Playwright/manual checks.
 
-## Phase 1: Audio Engine Core (scheduler + switching state)
+## Phase 1: Audio Engine Core (scheduler + switching state) [checkpoint: fc9540d]
 
 - [x] Task: Write failing tests for the pure music scheduler (Red) (3c17871)
   - Scheduler starts/stops loops; rapid theme switches never stack two loops
