@@ -25,16 +25,26 @@ test("stars earned in the room survive parent-panel toggles and a reload", async
 	// erased earned stars exactly here (stale snapshot written back).
 	await page.goto("/#/parents");
 	await page.getByRole("button", { name: "Turn sound off" }).click();
+	await expect(
+		page.getByRole("button", { name: "Turn sound on" }),
+	).toBeVisible();
 	await page.getByRole("button", { name: "Turn bedtime on" }).click();
+	await expect(
+		page.getByRole("button", { name: "Turn bedtime off" }),
+	).toBeVisible();
 
-	// Reload: the persisted save must still hold the earned star.
+	// saveSave is fire-and-forget; give the IndexedDB write a beat to
+	// land before the reload tears the page down.
+	await page.waitForTimeout(500);
 	await page.reload();
 	await page.goto("/#/");
 	await expect(chip).toHaveText("⭐ 1");
 
 	// And the settings toggles took effect too — both writes landed.
 	await page.goto("/#/parents");
-	await expect(page.getByRole("button", { name: "Turn sound on" })).toBeVisible();
+	await expect(
+		page.getByRole("button", { name: "Turn sound on" }),
+	).toBeVisible();
 	await expect(
 		page.getByRole("button", { name: "Turn bedtime off" }),
 	).toBeVisible();
