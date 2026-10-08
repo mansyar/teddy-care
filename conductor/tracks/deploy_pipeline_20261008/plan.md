@@ -44,11 +44,20 @@
 
 ## Phase 3: Secrets, protection & first production deploy
 
-- [ ] Task: Hand the user exact `gh secret set` commands; user creates the
+- [x] Task: Hand the user exact `gh secret set` commands; user creates the
       Cloudflare API token (Pages: Edit) + Account ID
-- [ ] Task: Enable branch protection on `main` (require `verify` check + PR)
-- [ ] Task: End-to-end proof — open a real PR (docs tweak) → CI green →
+  - Secrets set by user via gh secret set; Pages project created via
+    `wrangler pages project create teddy-care --production-branch=main`
+    (second attempt — first deploy failed with "project does not exist")
+- [x] Task: Enable branch protection on `main` (require `verify` check + PR)
+  - strict + context `verify`, 1 approval, force-push/deletion blocked,
+    `enforce_admins: false` (solo admin can bypass with `gh pr merge --admin`)
+- [x] Task: End-to-end proof — open a real PR (docs tweak) → CI green →
       merge → deploy runs → verify `https://teddy-care.pages.dev` serves the
       playable, installable, offline-capable game
-- [ ] Task: README — document pipeline + live URL
+  - PR #1 (docs + e2e settle fix): first CI run exposed the same
+    fire-and-forget write race in settings-persist.spec (fixed with the
+    proven settle pattern); re-run green; merged with --admin; deploy run
+    37751461593 success; site returns 200 with Teddy Care + sw.js
+- [x] Task: README — document pipeline + live URL
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
