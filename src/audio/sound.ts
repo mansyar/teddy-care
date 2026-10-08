@@ -1,15 +1,57 @@
 /**
- * Placeholder audio: tiny synthesized SFX + a gentle music-box loop, all
+ * Audio layer: tiny synthesized SFX + scheduler-driven music themes, all
  * generated with WebAudio (zero assets, fully offline). Every entry point
  * takes the parent settings and stays silent unless audible — callers never
- * branch on mute/bedtime themselves. Real compositions replace these
- * placeholders in a later track without touching call sites.
+ * branch on mute/bedtime themselves.
+ *
+ * Music timing follows the lookahead-scheduler pattern: a light pump driver
+ * tops up the schedule, but every note is placed on the AudioContext clock
+ * by the pure `MusicScheduler`, so loops never drift. Themes crossfade on
+ * per-theme gain buses; stopping ramps buses down instead of cutting out.
  */
 import { isAudible } from "../pet/settings";
 import type { ParentSettings } from "../save/store";
+import {
+	FADE_S,
+	LOOKAHEAD_S,
+	MusicScheduler,
+	type ScheduledNote,
+	type SchedulerHost,
+	type Theme,
+} from "./scheduler";
+import type { VoiceName } from "./themes";
+import { envelopeFor, voiceFor } from "./voices";
 
 let ctx: AudioContext | null = null;
-let musicTimer: number | undefined;
+let scheduler: MusicScheduler | null = null;
+let pumpTimer: number | undefined;
+let liveSettings: ParentSettings | null = null;
+/** Clock reading at the last pump, so long throttle gaps can be detected. */
+let lastPumpAt = 0;
+/** Themes registered by startMusic, so fade callbacks can find their gain. */
+const themes = new Map<string, Theme>();
+/** Per-theme gain buses — the crossfade happens between these. */
+const buses = new Map<string, GainNode>();
+/** Shared noise band for the shimmer voice, built once per context. */
+let noiseBuffer: AudioBuffer | null = null;
+
+/** How often the pump driver tops up the lookahead (ms). */
+const PUMP_INTERVAL_MS = 200;
+/** Quick fade-out on stop, so silence never arrives as a click. */
+const STOP_FADE_S = 0.15;
+
+/** The room's music-box theme: a gentle C–E–G fragment, looped seamlessly. */
+const ROOM_THEME: Theme = {
+	id: "room",
+	loopS: 1.92,
+	gain: 1,
+	notes: [523, 659, 784, 659].map((frequency, index) => ({
+		offsetS: index * 0.48,
+		frequency,
+		durationS: 0.5,
+		volume: 0.05,
+	})),
+};
 
 /** Lazily create (and resume) the shared context; null where unsupported. */
 function audio(): AudioContext | null {
@@ -25,7 +67,7 @@ function audio(): AudioContext | null {
 	}
 }
 
-/** One soft enveloped tone. */
+/** One soft enveloped tone, routed to `out` (the destination by default). */
 function tone(
 	context: AudioContext,
 	frequency: number,
@@ -33,6 +75,7 @@ function tone(
 	durationS: number,
 	volume = 0.12,
 	type: OscillatorType = "sine",
+	out: AudioNode = context.destination,
 ): void {
 	const start = context.currentTime + delayS;
 	const osc = context.createOscillator();
@@ -42,9 +85,72 @@ function tone(
 	gain.gain.setValueAtTime(0, start);
 	gain.gain.linearRampToValueAtTime(volume, start + 0.02);
 	gain.gain.exponentialRampToValueAtTime(0.001, start + durationS);
-	osc.connect(gain).connect(context.destination);
+	osc.connect(gain).connect(out);
 	osc.start(start);
 	osc.stop(start + durationS + 0.05);
+}
+
+/** A one-second white-noise band, shared by every shimmer note. */
+function noiseFor(context: AudioContext): AudioBuffer {
+	if (noiseBuffer === null || noiseBuffer.sampleRate !== context.sampleRate) {
+		const buffer = context.createBuffer(
+			1,
+			context.sampleRate,
+			context.sampleRate,
+		);
+		const data = buffer.getChannelData(0);
+		for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+		noiseBuffer = buffer;
+	}
+	return noiseBuffer;
+}
+
+/** Play one scheduled theme note with its voice's timbre and envelope. */
+function playVoice(
+	context: AudioContext,
+	out: AudioNode,
+	atS: number,
+	note: ScheduledNote,
+): void {
+	// note.voice is scheduler-opaque (a bare string); the cast is safe
+	// because voiceFor falls back to the pluck for unknown names.
+	const spec = voiceFor((note.voice ?? "pluck") as VoiceName);
+	const env = envelopeFor(spec, note.durationS);
+	const level = note.volume * spec.gainScale;
+	const releaseStart = atS + env.attackS + env.holdS;
+	const endS = releaseStart + env.releaseS;
+
+	const gain = context.createGain();
+	gain.gain.setValueAtTime(0, atS);
+	gain.gain.linearRampToValueAtTime(level, atS + env.attackS);
+	gain.gain.setValueAtTime(level, releaseStart);
+	gain.gain.exponentialRampToValueAtTime(0.001, endS);
+
+	let source: AudioScheduledSourceNode;
+	if (spec.noise) {
+		const band = context.createBufferSource();
+		band.buffer = noiseFor(context);
+		band.loop = true;
+		source = band;
+	} else {
+		const osc = context.createOscillator();
+		osc.type = spec.wave;
+		osc.frequency.value = note.frequency;
+		source = osc;
+	}
+	source.connect(gain);
+
+	let tail: AudioNode = gain;
+	if (spec.filterHz !== undefined) {
+		const filter = context.createBiquadFilter();
+		filter.type = "lowpass";
+		filter.frequency.value = spec.filterHz;
+		gain.connect(filter);
+		tail = filter;
+	}
+	tail.connect(out);
+	source.start(atS);
+	source.stop(endS + 0.05);
 }
 
 function play(
@@ -61,12 +167,65 @@ function play(
 	if (context === null) return;
 	for (const note of notes) {
 		tone(context, note.frequency, note.delayS, note.durationS, note.volume);
+		// A quieter sub-octave shadow gives every note a warmer body.
+		tone(
+			context,
+			note.frequency / 2,
+			note.delayS,
+			note.durationS,
+			(note.volume ?? 0.12) * 0.5,
+		);
+	}
+}
+
+/** One short filtered noise burst — texture, not melody. */
+function burst(
+	context: AudioContext,
+	delayS: number,
+	durationS: number,
+	volume: number,
+	filterHz: number,
+): void {
+	const start = context.currentTime + delayS;
+	const band = context.createBufferSource();
+	band.buffer = noiseFor(context);
+	band.loop = true;
+	const filter = context.createBiquadFilter();
+	filter.type = "lowpass";
+	filter.frequency.value = filterHz;
+	const gain = context.createGain();
+	gain.gain.setValueAtTime(0, start);
+	gain.gain.linearRampToValueAtTime(volume, start + 0.005);
+	gain.gain.exponentialRampToValueAtTime(0.001, start + durationS);
+	band.connect(filter).connect(gain).connect(context.destination);
+	band.start(start);
+	band.stop(start + durationS + 0.05);
+}
+
+/** Gated noise texture — a no-op whenever sound is not allowed. */
+function texture(
+	settings: ParentSettings,
+	bursts: {
+		delayS: number;
+		durationS: number;
+		volume: number;
+		filterHz: number;
+	}[],
+): void {
+	if (!isAudible(settings)) return;
+	const context = audio();
+	if (context === null) return;
+	for (const item of bursts) {
+		burst(context, item.delayS, item.durationS, item.volume, item.filterHz);
 	}
 }
 
 /** Soft pop for care buttons. */
 export function playPop(settings: ParentSettings): void {
 	play(settings, [{ frequency: 520, delayS: 0, durationS: 0.12 }]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.04, volume: 0.02, filterHz: 3000 },
+	]);
 }
 
 /** Gentle alternating footstep ticks while Teddy walks. */
@@ -77,6 +236,12 @@ export function playFootsteps(settings: ParentSettings): void {
 		{ frequency: 180, delayS: 0.36, durationS: 0.07, volume: 0.05 },
 		{ frequency: 150, delayS: 0.54, durationS: 0.07, volume: 0.05 },
 	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.05, volume: 0.025, filterHz: 900 },
+		{ delayS: 0.18, durationS: 0.05, volume: 0.025, filterHz: 900 },
+		{ delayS: 0.36, durationS: 0.05, volume: 0.02, filterHz: 900 },
+		{ delayS: 0.54, durationS: 0.05, volume: 0.02, filterHz: 900 },
+	]);
 }
 
 /** Three low crunches for a meal at the bowl. */
@@ -85,6 +250,11 @@ export function playMunch(settings: ParentSettings): void {
 		{ frequency: 220, delayS: 0, durationS: 0.09, volume: 0.1 },
 		{ frequency: 180, delayS: 0.14, durationS: 0.09, volume: 0.1 },
 		{ frequency: 220, delayS: 0.28, durationS: 0.12, volume: 0.09 },
+	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.08, volume: 0.03, filterHz: 1200 },
+		{ delayS: 0.14, durationS: 0.08, volume: 0.03, filterHz: 1200 },
+		{ delayS: 0.28, durationS: 0.08, volume: 0.03, filterHz: 1200 },
 	]);
 }
 
@@ -95,6 +265,9 @@ export function playFizz(settings: ParentSettings): void {
 		{ frequency: 980, delayS: 0.09, durationS: 0.09, volume: 0.07 },
 		{ frequency: 820, delayS: 0.18, durationS: 0.09, volume: 0.06 },
 		{ frequency: 1100, delayS: 0.27, durationS: 0.12, volume: 0.06 },
+	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.5, volume: 0.015, filterHz: 5000 },
 	]);
 }
 
@@ -122,6 +295,9 @@ export function playStar(settings: ParentSettings): void {
 		{ frequency: 880, delayS: 0, durationS: 0.2 },
 		{ frequency: 1320, delayS: 0.1, durationS: 0.3 },
 	]);
+	texture(settings, [
+		{ delayS: 0.1, durationS: 0.6, volume: 0.012, filterHz: 6000 },
+	]);
 }
 
 /** Shimmering ascending run for the buy-a-costume celebration. */
@@ -131,6 +307,9 @@ export function playSparkle(settings: ParentSettings): void {
 		{ frequency: 1175, delayS: 0.07, durationS: 0.1, volume: 0.09 },
 		{ frequency: 1320, delayS: 0.14, durationS: 0.12, volume: 0.1 },
 		{ frequency: 1760, delayS: 0.21, durationS: 0.3, volume: 0.1 },
+	]);
+	texture(settings, [
+		{ delayS: 0.21, durationS: 0.4, volume: 0.015, filterHz: 6000 },
 	]);
 }
 
@@ -147,6 +326,9 @@ export function playFanfare(settings: ParentSettings): void {
 /** Bright short blip for popping a bubble in the tap game. */
 export function playPopBubble(settings: ParentSettings): void {
 	play(settings, [{ frequency: 1150, delayS: 0, durationS: 0.08 }]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.04, volume: 0.02, filterHz: 4000 },
+	]);
 }
 
 /** Quick light tick when a puzzle piece is picked up. */
@@ -162,6 +344,9 @@ export function playSnap(settings: ParentSettings): void {
 		{ frequency: 880, delayS: 0, durationS: 0.05 },
 		{ frequency: 1175, delayS: 0.06, durationS: 0.06 },
 	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.03, volume: 0.02, filterHz: 3000 },
+	]);
 }
 
 /** Gentle descending boop when a piece meets the wrong outline. */
@@ -172,27 +357,119 @@ export function playBoop(settings: ParentSettings): void {
 	]);
 }
 
-/** Placeholder music-box loop (C–E–G lullaby fragment). Idempotent. */
-export function startMusic(settings: ParentSettings): void {
-	if (!isAudible(settings) || musicTimer !== undefined) return;
+/** Per-theme gain bus, created silent; the fade envelope brings it up. */
+function busFor(context: AudioContext, theme: Theme): GainNode {
+	const existing = buses.get(theme.id);
+	if (existing) return existing;
+	const node = context.createGain();
+	node.gain.value = 0;
+	node.connect(context.destination);
+	buses.set(theme.id, node);
+	return node;
+}
+
+/** The WebAudio side of the scheduler boundary, bound to one context. */
+function musicHost(context: AudioContext): SchedulerHost {
+	return {
+		note(atS, note, theme) {
+			playVoice(context, busFor(context, theme), atS, note);
+		},
+		fade(prev, next, atS) {
+			const nextTheme = themes.get(next);
+			if (nextTheme) {
+				const node = busFor(context, nextTheme);
+				node.gain.setValueAtTime(0, atS);
+				node.gain.linearRampToValueAtTime(nextTheme.gain, atS + FADE_S);
+			}
+			if (prev !== null) {
+				const old = buses.get(prev);
+				if (old) {
+					old.gain.cancelScheduledValues(atS);
+					old.gain.setValueAtTime(old.gain.value, atS);
+					old.gain.linearRampToValueAtTime(0, atS + FADE_S);
+					// Drop the map entry now so a quick switch-back gets a
+					// fresh bus; disconnect the fading node a beat later.
+					buses.delete(prev);
+					globalThis.setTimeout(
+						() => old.disconnect(),
+						(atS + FADE_S - context.currentTime) * 1000 + 100,
+					);
+				}
+			}
+		},
+	};
+}
+
+/**
+ * Start (or crossfade to) a music theme. Idempotent for the running theme.
+ * The optional theme keeps the historical one-argument call sites working;
+ * per-screen themes arrive with the screen-music hook.
+ */
+export function startMusic(
+	settings: ParentSettings,
+	theme: Theme = ROOM_THEME,
+): void {
+	if (!isAudible(settings)) return;
 	const context = audio();
 	if (context === null) return;
-	const phrase = [523, 659, 784, 659];
-	let step = 0;
-	musicTimer = window.setInterval(() => {
-		if (!isAudible(settings)) {
+	themes.set(theme.id, theme);
+	liveSettings = settings;
+	lastPumpAt = context.currentTime;
+	if (scheduler !== null) {
+		if (scheduler.active === theme.id) return;
+		scheduler.switchTo(theme, context.currentTime);
+		scheduler.pump(context.currentTime);
+		return;
+	}
+	scheduler = new MusicScheduler(musicHost(context));
+	scheduler.start(theme, context.currentTime);
+	scheduler.pump(context.currentTime);
+	// Light pump driver: only tops up the lookahead — every note time comes
+	// from the AudioContext clock, so the loop never drifts.
+	pumpTimer = window.setInterval(() => {
+		if (liveSettings === null || !isAudible(liveSettings)) {
 			stopMusic();
 			return;
 		}
 		const live = audio();
-		if (live === null) return;
-		tone(live, phrase[step % phrase.length], 0, 0.5, 0.05, "triangle");
-		step++;
-	}, 480);
+		if (live === null || scheduler === null) return;
+		// After long tab-hide, timers throttle and the loop origin falls
+		// behind the clock. Catching up would dump every missed note at
+		// once — resync to the first beat instead (restart in sync).
+		if (live.currentTime - lastPumpAt > LOOKAHEAD_S * 2) {
+			const theme = themes.get(scheduler.active ?? "");
+			if (theme !== undefined) {
+				scheduler.switchTo(theme, live.currentTime);
+				lastPumpAt = live.currentTime;
+				return;
+			}
+		}
+		lastPumpAt = live.currentTime;
+		scheduler.pump(live.currentTime);
+	}, PUMP_INTERVAL_MS);
 }
 
-/** Stop the music loop (mute, bedtime, or teardown). */
+/** Stop the music (mute, bedtime, or teardown): ramp buses down, no clicks. */
 export function stopMusic(): void {
-	window.clearInterval(musicTimer);
-	musicTimer = undefined;
+	if (pumpTimer !== undefined) {
+		window.clearInterval(pumpTimer);
+		pumpTimer = undefined;
+	}
+	liveSettings = null;
+	scheduler?.stop();
+	scheduler = null;
+	if (ctx === null) {
+		buses.clear();
+		return;
+	}
+	const now = ctx.currentTime;
+	for (const [id, node] of buses) {
+		node.gain.cancelScheduledValues(now);
+		node.gain.setValueAtTime(node.gain.value, now);
+		node.gain.linearRampToValueAtTime(0, now + STOP_FADE_S);
+		// Free the map entry immediately so a quick restart builds a fresh
+		// bus; the fading node disconnects once the ramp is done.
+		buses.delete(id);
+		globalThis.setTimeout(() => node.disconnect(), STOP_FADE_S * 1000 + 100);
+	}
 }

@@ -29,8 +29,12 @@ Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
 - Responsive 360px portrait baseline → desktop; touch-first
 
 ## Audio
-- WebAudio: generated/royalty-free music loop + SFX; parent mute persisted;
-  bedtime silences
+- WebAudio: composed per-screen music themes + SFX, all synthesized (zero
+  audio assets, fully offline); a pure lookahead `MusicScheduler` loops
+  8–16 bar themes on the AudioContext clock with ~1s crossfades between
+  screens; richer SFX via sub-octave shadows + noise textures; first
+  tap/keypress unlocks playback (no UI); parent mute persisted (silences
+  all), bedtime swaps in a soft lullaby instead of silencing
 
 ## Tooling & Quality
 - **pnpm** — package manager

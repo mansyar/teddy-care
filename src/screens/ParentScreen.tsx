@@ -5,11 +5,13 @@
  * stuck bedtime dim or mute can survive a fresh Teddy).
  */
 import { useState } from "react";
-import { useSettings } from "../pet/useSettings";
+import type { SettingsState } from "../pet/useSettings";
 import { resetSave } from "../save/store";
 
-export default function ParentScreen() {
-	const { settings, updateSettings } = useSettings();
+export default function ParentScreen({
+	settings,
+	updateSettings,
+}: SettingsState) {
 	const [armingReset, setArmingReset] = useState(false);
 
 	const handleReset = async () => {

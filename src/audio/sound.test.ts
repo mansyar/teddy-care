@@ -17,6 +17,9 @@ const BEDTIME = { muted: false, bedtime: true };
 
 let constructed: number;
 let oscillators: number;
+let sources: number;
+/** Simulated audio-clock time; the wiring must read it, never guess it. */
+let nowS: number;
 
 /** Fresh module per test (its AudioContext cache is module-scoped). */
 async function load(): Promise<typeof Sound> {
@@ -27,10 +30,14 @@ async function load(): Promise<typeof Sound> {
 class StubAudioContext {
 	state = "running";
 	destination = {};
-	currentTime = 0;
+	sampleRate = 48000;
 
 	constructor() {
 		constructed++;
+	}
+
+	get currentTime(): number {
+		return nowS;
 	}
 
 	resume(): Promise<void> {
@@ -47,14 +54,42 @@ class StubAudioContext {
 			stop: () => undefined,
 		};
 	}
+	createBufferSource() {
+		sources++;
+		return {
+			buffer: null,
+			loop: false,
+			connect: (node: unknown) => node,
+			start: () => undefined,
+			stop: () => undefined,
+		};
+	}
+	createBuffer(_channels: number, length: number, sampleRate: number) {
+		return {
+			sampleRate,
+			getChannelData: () => new Float32Array(length),
+		};
+	}
+	createBiquadFilter() {
+		return {
+			type: "",
+			frequency: { value: 0 },
+			Q: { value: 0 },
+			connect: (node: unknown) => node,
+			disconnect: () => undefined,
+		};
+	}
 	createGain() {
 		return {
 			gain: {
+				value: 0,
 				setValueAtTime: () => undefined,
 				linearRampToValueAtTime: () => undefined,
 				exponentialRampToValueAtTime: () => undefined,
+				cancelScheduledValues: () => undefined,
 			},
 			connect: (node: unknown) => node,
+			disconnect: () => undefined,
 		};
 	}
 }
@@ -62,6 +97,8 @@ class StubAudioContext {
 function installAudioStub() {
 	constructed = 0;
 	oscillators = 0;
+	sources = 0;
+	nowS = 0;
 	const timers = globalThis as unknown as {
 		setInterval: typeof setInterval;
 		clearInterval: typeof clearInterval;
@@ -74,6 +111,11 @@ function installAudioStub() {
 		clearInterval: timers.clearInterval,
 	});
 	vi.stubGlobal("AudioContext", StubAudioContext);
+}
+
+/** Advance the simulated audio clock (the wiring reads ctx.currentTime). */
+function setNow(seconds: number) {
+	nowS = seconds;
 }
 
 afterEach(() => {
@@ -127,14 +169,14 @@ describe("room sound gating", () => {
 		const { playMunch } = await load();
 		playMunch(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBe(3);
+		expect(oscillators).toBe(6);
 	});
 
 	it("audible footsteps schedule several soft ticks", async () => {
 		installAudioStub();
 		const { playFootsteps } = await load();
 		playFootsteps(AUDIBLE);
-		expect(oscillators).toBeGreaterThanOrEqual(2);
+		expect(oscillators).toBeGreaterThanOrEqual(8);
 	});
 
 	it("audible fizz and yawn schedule oscillators", async () => {
@@ -142,7 +184,52 @@ describe("room sound gating", () => {
 		const { playFizz, playYawn } = await load();
 		playFizz(AUDIBLE);
 		playYawn(AUDIBLE);
-		expect(oscillators).toBe(7);
+		expect(oscillators).toBe(14);
+	});
+});
+
+describe("sfx textures (richer layers)", () => {
+	it("fizz carries an airy noise bed under the bubbles", async () => {
+		installAudioStub();
+		const { playFizz } = await load();
+		playFizz(AUDIBLE);
+		expect(sources).toBeGreaterThanOrEqual(1);
+	});
+
+	it("star and sparkle leave a shimmer tail", async () => {
+		installAudioStub();
+		const { playStar, playSparkle } = await load();
+		playStar(AUDIBLE);
+		expect(sources).toBe(1);
+		playSparkle(AUDIBLE);
+		expect(sources).toBe(2);
+	});
+
+	it("pop, snap and pop-bubble get a tiny noise click", async () => {
+		installAudioStub();
+		const { playPop, playSnap, playPopBubble } = await load();
+		playPop(AUDIBLE);
+		playSnap(AUDIBLE);
+		playPopBubble(AUDIBLE);
+		expect(sources).toBe(3);
+	});
+
+	it("munch and footsteps get grainy texture", async () => {
+		installAudioStub();
+		const { playMunch, playFootsteps } = await load();
+		playMunch(AUDIBLE);
+		expect(sources).toBe(3);
+		playFootsteps(AUDIBLE);
+		expect(sources).toBe(7);
+	});
+
+	it("silence still creates no noise sources", async () => {
+		installAudioStub();
+		const { playFizz, playStar } = await load();
+		playFizz(MUTED);
+		playStar(BEDTIME);
+		expect(sources).toBe(0);
+		expect(oscillators).toBe(0);
 	});
 });
 
@@ -166,7 +253,7 @@ describe("bubble pop sound", () => {
 		const { playPopBubble } = await load();
 		playPopBubble(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBe(1);
+		expect(oscillators).toBe(2);
 	});
 });
 
@@ -194,11 +281,11 @@ describe("puzzle sounds", () => {
 		const s = await load();
 		installAudioStub();
 		s.playPickup(AUDIBLE);
-		expect(oscillators).toBe(1);
+		expect(oscillators).toBe(2);
 		s.playSnap(AUDIBLE);
-		expect(oscillators).toBe(3);
+		expect(oscillators).toBe(6);
 		s.playBoop(AUDIBLE);
-		expect(oscillators).toBe(5);
+		expect(oscillators).toBe(10);
 	});
 });
 
@@ -222,7 +309,7 @@ describe("wardrobe buy celebration", () => {
 		const { playSparkle } = await load();
 		playSparkle(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBeGreaterThanOrEqual(4);
+		expect(oscillators).toBeGreaterThanOrEqual(8);
 	});
 });
 
@@ -233,53 +320,160 @@ describe("placeholder sounds and music loop", () => {
 		playGiggle(AUDIBLE);
 		playStar(AUDIBLE);
 		playFanfare(AUDIBLE);
-		expect(oscillators).toBe(3 + 2 + 4);
+		expect(oscillators).toBe(6 + 4 + 8);
 	});
+});
 
-	it("startMusic plays the lullaby on an interval", async () => {
-		vi.useFakeTimers();
+describe("music wiring (scheduler-driven)", () => {
+	it("startMusic schedules a lookahead burst of notes on the audio clock", async () => {
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		startMusic(AUDIBLE);
 		expect(constructed).toBe(1);
-		vi.advanceTimersByTime(480 * 3);
-		expect(oscillators).toBe(3);
+		// More than one note lands inside the lookahead window up front.
+		expect(oscillators).toBeGreaterThanOrEqual(2);
 	});
 
-	it("startMusic is idempotent — a second call never doubles the band", async () => {
-		vi.useFakeTimers();
+	it("startMusic is idempotent — restarting the same theme never doubles the band", async () => {
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		startMusic(AUDIBLE);
+		const afterStart = oscillators;
 		startMusic(AUDIBLE);
-		vi.advanceTimersByTime(480 * 2);
-		expect(oscillators).toBe(2);
-		expect(constructed).toBe(1);
+		expect(oscillators).toBe(afterStart);
+	});
+
+	it("the pump driver keeps the loop flowing as the audio clock advances", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		setNow(10);
+		const { startMusic } = await load();
+		startMusic(AUDIBLE);
+		const afterStart = oscillators;
+		for (let step = 0; step < 5; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBeGreaterThan(afterStart);
+	});
+
+	it("music stops cleanly — no further notes after stopMusic", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		setNow(10);
+		const { startMusic, stopMusic } = await load();
+		startMusic(AUDIBLE);
+		stopMusic();
+		const afterStop = oscillators;
+		for (let step = 0; step < 5; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBe(afterStop);
 	});
 
 	it("music stops itself when bedtime arrives mid-phrase", async () => {
 		vi.useFakeTimers();
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		const settings = { ...AUDIBLE };
 		startMusic(settings);
-		vi.advanceTimersByTime(480);
-		expect(oscillators).toBe(1);
+		const afterStart = oscillators;
 		settings.bedtime = true;
-		vi.advanceTimersByTime(480 * 2);
-		// The interval cleared itself: no further notes get scheduled.
-		expect(oscillators).toBe(1);
+		for (let step = 0; step < 3; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBe(afterStart);
 	});
 
-	it("startMusic stays silent when muted", async () => {
+	it("startMusic stays silent when muted or at bedtime — no context is created", async () => {
 		installAudioStub();
 		const { startMusic } = await load();
 		startMusic(MUTED);
+		startMusic(BEDTIME);
 		expect(constructed).toBe(0);
 		expect(oscillators).toBe(0);
 	});
 
+	it("resyncs to the first beat after a long clock jump instead of dumping missed notes", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		const { startMusic } = await load();
+		// A dense one-second loop makes a catch-up burst easy to detect.
+		const loopTheme = {
+			id: "gap-probe",
+			loopS: 1,
+			gain: 1,
+			notes: [{ offsetS: 0, frequency: 440, durationS: 0.5, volume: 0.05 }],
+		};
+		setNow(10);
+		startMusic({ ...AUDIBLE }, loopTheme);
+		const afterStart = oscillators;
+
+		// Hidden for ~50 seconds: the clock jumps far past the pump cadence.
+		setNow(60);
+		vi.advanceTimersByTime(200); // one pump fires after the jump
+		const afterResync = oscillators;
+		// Catching up would schedule ~50 missed beats; a resync schedules
+		// at most one lookahead window from the new origin.
+		expect(afterResync - afterStart).toBeLessThanOrEqual(3);
+
+		// And the loop keeps flowing on the resynced clock afterwards.
+		setNow(61.1);
+		vi.advanceTimersByTime(200);
+		expect(oscillators).toBeGreaterThan(afterResync);
+	});
+
+	it("voice routing: a shimmer note plays as a noise band, not an oscillator", async () => {
+		installAudioStub();
+		const { startMusic } = await load();
+		const shimmerTheme = {
+			id: "test-shimmer",
+			loopS: 2,
+			gain: 1,
+			notes: [
+				{
+					offsetS: 0,
+					frequency: 2093,
+					durationS: 2,
+					volume: 0.015,
+					voice: "shimmer",
+				},
+			],
+		};
+		startMusic(AUDIBLE, shimmerTheme);
+		expect(sources).toBe(1);
+		expect(oscillators).toBe(0);
+	});
+
+	it("voice routing: a pluck note plays as an oscillator", async () => {
+		installAudioStub();
+		const { startMusic } = await load();
+		const pluckTheme = {
+			id: "test-pluck",
+			loopS: 2,
+			gain: 1,
+			notes: [
+				{
+					offsetS: 0,
+					frequency: 523.25,
+					durationS: 0.9,
+					volume: 0.05,
+					voice: "pluck",
+				},
+			],
+		};
+		startMusic(AUDIBLE, pluckTheme);
+		expect(oscillators).toBe(1);
+		expect(sources).toBe(0);
+	});
+
 	it("sounds degrade gracefully without any AudioContext", async () => {
+		installAudioStub();
 		const timers = globalThis as unknown as {
 			setInterval: typeof setInterval;
 			clearInterval: typeof clearInterval;
