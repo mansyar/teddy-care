@@ -7,15 +7,17 @@
  * state forks, where a parent-panel mute toggle could persist the shell's
  * stale snapshot and erase stars the child had just earned.
  */
-import { createContext, useContext, type ReactNode } from "react";
-import { usePetSave, type PetSave } from "./usePetSave";
+import { createContext, type ReactNode, useContext } from "react";
+import { type PetSave, usePetSave } from "./usePetSave";
 
 const PetSaveContext = createContext<PetSave | null>(null);
 
 export function PetSaveProvider({ children }: { children: ReactNode }) {
 	const petSave = usePetSave();
 	return (
-		<PetSaveContext.Provider value={petSave}>{children}</PetSaveContext.Provider>
+		<PetSaveContext.Provider value={petSave}>
+			{children}
+		</PetSaveContext.Provider>
 	);
 }
 

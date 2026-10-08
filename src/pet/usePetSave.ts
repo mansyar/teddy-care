@@ -41,6 +41,15 @@ export interface PetSave {
 	updateSettings: (patch: Partial<ParentSettings>) => void;
 }
 
+/**
+ * The single save owner's hook — its sole caller is `PetSaveProvider`.
+ *
+ * @package
+ * Screens must consume `usePetSaveContext` from `./PetSaveProvider` so
+ * the React tree keeps exactly one save fork and one IndexedDB load;
+ * importing this hook directly elsewhere re-creates the forking bug
+ * this track fixed.
+ */
 export function usePetSave(): PetSave {
 	const [save, setSave] = useState<SaveData | null>(null);
 
