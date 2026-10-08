@@ -37,6 +37,25 @@ pnpm test       # Vitest unit tests (logic modules)
 pnpm test:e2e   # Playwright flows (care, mini-games, offline, settings)
 ```
 
+## Live & Deployment
+
+**https://teddy-care.pages.dev** — deployed automatically on every merge to
+`main`.
+
+- **Pipeline** (`.github/workflows/ci-deploy.yml`): every push and PR runs
+  the full gate — `pnpm check`, unit tests, production build, Playwright
+  e2e (serving the freshly built `dist/`). On `main` pushes, a passing
+  pipeline deploys `dist/` to Cloudflare Pages (`teddy-care`) via wrangler.
+- **Repo hygiene**: `main` is protected — changes land through PRs and only
+  with a green `verify` check.
+- **Setup (one-time)**: repository secrets `CLOUDFLARE_API_TOKEN`
+  (Account → Cloudflare Pages → Edit) and `CLOUDFLARE_ACCOUNT_ID`, plus a
+  Pages project `teddy-care` (`wrangler pages project create teddy-care
+  --production-branch=main`).
+- **pnpm 12 note**: `pnpm-workspace.yaml` `allowBuilds` approves the build
+  scripts of `esbuild` and `workerd` (wrangler dependencies); pnpm 12 fails
+  installs with `ERR_PNPM_IGNORED_BUILDS` otherwise.
+
 ## Project Structure
 
 ```
