@@ -18,7 +18,7 @@
 
 - [x] Task: Write failing tests for theme resolution (Red) — route → theme mapping, bedtime → lullaby override, unknown routes → room theme (9862d0a)
 - [x] Task: Implement pure theme definitions (note sequences, chords, tempos, per-voice volumes as data) (9862d0a)
-- [ ] Task: Write failing tests + implement synthesis voices (pluck/pad, arpeggio, noise shimmer, percussion) — envelope/clamp logic unit-tested
+- [x] Task: Write failing tests + implement synthesis voices (pluck/pad, arpeggio, noise shimmer, percussion) — envelope/clamp logic unit-tested (cc03560)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: App Integration (hook, crossfade, unlock)
