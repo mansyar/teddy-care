@@ -1,15 +1,49 @@
 /**
- * Placeholder audio: tiny synthesized SFX + a gentle music-box loop, all
+ * Audio layer: tiny synthesized SFX + scheduler-driven music themes, all
  * generated with WebAudio (zero assets, fully offline). Every entry point
  * takes the parent settings and stays silent unless audible — callers never
- * branch on mute/bedtime themselves. Real compositions replace these
- * placeholders in a later track without touching call sites.
+ * branch on mute/bedtime themselves.
+ *
+ * Music timing follows the lookahead-scheduler pattern: a light pump driver
+ * tops up the schedule, but every note is placed on the AudioContext clock
+ * by the pure `MusicScheduler`, so loops never drift. Themes crossfade on
+ * per-theme gain buses; stopping ramps buses down instead of cutting out.
  */
 import { isAudible } from "../pet/settings";
 import type { ParentSettings } from "../save/store";
+import {
+	FADE_S,
+	MusicScheduler,
+	type SchedulerHost,
+	type Theme,
+} from "./scheduler";
 
 let ctx: AudioContext | null = null;
-let musicTimer: number | undefined;
+let scheduler: MusicScheduler | null = null;
+let pumpTimer: number | undefined;
+let liveSettings: ParentSettings | null = null;
+/** Themes registered by startMusic, so fade callbacks can find their gain. */
+const themes = new Map<string, Theme>();
+/** Per-theme gain buses — the crossfade happens between these. */
+const buses = new Map<string, GainNode>();
+
+/** How often the pump driver tops up the lookahead (ms). */
+const PUMP_INTERVAL_MS = 200;
+/** Quick fade-out on stop, so silence never arrives as a click. */
+const STOP_FADE_S = 0.15;
+
+/** The room's music-box theme: a gentle C–E–G fragment, looped seamlessly. */
+const ROOM_THEME: Theme = {
+	id: "room",
+	loopS: 1.92,
+	gain: 1,
+	notes: [523, 659, 784, 659].map((frequency, index) => ({
+		offsetS: index * 0.48,
+		frequency,
+		durationS: 0.5,
+		volume: 0.05,
+	})),
+};
 
 /** Lazily create (and resume) the shared context; null where unsupported. */
 function audio(): AudioContext | null {
@@ -25,7 +59,7 @@ function audio(): AudioContext | null {
 	}
 }
 
-/** One soft enveloped tone. */
+/** One soft enveloped tone, routed to `out` (the destination by default). */
 function tone(
 	context: AudioContext,
 	frequency: number,
@@ -33,6 +67,7 @@ function tone(
 	durationS: number,
 	volume = 0.12,
 	type: OscillatorType = "sine",
+	out: AudioNode = context.destination,
 ): void {
 	const start = context.currentTime + delayS;
 	const osc = context.createOscillator();
@@ -42,7 +77,7 @@ function tone(
 	gain.gain.setValueAtTime(0, start);
 	gain.gain.linearRampToValueAtTime(volume, start + 0.02);
 	gain.gain.exponentialRampToValueAtTime(0.001, start + durationS);
-	osc.connect(gain).connect(context.destination);
+	osc.connect(gain).connect(out);
 	osc.start(start);
 	osc.stop(start + durationS + 0.05);
 }
@@ -172,27 +207,114 @@ export function playBoop(settings: ParentSettings): void {
 	]);
 }
 
-/** Placeholder music-box loop (C–E–G lullaby fragment). Idempotent. */
-export function startMusic(settings: ParentSettings): void {
-	if (!isAudible(settings) || musicTimer !== undefined) return;
+/** Per-theme gain bus, created silent; the fade envelope brings it up. */
+function busFor(context: AudioContext, theme: Theme): GainNode {
+	const existing = buses.get(theme.id);
+	if (existing) return existing;
+	const node = context.createGain();
+	node.gain.value = 0;
+	node.connect(context.destination);
+	buses.set(theme.id, node);
+	return node;
+}
+
+/** The WebAudio side of the scheduler boundary, bound to one context. */
+function musicHost(context: AudioContext): SchedulerHost {
+	return {
+		note(atS, note, theme) {
+			// A music-box voice: triangle wave into the theme's bus.
+			tone(
+				context,
+				note.frequency,
+				atS - context.currentTime,
+				note.durationS,
+				note.volume,
+				"triangle",
+				busFor(context, theme),
+			);
+		},
+		fade(prev, next, atS) {
+			const nextTheme = themes.get(next);
+			if (nextTheme) {
+				const node = busFor(context, nextTheme);
+				node.gain.setValueAtTime(0, atS);
+				node.gain.linearRampToValueAtTime(nextTheme.gain, atS + FADE_S);
+			}
+			if (prev !== null) {
+				const old = buses.get(prev);
+				if (old) {
+					old.gain.cancelScheduledValues(atS);
+					old.gain.setValueAtTime(old.gain.value, atS);
+					old.gain.linearRampToValueAtTime(0, atS + FADE_S);
+					// Drop the map entry now so a quick switch-back gets a
+					// fresh bus; disconnect the fading node a beat later.
+					buses.delete(prev);
+					globalThis.setTimeout(
+						() => old.disconnect(),
+						(atS + FADE_S - context.currentTime) * 1000 + 100,
+					);
+				}
+			}
+		},
+	};
+}
+
+/**
+ * Start (or crossfade to) a music theme. Idempotent for the running theme.
+ * The optional theme keeps the historical one-argument call sites working;
+ * per-screen themes arrive with the screen-music hook.
+ */
+export function startMusic(
+	settings: ParentSettings,
+	theme: Theme = ROOM_THEME,
+): void {
+	if (!isAudible(settings)) return;
 	const context = audio();
 	if (context === null) return;
-	const phrase = [523, 659, 784, 659];
-	let step = 0;
-	musicTimer = window.setInterval(() => {
-		if (!isAudible(settings)) {
+	themes.set(theme.id, theme);
+	liveSettings = settings;
+	if (scheduler !== null) {
+		if (scheduler.active === theme.id) return;
+		scheduler.switchTo(theme, context.currentTime);
+		scheduler.pump(context.currentTime);
+		return;
+	}
+	scheduler = new MusicScheduler(musicHost(context));
+	scheduler.start(theme, context.currentTime);
+	scheduler.pump(context.currentTime);
+	// Light pump driver: only tops up the lookahead — every note time comes
+	// from the AudioContext clock, so the loop never drifts.
+	pumpTimer = window.setInterval(() => {
+		if (liveSettings === null || !isAudible(liveSettings)) {
 			stopMusic();
 			return;
 		}
 		const live = audio();
-		if (live === null) return;
-		tone(live, phrase[step % phrase.length], 0, 0.5, 0.05, "triangle");
-		step++;
-	}, 480);
+		if (live !== null) scheduler?.pump(live.currentTime);
+	}, PUMP_INTERVAL_MS);
 }
 
-/** Stop the music loop (mute, bedtime, or teardown). */
+/** Stop the music (mute, bedtime, or teardown): ramp buses down, no clicks. */
 export function stopMusic(): void {
-	window.clearInterval(musicTimer);
-	musicTimer = undefined;
+	if (pumpTimer !== undefined) {
+		window.clearInterval(pumpTimer);
+		pumpTimer = undefined;
+	}
+	liveSettings = null;
+	scheduler?.stop();
+	scheduler = null;
+	if (ctx === null) {
+		buses.clear();
+		return;
+	}
+	const now = ctx.currentTime;
+	for (const [id, node] of buses) {
+		node.gain.cancelScheduledValues(now);
+		node.gain.setValueAtTime(node.gain.value, now);
+		node.gain.linearRampToValueAtTime(0, now + STOP_FADE_S);
+		// Free the map entry immediately so a quick restart builds a fresh
+		// bus; the fading node disconnects once the ramp is done.
+		buses.delete(id);
+		globalThis.setTimeout(() => node.disconnect(), STOP_FADE_S * 1000 + 100);
+	}
 }

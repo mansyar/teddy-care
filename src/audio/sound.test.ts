@@ -17,6 +17,8 @@ const BEDTIME = { muted: false, bedtime: true };
 
 let constructed: number;
 let oscillators: number;
+/** Simulated audio-clock time; the wiring must read it, never guess it. */
+let nowS: number;
 
 /** Fresh module per test (its AudioContext cache is module-scoped). */
 async function load(): Promise<typeof Sound> {
@@ -27,10 +29,13 @@ async function load(): Promise<typeof Sound> {
 class StubAudioContext {
 	state = "running";
 	destination = {};
-	currentTime = 0;
 
 	constructor() {
 		constructed++;
+	}
+
+	get currentTime(): number {
+		return nowS;
 	}
 
 	resume(): Promise<void> {
@@ -50,11 +55,14 @@ class StubAudioContext {
 	createGain() {
 		return {
 			gain: {
+				value: 0,
 				setValueAtTime: () => undefined,
 				linearRampToValueAtTime: () => undefined,
 				exponentialRampToValueAtTime: () => undefined,
+				cancelScheduledValues: () => undefined,
 			},
 			connect: (node: unknown) => node,
+			disconnect: () => undefined,
 		};
 	}
 }
@@ -62,6 +70,7 @@ class StubAudioContext {
 function installAudioStub() {
 	constructed = 0;
 	oscillators = 0;
+	nowS = 0;
 	const timers = globalThis as unknown as {
 		setInterval: typeof setInterval;
 		clearInterval: typeof clearInterval;
@@ -74,6 +83,11 @@ function installAudioStub() {
 		clearInterval: timers.clearInterval,
 	});
 	vi.stubGlobal("AudioContext", StubAudioContext);
+}
+
+/** Advance the simulated audio clock (the wiring reads ctx.currentTime). */
+function setNow(seconds: number) {
+	nowS = seconds;
 }
 
 afterEach(() => {
@@ -235,46 +249,79 @@ describe("placeholder sounds and music loop", () => {
 		playFanfare(AUDIBLE);
 		expect(oscillators).toBe(3 + 2 + 4);
 	});
+});
 
-	it("startMusic plays the lullaby on an interval", async () => {
-		vi.useFakeTimers();
+describe("music wiring (scheduler-driven)", () => {
+	it("startMusic schedules a lookahead burst of notes on the audio clock", async () => {
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		startMusic(AUDIBLE);
 		expect(constructed).toBe(1);
-		vi.advanceTimersByTime(480 * 3);
-		expect(oscillators).toBe(3);
+		// More than one note lands inside the lookahead window up front.
+		expect(oscillators).toBeGreaterThanOrEqual(2);
 	});
 
-	it("startMusic is idempotent — a second call never doubles the band", async () => {
-		vi.useFakeTimers();
+	it("startMusic is idempotent — restarting the same theme never doubles the band", async () => {
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		startMusic(AUDIBLE);
+		const afterStart = oscillators;
 		startMusic(AUDIBLE);
-		vi.advanceTimersByTime(480 * 2);
-		expect(oscillators).toBe(2);
-		expect(constructed).toBe(1);
+		expect(oscillators).toBe(afterStart);
+	});
+
+	it("the pump driver keeps the loop flowing as the audio clock advances", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		setNow(10);
+		const { startMusic } = await load();
+		startMusic(AUDIBLE);
+		const afterStart = oscillators;
+		for (let step = 0; step < 5; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBeGreaterThan(afterStart);
+	});
+
+	it("music stops cleanly — no further notes after stopMusic", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		setNow(10);
+		const { startMusic, stopMusic } = await load();
+		startMusic(AUDIBLE);
+		stopMusic();
+		const afterStop = oscillators;
+		for (let step = 0; step < 5; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBe(afterStop);
 	});
 
 	it("music stops itself when bedtime arrives mid-phrase", async () => {
 		vi.useFakeTimers();
 		installAudioStub();
+		setNow(10);
 		const { startMusic } = await load();
 		const settings = { ...AUDIBLE };
 		startMusic(settings);
-		vi.advanceTimersByTime(480);
-		expect(oscillators).toBe(1);
+		const afterStart = oscillators;
 		settings.bedtime = true;
-		vi.advanceTimersByTime(480 * 2);
-		// The interval cleared itself: no further notes get scheduled.
-		expect(oscillators).toBe(1);
+		for (let step = 0; step < 3; step++) {
+			setNow(10.5 + step * 0.4);
+			vi.advanceTimersByTime(200);
+		}
+		expect(oscillators).toBe(afterStart);
 	});
 
-	it("startMusic stays silent when muted", async () => {
+	it("startMusic stays silent when muted or at bedtime — no context is created", async () => {
 		installAudioStub();
 		const { startMusic } = await load();
 		startMusic(MUTED);
+		startMusic(BEDTIME);
 		expect(constructed).toBe(0);
 		expect(oscillators).toBe(0);
 	});
