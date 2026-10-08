@@ -23,5 +23,5 @@
 - [x] **Track: Save Integrity — single source of truth for pet state (provider unification, star clamping, regression e2e)**
   *Link: [save_integrity_20261008](../archive/save_integrity_20261008/index.md)* *(archived 2026-10-08, reviewed and approved)*
 
-- [ ] **Track: Deployment Pipeline — public GitHub repo, Actions CI, Cloudflare Pages auto-deploy**
+- [x] **Track: Deployment Pipeline — public GitHub repo, Actions CI, Cloudflare Pages auto-deploy**
   *Link: [deploy_pipeline_20261008](./tracks/deploy_pipeline_20261008/index.md)*
