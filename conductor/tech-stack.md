@@ -40,6 +40,9 @@ Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
 - **pnpm** — package manager
 - **Biome** — lint + format (single binary, replaces ESLint/Prettier)
 - **Vitest + Playwright** — component tests + PWA install/offline flows
+- **jsdom + @testing-library/react** (dev-only, added 2026-10-08 for the
+  Save Integrity track) — lets Vitest render React trees so provider/context
+  wiring can be unit-tested (single save owner across consumers)
 - Strict TypeScript
 - Asset pipeline: sprite-gen outputs land in `assets/teddy/` (strips, WebP,
   stills)
