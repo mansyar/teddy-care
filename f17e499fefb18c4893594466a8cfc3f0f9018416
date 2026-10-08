@@ -1,1 +1,0 @@
-Presentational (no Vitest per workflow): CareScreen idle presence — base still, blink swap every 3-5s for 180ms (blink preloaded), CSS float. pnpm check clean, build green (29 precache entries).
