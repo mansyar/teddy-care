@@ -13,6 +13,9 @@ test("mute and bedtime persist; reset starts over", async ({ page }) => {
 	await expect(
 		page.getByRole("button", { name: "Turn sound on" }),
 	).toBeVisible();
+	// saveSave is fire-and-forget; let the IndexedDB write settle before
+	// the reload tears the page down.
+	await page.waitForTimeout(500);
 	await page.reload();
 	await expect(
 		page.getByRole("button", { name: "Turn sound on" }),
@@ -26,6 +29,7 @@ test("mute and bedtime persist; reset starts over", async ({ page }) => {
 		"src",
 		/teddy-sleepy/,
 	);
+	await page.waitForTimeout(500);
 	await page.reload();
 	await expect(page.locator("body")).toHaveClass(/bedtime/);
 
