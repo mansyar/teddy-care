@@ -1,0 +1,1 @@
+Pre-push hygiene complete: secrets scan clean, .gitignore verified, author email rewritten to noreply across 227 commits (filter-branch pre-push), 73 notes re-attached, old objects pruned.
