@@ -1,9 +1,10 @@
 {
   "id": "wardrobe_20261008",
-  "title": "Wardrobe Expansion — tiered costume closet with free switching and overlay accessories",
+  "title": "Wardrobe Expansion - tiered costume closet with free switching and filter-recolor looks",
   "type": "feature",
-  "status": "new",
+  "status": "complete",
   "created": "2026-10-08",
+  "completed": "2026-10-08",
   "branch": "track/wardrobe-expansion",
   "spec": "spec.md",
   "plan": "plan.md"
