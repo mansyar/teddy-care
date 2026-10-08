@@ -1,3 +1,0 @@
-Phase 4 Catalog Revision: Rev 2 re-scope (user rejected overlay art at Phase 3 checkpoint; art commit reverted in c653d77). TDD red 6/14 -> green: COSTUMES = sunset-onesie 10/Mint Dream 20/Berry Night 30, all CSS-filter; dropped Costume.kind (back to required filter); prices MINT_DREAM_PRICE/BERRY_NIGHT_PRICE centralized in stars.ts; store.test ids aligned. check clean, 158/158.
-
-Phase 4 checkpoint verification: pnpm check clean; CI=true pnpm test 15 files / 158 passed; unit coverage of catalog tiers, ownership, free switching, migration; user approved close.
