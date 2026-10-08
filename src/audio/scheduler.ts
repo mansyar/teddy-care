@@ -16,6 +16,11 @@ export interface ScheduledNote {
 	frequency: number;
 	durationS: number;
 	volume: number;
+	/**
+	 * Which synthesizer voice plays the note. Opaque to the scheduler —
+	 * the palette lives in `themes.ts`, the wiring interprets it.
+	 */
+	voice?: string;
 }
 
 /** A composed, seamlessly-looping phrase for one screen mood. */
