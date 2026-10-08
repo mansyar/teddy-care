@@ -96,12 +96,16 @@
 
 ## Phase 6 — E2E, Offline & Docs
 
-- [ ] Task: Playwright `wardrobe.spec.ts` — open closet → buy Mint Dream at
+- [x] Task: Playwright `wardrobe.spec.ts` — open closet → buy Mint Dream at
   enough stars → sparkle + worn; unaffordable Berry Night → wiggle, stars
-  unchanged; switch to default and back; persists across reload
-- [ ] Task: Offline coverage — wardrobe + room boot after offline reload
-  (`wardrobe-offline.spec.ts`); confirm precache list unchanged
-- [ ] Task: Update README + `product.md` (Shipped section: Wardrobe Expansion)
-  + docs sync
-- [ ] Task: Commit code changes + attach git note + update plan task status
+  unchanged; switch to default and back; persists across reload <4b070ed>
+  (passes against the built PWA after `pnpm build` — e2e runs `vite preview`
+  of `dist/`, so the first red was just a stale build)
+- [x] Task: Offline coverage — wardrobe + room boot after offline reload
+  (`wardrobe-offline.spec.ts`); confirm precache list unchanged <4b070ed>
+  (no new art under Rev 2, precache list untouched)
+- [x] Task: Update README + `product.md` (Shipped section: Wardrobe Expansion)
+  + docs sync <4b070ed>
+- [x] Task: Commit code changes + attach git note + update plan task status
+  <4b070ed>
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
