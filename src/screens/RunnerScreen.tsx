@@ -9,8 +9,8 @@
 import { useEffect, useRef, useState } from "react";
 import { playFanfare } from "../audio/sound";
 import { createRunnerGame, type RunnerApi } from "../game/runGame";
+import { usePetSaveContext } from "../pet/PetSaveProvider";
 import { type RunResult, runReward } from "../pet/runner";
-import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 
 interface FinishedRun {
@@ -19,7 +19,7 @@ interface FinishedRun {
 }
 
 export default function RunnerScreen() {
-	const { award } = usePetSave();
+	const { award } = usePetSaveContext();
 	const { settings } = useSettings();
 	const hostRef = useRef<HTMLDivElement>(null);
 	const apiRef = useRef<RunnerApi | null>(null);

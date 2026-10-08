@@ -191,3 +191,39 @@ describe("v1 → v2 migration", () => {
 		).toEqual(DEFAULT_SAVE);
 	});
 });
+
+describe("star clamping at the persistence boundary", () => {
+	it("clamps negative and fractional stars on a v2 passthrough", () => {
+		const clamped = migrateSave({ ...DEFAULT_SAVE, stars: -5 });
+		expect(clamped.stars).toBe(0);
+		const floored = migrateSave({ ...DEFAULT_SAVE, stars: 7.9 });
+		expect(floored.stars).toBe(7);
+		expect(Number.isInteger(floored.stars)).toBe(true);
+	});
+
+	it("clamps negative stars during a v1 migration", () => {
+		const migrated = migrateSave({
+			version: 1,
+			stats: { hunger: 50, happiness: 60, energy: 70, cleanliness: 80 },
+			stars: -2,
+			costume: null,
+			settings: { muted: false, bedtime: false },
+			lastSeen: 1000,
+		});
+		expect(migrated.stars).toBe(0);
+	});
+
+	it("falls back to fresh defaults when stars are non-finite", () => {
+		expect(migrateSave({ ...DEFAULT_SAVE, stars: Number.NaN })).toEqual(
+			DEFAULT_SAVE,
+		);
+	});
+
+	it("clamps stars written through saveSave so a reload never sees them raw", async () => {
+		await saveSave({ ...DEFAULT_SAVE, stars: -3 });
+		expect((await loadSave()).stars).toBe(0);
+
+		await saveSave({ ...DEFAULT_SAVE, stars: 12.5 });
+		expect((await loadSave()).stars).toBe(12);
+	});
+});

@@ -21,8 +21,8 @@ import {
 } from "../audio/sound";
 import { COSTUMES } from "../pet/costume";
 import { deriveMood, FACE_FOR_MOOD } from "../pet/mood";
+import { usePetSaveContext } from "../pet/PetSaveProvider";
 import { usePrefersReducedMotion } from "../pet/useMotion";
-import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 import {
 	type Poi,
@@ -63,7 +63,7 @@ const INITIAL_WALK: WalkState = {
 };
 
 export default function RoomScreen() {
-	const { save, loading, act, buy, equip } = usePetSave();
+	const { save, loading, act, buy, equip } = usePetSaveContext();
 	const { settings } = useSettings();
 	const navigate = useNavigate();
 	const layout = useRoomLayout();

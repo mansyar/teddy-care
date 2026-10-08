@@ -19,8 +19,8 @@ import {
 } from "react";
 import { playFanfare, playPopBubble } from "../audio/sound";
 import { BUBBLE_ROUND_MS, bubblePace, bubbleReward } from "../pet/bubbles";
+import { usePetSaveContext } from "../pet/PetSaveProvider";
 import { usePrefersReducedMotion } from "../pet/useMotion";
-import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 
 /** One floating bubble on the stage. */
@@ -58,7 +58,7 @@ const PARKED_LIMIT = 12;
 const RISE_TO = "calc(-115vh - 120px)";
 
 export default function BubblesScreen() {
-	const { awardBubbles } = usePetSave();
+	const { awardBubbles } = usePetSaveContext();
 	const { settings } = useSettings();
 	const reducedMotion = usePrefersReducedMotion();
 	const stageRef = useRef<HTMLDivElement>(null);

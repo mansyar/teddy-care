@@ -12,6 +12,7 @@ import {
 	useLocation,
 } from "react-router-dom";
 import { useScreenMusic } from "./audio/useScreenMusic.ts";
+import { PetSaveProvider } from "./pet/PetSaveProvider.tsx";
 import { useSettings } from "./pet/useSettings.ts";
 import BubblesScreen from "./screens/BubblesScreen.tsx";
 import ParentScreen from "./screens/ParentScreen.tsx";
@@ -20,9 +21,8 @@ import RoomScreen from "./screens/RoomScreen.tsx";
 import RunnerScreen from "./screens/RunnerScreen.tsx";
 
 function Shell() {
-	// Shell owns the settings so the music hook and the parent panel see
-	// the same state — a second usePetSave instance here would fork the
-	// truth and the panel's toggles would never reach the music.
+	// Settings come from the shared save provider, so the music hook and
+	// the parent panel see the same state.
 	const { settings, updateSettings } = useSettings();
 	const { pathname } = useLocation();
 	useScreenMusic(settings, pathname);
@@ -62,7 +62,11 @@ function Shell() {
 export default function App() {
 	return (
 		<HashRouter>
-			<Shell />
+			{/* One save owner for the whole tree: a single IndexedDB load, one
+			    shared fork — no screen or hook creates its own save state. */}
+			<PetSaveProvider>
+				<Shell />
+			</PetSaveProvider>
 		</HashRouter>
 	);
 }

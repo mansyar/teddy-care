@@ -6,6 +6,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { playBoop, playPickup, playSnap, playStar } from "../audio/sound";
+import { usePetSaveContext } from "../pet/PetSaveProvider";
 import {
 	createRound,
 	isRoundComplete,
@@ -16,7 +17,6 @@ import {
 	sliceBoard,
 	slotBackgroundPosition,
 } from "../pet/puzzle";
-import { usePetSave } from "../pet/usePetSave";
 import { useSettings } from "../pet/useSettings";
 
 /** Where the round flow stands: playing, between rounds, or all done. */
@@ -38,7 +38,7 @@ function backgroundSize(roundIndex: number): string {
 }
 
 export default function PuzzleScreen() {
-	const { awardPuzzleRound } = usePetSave();
+	const { awardPuzzleRound } = usePetSaveContext();
 	const { settings } = useSettings();
 	const navigate = useNavigate();
 	const [state, setState] = useState<PuzzleState>(() => createRound(0));

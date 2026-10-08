@@ -55,6 +55,16 @@ function freshDefault(): SaveData {
 	return JSON.parse(JSON.stringify(DEFAULT_SAVE)) as SaveData;
 }
 
+/**
+ * Stars must be a non-negative integer: they are counted, never fractional
+ * or owed. Anything else that reaches the persistence boundary clamps to a
+ * safe value instead of being trusted.
+ */
+function clampStars(value: number): number {
+	if (!Number.isFinite(value)) return 0;
+	return Math.max(0, Math.floor(value));
+}
+
 /** Field checks shared by the v1 and v2 save shapes. */
 function hasValidCommon(v: Record<string, unknown>): boolean {
 	const stats = v.stats as Record<string, unknown> | undefined;
@@ -99,13 +109,13 @@ function isSaveDataV1(value: unknown): value is Record<string, unknown> {
  * garbage, unknown versions — falls back to safe fresh-install defaults.
  */
 export function migrateSave(value: unknown): SaveData {
-	if (isSaveData(value)) return value;
+	if (isSaveData(value)) return { ...value, stars: clampStars(value.stars) };
 	if (isSaveDataV1(value)) {
 		const costume = value.costume as string | null;
 		return {
 			version: SAVE_VERSION,
 			stats: value.stats as SaveData["stats"],
-			stars: value.stars as number,
+			stars: clampStars(value.stars as number),
 			costume,
 			owned: costume ? [costume] : [],
 			settings: value.settings as SaveData["settings"],
@@ -163,7 +173,7 @@ export async function saveSave(data: SaveData): Promise<void> {
 		await new Promise<void>((resolve, reject) => {
 			const tx = db.transaction(STORE_NAME, "readwrite");
 			tx.objectStore(STORE_NAME).put(
-				{ ...data, lastSeen: Date.now() },
+				{ ...data, stars: clampStars(data.stars), lastSeen: Date.now() },
 				SAVE_KEY,
 			);
 			tx.oncomplete = () => resolve();

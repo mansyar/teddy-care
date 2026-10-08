@@ -95,6 +95,12 @@ tracking.
 - Still zero audio files: everything is synthesized WebAudio, so the
   install payload and offline story are unchanged
 
+## Shipped (Track 7: Save Integrity)
+- Invisible reliability work: Teddy's progress (stars, stats, costume)
+  now has a single owner in the app — a parent toggling mute or bedtime
+  can no longer wipe stars the child just earned, and saved star values
+  are clamped so a corrupted save can't produce impossible numbers
+
 ## Deferred (Post-MVP)
 - Pet collection metagame
 
