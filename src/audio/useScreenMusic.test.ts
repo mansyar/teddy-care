@@ -80,4 +80,21 @@ describe("decideMusic", () => {
 			command: "none",
 		});
 	});
+
+	it("the parent panel keeps whatever was playing (FR3)", () => {
+		expect(decideMusic("bubbles", true, AUDIBLE, "/parents", true)).toEqual({
+			themeId: "bubbles",
+			command: "none",
+		});
+		// Restarted after a mute, still the remembered theme.
+		expect(decideMusic("bubbles", false, AUDIBLE, "/parents", true)).toEqual({
+			themeId: "bubbles",
+			command: "play",
+		});
+		// Nothing yet? The room theme fills in.
+		expect(decideMusic(null, false, AUDIBLE, "/parents", true)).toEqual({
+			themeId: "room",
+			command: "play",
+		});
+	});
 });

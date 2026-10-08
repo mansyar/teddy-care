@@ -39,6 +39,13 @@ export function decideMusic(
 	if (settings.muted) {
 		return { themeId: previous ?? "", command: playing ? "stop" : "none" };
 	}
+	// The parent panel is not a play space: it keeps whatever was playing.
+	if (route === "/parents") {
+		const kept = previous ?? THEMES.room.id;
+		return playing && kept === previous
+			? { themeId: kept, command: "none" }
+			: { themeId: kept, command: "play" };
+	}
 	const theme = themeFor(route, settings.bedtime);
 	if (playing && theme.id === previous) {
 		return { themeId: theme.id, command: "none" };
