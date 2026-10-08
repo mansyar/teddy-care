@@ -68,7 +68,7 @@
   <6f5087e>
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) <6f5087e>
 
-## Phase 5 — Wardrobe UI (presentational)
+## Phase 5 — Wardrobe UI (presentational) [checkpoint: e3b6514]
 
 - [x] Task: Closet modal → live preview strip: card per costume +
   default-onesie card; owned = tap-to-equip (worn card highlighted);
