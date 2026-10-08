@@ -79,6 +79,22 @@ tracking.
   (the onesie you wore implies you own it), and the save database itself
   now opens at the schema version
 
+## Shipped (Track 6: Real Music & Audio Polish)
+- The placeholder 4-note loop is gone: every screen now has its own
+  composed synthesized theme — a gentle music-box room theme, a bouncy
+  runner arpeggio, watery bubble blips, a calm puzzle marimba, and a
+  very soft bedtime lullaby (bedtime no longer means total silence)
+- Themes loop seamlessly (lookahead scheduling on the audio clock, no
+  drift or gaps) and crossfade in ~1s when Teddy moves between screens;
+  the parent panel keeps whatever was playing — music never restarts
+- Sound still honors the single parent mute everywhere, and playback
+  waits for the child's first tap or keypress (autoplay unlock, no UI)
+- SFX got richer without new assets: warmer sub-octave layering plus
+  tiny noise textures (crunchy bites, scuffy footsteps, fizz, chime
+  tails) — same recognizable signatures, same mute/bedtime kindness
+- Still zero audio files: everything is synthesized WebAudio, so the
+  install payload and offline story are unchanged
+
 ## Deferred (Post-MVP)
 - Pet collection metagame
 
