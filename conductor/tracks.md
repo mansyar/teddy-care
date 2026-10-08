@@ -18,4 +18,4 @@
   *Link: [wardrobe_20261008](../archive/wardrobe_20261008/index.md) — archived 2026-10-08 (reviewed, approved)*
 
 - [x] **Track: Real Music & Audio Polish — composed per-screen WebAudio themes with crossfades and a bedtime lullaby**
-  *Link: [music_audio_polish_20261008](./tracks/music_audio_polish_20261008/index.md)*
+  *Link: [music_audio_polish_20261008](../archive/music_audio_polish_20261008/index.md)* *(archived 2026-10-08, reviewed and approved)*
