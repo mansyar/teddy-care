@@ -9,10 +9,11 @@
 - [x] Task: Pre-push hygiene
   - Secrets scan clean (sprite-gen usage reports only); .gitignore verified
   - Personal email rewritten to mansyar@users.noreply.github.com across all 227 commits (filter-branch, pre-push so safe); 73 git notes re-attached to rewritten SHAs; old objects pruned (verified: pre-rewrite SHAs no longer resolve)
-  - [ ] History scan for secrets/personal data before going public
-  - [ ] Verify `.gitignore` covers `dist/`, `coverage/`, local artifacts
-- [ ] Task: Create public repo `mansyar/teddy-care` via `gh`, wire as
+  - [x] History scan for secrets/personal data before going public
+  - [x] Verify `.gitignore` covers `dist/`, `coverage/`, local artifacts
+- [x] Task: Create public repo `mansyar/teddy-care` via `gh`, wire as
       `origin`, push `main` with full history
+  - Repo live at https://github.com/mansyar/teddy-care; `main`, `deploy-pipeline`, and `refs/notes/commits` pushed
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Repo live on GitHub; push clean
 
