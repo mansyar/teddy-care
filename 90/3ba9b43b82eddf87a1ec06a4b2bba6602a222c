@@ -1,0 +1,1 @@
+Task: room audio wiring (under Phase 4 Green scope). playMunch on feed arrival, playFizz on wash, playYawn on rest, playFootsteps every 500ms while walking (interval cleared on arrival/retap/unmount). All gated by isAudible via settings. Fixed exhaustive-deps for beginWalk (added settings). No deviations of substance.
