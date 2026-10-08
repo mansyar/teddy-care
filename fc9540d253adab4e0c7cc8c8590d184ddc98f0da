@@ -1,0 +1,24 @@
+Task 1.3: Wire the engine into WebAudio (Green)
+
+What: startMusic/stopMusic now drive the pure MusicScheduler. Per-theme
+gain buses carry the crossfade (fade-in on start/hand-off, fade-out on
+stop with a short ramp so silence never clicks); a light 200ms pump
+driver tops up the scheduler lookahead, while every note time comes
+from the AudioContext clock (no setInterval timing loop, no drift).
+The historical one-argument startMusic(settings) call sites keep
+working via the default ROOM_THEME; settings are re-gated on every
+pump so bedtime/mute still stop the music by themselves.
+
+Tests: sound.test.ts music wiring suite (7 scheduler-driven cases)
+written first - Red confirmed against the interval implementation
+(lookahead burst failed). StubAudioContext gained a controllable
+currentTime getter so the wiring is tested reading the real clock.
+Full audio suites: 36/36. Whole unit suite: 172/172. pnpm check clean.
+
+Why: the interval loop could not compose per-screen themes or
+crossfade without drift; the scheduler owns timing, sound.ts stays
+thin WebAudio wiring. Call sites (startMusic/stopMusic signatures)
+are unchanged.
+
+Files: src/audio/sound.ts, src/audio/sound.test.ts
+Gates: pnpm check clean; CI=true pnpm test 172/172.
