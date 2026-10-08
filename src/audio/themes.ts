@@ -10,7 +10,7 @@
  * the bar length its notes tile over, and the scheduler loops them
  * seamlessly.
  */
-import type { ScheduledNote } from "./scheduler";
+import type { ScheduledNote, Theme } from "./scheduler";
 
 /** Which synthesizer voice plays a note. */
 export type VoiceName =
@@ -23,8 +23,6 @@ export type VoiceName =
 
 /** A theme note: when it lands in the loop, and how its voice plays it. */
 export type ThemeNote = ScheduledNote & { voice: VoiceName };
-
-import type { Theme } from "./scheduler";
 
 /** A composed loop: notes tile over `loopS` seconds, forever. */
 export type ComposedTheme = Theme & { notes: ThemeNote[] };

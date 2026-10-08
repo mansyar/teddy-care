@@ -13,6 +13,7 @@ import { isAudible } from "../pet/settings";
 import type { ParentSettings } from "../save/store";
 import {
 	FADE_S,
+	LOOKAHEAD_S,
 	MusicScheduler,
 	type ScheduledNote,
 	type SchedulerHost,
@@ -25,6 +26,8 @@ let ctx: AudioContext | null = null;
 let scheduler: MusicScheduler | null = null;
 let pumpTimer: number | undefined;
 let liveSettings: ParentSettings | null = null;
+/** Clock reading at the last pump, so long throttle gaps can be detected. */
+let lastPumpAt = 0;
 /** Themes registered by startMusic, so fade callbacks can find their gain. */
 const themes = new Map<string, Theme>();
 /** Per-theme gain buses — the crossfade happens between these. */
@@ -109,6 +112,8 @@ function playVoice(
 	atS: number,
 	note: ScheduledNote,
 ): void {
+	// note.voice is scheduler-opaque (a bare string); the cast is safe
+	// because voiceFor falls back to the pluck for unknown names.
 	const spec = voiceFor((note.voice ?? "pluck") as VoiceName);
 	const env = envelopeFor(spec, note.durationS);
 	const level = note.volume * spec.gainScale;
@@ -409,6 +414,7 @@ export function startMusic(
 	if (context === null) return;
 	themes.set(theme.id, theme);
 	liveSettings = settings;
+	lastPumpAt = context.currentTime;
 	if (scheduler !== null) {
 		if (scheduler.active === theme.id) return;
 		scheduler.switchTo(theme, context.currentTime);
@@ -426,7 +432,20 @@ export function startMusic(
 			return;
 		}
 		const live = audio();
-		if (live !== null) scheduler?.pump(live.currentTime);
+		if (live === null || scheduler === null) return;
+		// After long tab-hide, timers throttle and the loop origin falls
+		// behind the clock. Catching up would dump every missed note at
+		// once — resync to the first beat instead (restart in sync).
+		if (live.currentTime - lastPumpAt > LOOKAHEAD_S * 2) {
+			const theme = themes.get(scheduler.active ?? "");
+			if (theme !== undefined) {
+				scheduler.switchTo(theme, live.currentTime);
+				lastPumpAt = live.currentTime;
+				return;
+			}
+		}
+		lastPumpAt = live.currentTime;
+		scheduler.pump(live.currentTime);
 	}, PUMP_INTERVAL_MS);
 }
 

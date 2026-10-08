@@ -399,6 +399,35 @@ describe("music wiring (scheduler-driven)", () => {
 		expect(oscillators).toBe(0);
 	});
 
+	it("resyncs to the first beat after a long clock jump instead of dumping missed notes", async () => {
+		vi.useFakeTimers();
+		installAudioStub();
+		const { startMusic } = await load();
+		// A dense one-second loop makes a catch-up burst easy to detect.
+		const loopTheme = {
+			id: "gap-probe",
+			loopS: 1,
+			gain: 1,
+			notes: [{ offsetS: 0, frequency: 440, durationS: 0.5, volume: 0.05 }],
+		};
+		setNow(10);
+		startMusic({ ...AUDIBLE }, loopTheme);
+		const afterStart = oscillators;
+
+		// Hidden for ~50 seconds: the clock jumps far past the pump cadence.
+		setNow(60);
+		vi.advanceTimersByTime(200); // one pump fires after the jump
+		const afterResync = oscillators;
+		// Catching up would schedule ~50 missed beats; a resync schedules
+		// at most one lookahead window from the new origin.
+		expect(afterResync - afterStart).toBeLessThanOrEqual(3);
+
+		// And the loop keeps flowing on the resynced clock afterwards.
+		setNow(61.1);
+		vi.advanceTimersByTime(200);
+		expect(oscillators).toBeGreaterThan(afterResync);
+	});
+
 	it("voice routing: a shimmer note plays as a noise band, not an oscillator", async () => {
 		installAudioStub();
 		const { startMusic } = await load();

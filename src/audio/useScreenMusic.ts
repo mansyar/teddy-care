@@ -94,9 +94,9 @@ export function useScreenMusic(settings: ParentSettings, route: string): void {
 			),
 			settings,
 			{
-				start: (next, themeId_) => {
-					startMusic(next, THEMES[themeId_]);
-					themeId.current = themeId_;
+				start: (next, wantedId) => {
+					startMusic(next, THEMES[wantedId]);
+					themeId.current = wantedId;
 					playing.current = true;
 				},
 				stop: () => {
