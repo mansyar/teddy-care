@@ -169,14 +169,14 @@ describe("room sound gating", () => {
 		const { playMunch } = await load();
 		playMunch(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBe(3);
+		expect(oscillators).toBe(6);
 	});
 
 	it("audible footsteps schedule several soft ticks", async () => {
 		installAudioStub();
 		const { playFootsteps } = await load();
 		playFootsteps(AUDIBLE);
-		expect(oscillators).toBeGreaterThanOrEqual(2);
+		expect(oscillators).toBeGreaterThanOrEqual(8);
 	});
 
 	it("audible fizz and yawn schedule oscillators", async () => {
@@ -184,7 +184,52 @@ describe("room sound gating", () => {
 		const { playFizz, playYawn } = await load();
 		playFizz(AUDIBLE);
 		playYawn(AUDIBLE);
-		expect(oscillators).toBe(7);
+		expect(oscillators).toBe(14);
+	});
+});
+
+describe("sfx textures (richer layers)", () => {
+	it("fizz carries an airy noise bed under the bubbles", async () => {
+		installAudioStub();
+		const { playFizz } = await load();
+		playFizz(AUDIBLE);
+		expect(sources).toBeGreaterThanOrEqual(1);
+	});
+
+	it("star and sparkle leave a shimmer tail", async () => {
+		installAudioStub();
+		const { playStar, playSparkle } = await load();
+		playStar(AUDIBLE);
+		expect(sources).toBe(1);
+		playSparkle(AUDIBLE);
+		expect(sources).toBe(2);
+	});
+
+	it("pop, snap and pop-bubble get a tiny noise click", async () => {
+		installAudioStub();
+		const { playPop, playSnap, playPopBubble } = await load();
+		playPop(AUDIBLE);
+		playSnap(AUDIBLE);
+		playPopBubble(AUDIBLE);
+		expect(sources).toBe(3);
+	});
+
+	it("munch and footsteps get grainy texture", async () => {
+		installAudioStub();
+		const { playMunch, playFootsteps } = await load();
+		playMunch(AUDIBLE);
+		expect(sources).toBe(3);
+		playFootsteps(AUDIBLE);
+		expect(sources).toBe(7);
+	});
+
+	it("silence still creates no noise sources", async () => {
+		installAudioStub();
+		const { playFizz, playStar } = await load();
+		playFizz(MUTED);
+		playStar(BEDTIME);
+		expect(sources).toBe(0);
+		expect(oscillators).toBe(0);
 	});
 });
 
@@ -208,7 +253,7 @@ describe("bubble pop sound", () => {
 		const { playPopBubble } = await load();
 		playPopBubble(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBe(1);
+		expect(oscillators).toBe(2);
 	});
 });
 
@@ -236,11 +281,11 @@ describe("puzzle sounds", () => {
 		const s = await load();
 		installAudioStub();
 		s.playPickup(AUDIBLE);
-		expect(oscillators).toBe(1);
+		expect(oscillators).toBe(2);
 		s.playSnap(AUDIBLE);
-		expect(oscillators).toBe(3);
+		expect(oscillators).toBe(6);
 		s.playBoop(AUDIBLE);
-		expect(oscillators).toBe(5);
+		expect(oscillators).toBe(10);
 	});
 });
 
@@ -264,7 +309,7 @@ describe("wardrobe buy celebration", () => {
 		const { playSparkle } = await load();
 		playSparkle(AUDIBLE);
 		expect(constructed).toBe(1);
-		expect(oscillators).toBeGreaterThanOrEqual(4);
+		expect(oscillators).toBeGreaterThanOrEqual(8);
 	});
 });
 
@@ -275,7 +320,7 @@ describe("placeholder sounds and music loop", () => {
 		playGiggle(AUDIBLE);
 		playStar(AUDIBLE);
 		playFanfare(AUDIBLE);
-		expect(oscillators).toBe(3 + 2 + 4);
+		expect(oscillators).toBe(6 + 4 + 8);
 	});
 });
 

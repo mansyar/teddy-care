@@ -162,12 +162,65 @@ function play(
 	if (context === null) return;
 	for (const note of notes) {
 		tone(context, note.frequency, note.delayS, note.durationS, note.volume);
+		// A quieter sub-octave shadow gives every note a warmer body.
+		tone(
+			context,
+			note.frequency / 2,
+			note.delayS,
+			note.durationS,
+			(note.volume ?? 0.12) * 0.5,
+		);
+	}
+}
+
+/** One short filtered noise burst — texture, not melody. */
+function burst(
+	context: AudioContext,
+	delayS: number,
+	durationS: number,
+	volume: number,
+	filterHz: number,
+): void {
+	const start = context.currentTime + delayS;
+	const band = context.createBufferSource();
+	band.buffer = noiseFor(context);
+	band.loop = true;
+	const filter = context.createBiquadFilter();
+	filter.type = "lowpass";
+	filter.frequency.value = filterHz;
+	const gain = context.createGain();
+	gain.gain.setValueAtTime(0, start);
+	gain.gain.linearRampToValueAtTime(volume, start + 0.005);
+	gain.gain.exponentialRampToValueAtTime(0.001, start + durationS);
+	band.connect(filter).connect(gain).connect(context.destination);
+	band.start(start);
+	band.stop(start + durationS + 0.05);
+}
+
+/** Gated noise texture — a no-op whenever sound is not allowed. */
+function texture(
+	settings: ParentSettings,
+	bursts: {
+		delayS: number;
+		durationS: number;
+		volume: number;
+		filterHz: number;
+	}[],
+): void {
+	if (!isAudible(settings)) return;
+	const context = audio();
+	if (context === null) return;
+	for (const item of bursts) {
+		burst(context, item.delayS, item.durationS, item.volume, item.filterHz);
 	}
 }
 
 /** Soft pop for care buttons. */
 export function playPop(settings: ParentSettings): void {
 	play(settings, [{ frequency: 520, delayS: 0, durationS: 0.12 }]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.04, volume: 0.02, filterHz: 3000 },
+	]);
 }
 
 /** Gentle alternating footstep ticks while Teddy walks. */
@@ -178,6 +231,12 @@ export function playFootsteps(settings: ParentSettings): void {
 		{ frequency: 180, delayS: 0.36, durationS: 0.07, volume: 0.05 },
 		{ frequency: 150, delayS: 0.54, durationS: 0.07, volume: 0.05 },
 	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.05, volume: 0.025, filterHz: 900 },
+		{ delayS: 0.18, durationS: 0.05, volume: 0.025, filterHz: 900 },
+		{ delayS: 0.36, durationS: 0.05, volume: 0.02, filterHz: 900 },
+		{ delayS: 0.54, durationS: 0.05, volume: 0.02, filterHz: 900 },
+	]);
 }
 
 /** Three low crunches for a meal at the bowl. */
@@ -186,6 +245,11 @@ export function playMunch(settings: ParentSettings): void {
 		{ frequency: 220, delayS: 0, durationS: 0.09, volume: 0.1 },
 		{ frequency: 180, delayS: 0.14, durationS: 0.09, volume: 0.1 },
 		{ frequency: 220, delayS: 0.28, durationS: 0.12, volume: 0.09 },
+	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.08, volume: 0.03, filterHz: 1200 },
+		{ delayS: 0.14, durationS: 0.08, volume: 0.03, filterHz: 1200 },
+		{ delayS: 0.28, durationS: 0.08, volume: 0.03, filterHz: 1200 },
 	]);
 }
 
@@ -196,6 +260,9 @@ export function playFizz(settings: ParentSettings): void {
 		{ frequency: 980, delayS: 0.09, durationS: 0.09, volume: 0.07 },
 		{ frequency: 820, delayS: 0.18, durationS: 0.09, volume: 0.06 },
 		{ frequency: 1100, delayS: 0.27, durationS: 0.12, volume: 0.06 },
+	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.5, volume: 0.015, filterHz: 5000 },
 	]);
 }
 
@@ -223,6 +290,9 @@ export function playStar(settings: ParentSettings): void {
 		{ frequency: 880, delayS: 0, durationS: 0.2 },
 		{ frequency: 1320, delayS: 0.1, durationS: 0.3 },
 	]);
+	texture(settings, [
+		{ delayS: 0.1, durationS: 0.6, volume: 0.012, filterHz: 6000 },
+	]);
 }
 
 /** Shimmering ascending run for the buy-a-costume celebration. */
@@ -232,6 +302,9 @@ export function playSparkle(settings: ParentSettings): void {
 		{ frequency: 1175, delayS: 0.07, durationS: 0.1, volume: 0.09 },
 		{ frequency: 1320, delayS: 0.14, durationS: 0.12, volume: 0.1 },
 		{ frequency: 1760, delayS: 0.21, durationS: 0.3, volume: 0.1 },
+	]);
+	texture(settings, [
+		{ delayS: 0.21, durationS: 0.4, volume: 0.015, filterHz: 6000 },
 	]);
 }
 
@@ -248,6 +321,9 @@ export function playFanfare(settings: ParentSettings): void {
 /** Bright short blip for popping a bubble in the tap game. */
 export function playPopBubble(settings: ParentSettings): void {
 	play(settings, [{ frequency: 1150, delayS: 0, durationS: 0.08 }]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.04, volume: 0.02, filterHz: 4000 },
+	]);
 }
 
 /** Quick light tick when a puzzle piece is picked up. */
@@ -262,6 +338,9 @@ export function playSnap(settings: ParentSettings): void {
 	play(settings, [
 		{ frequency: 880, delayS: 0, durationS: 0.05 },
 		{ frequency: 1175, delayS: 0.06, durationS: 0.06 },
+	]);
+	texture(settings, [
+		{ delayS: 0, durationS: 0.03, volume: 0.02, filterHz: 3000 },
 	]);
 }
 
