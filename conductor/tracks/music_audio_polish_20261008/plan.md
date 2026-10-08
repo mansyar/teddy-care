@@ -21,7 +21,7 @@
 - [x] Task: Write failing tests + implement synthesis voices (pluck/pad, arpeggio, noise shimmer, percussion) — envelope/clamp logic unit-tested (cc03560)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3: App Integration (hook, crossfade, unlock)
+## Phase 3: App Integration (hook, crossfade, unlock) [checkpoint: 39aebb8]
 
 - [x] Task: Write failing tests for the `useScreenMusic` hook (Red) — current route + bedtime + settings resolve to exactly one active theme; mute silences without tearing down state (00f207b)
 - [x] Task: Implement the hook and mount it in `App.tsx` (Parent panel keeps last theme — FR3) (2757218, 39aebb8)
