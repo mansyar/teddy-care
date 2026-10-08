@@ -14,7 +14,7 @@
 - [x] Task: Wire the engine into WebAudio (`startMusic`/`stopMusic` preserve their signatures; lookahead scheduling on the AudioContext clock, no `setInterval` timing loop) (fc9540d)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2: Theme Library (five composed loops)
+## Phase 2: Theme Library (five composed loops) [checkpoint: cc03560]
 
 - [x] Task: Write failing tests for theme resolution (Red) — route → theme mapping, bedtime → lullaby override, unknown routes → room theme (9862d0a)
 - [x] Task: Implement pure theme definitions (note sequences, chords, tempos, per-voice volumes as data) (9862d0a)
