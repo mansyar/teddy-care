@@ -19,15 +19,25 @@
 
 ## Phase 2: CI & deploy workflow
 
-- [ ] Task: Write `.github/workflows/ci-deploy.yml`
-  - [ ] `verify` job: pnpm + Node 24 with lockfile cache →
+- [x] Task: Write `.github/workflows/ci-deploy.yml`
+  - [x] `verify` job: pnpm + Node 24 with lockfile cache→
         `pnpm install --frozen-lockfile` → `pnpm check` → unit → Playwright
         browsers (cached) → e2e → `pnpm build`
-  - [ ] `deploy` job: `needs: verify`, `main`-push-only, wrangler-action
+  - [x] `deploy` job: `needs: verify`, `main`-push-only, wrangler-action
         `pages deploy dist --project-name teddy-care`
-  - [ ] Concurrency group (cancel superseded runs)
-- [ ] Task: Push workflow to `main` (before protection is enabled) and
+        (deviation: implemented as one sequential job with a conditional
+        deploy step — deploy runs only after every verify step passed on a
+        push to main; same guarantee, simpler graph. wrangler-action was
+        replaced by repo-pinned wrangler 4.148.0 + `pnpm-workspace.yaml`
+        allowBuilds after ERR_PNPM_IGNORED_BUILDS on pnpm 12)
+  - [x] Concurrency group (cancel superseded runs)
+- [x] Task: Push workflow to `main` (before protection is enabled) and
       confirm the run executes
+  - 3 CI runs observed: (1) exposed e2e reload-vs-IDB-write race — fixed
+    with label-flip waits + 500ms settle; (2) exposed wrangler-action
+    pnpm-12 build-approval failure — fixed via repo-pinned wrangler;
+    (3) verify fully green, deploy fails loudly with wrangler's missing-
+    CLOUDFLARE_API_TOKEN error — the FR5 by-design proof
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
   - [ ] Actions run visible; deploy job fails loudly on missing secrets
         (FR5 proof)
