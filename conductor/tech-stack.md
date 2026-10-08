@@ -18,8 +18,9 @@ Bubble Pop tap and Puzzle Pieces jigsaw mini-games are pure React/DOM
   algorithm) applied at runtime to emotion stills — zero animation assets
 
 ## Game Data & Persistence
-- **IndexedDB (local-only)** via lightweight wrapper — stats, stars, costumes,
-  settings; no backend, no login
+- **IndexedDB (local-only)** via lightweight wrapper — stats, stars, owned +
+  worn costumes, settings; versioned save schema with migration on load;
+  no backend, no login
 - Timers computed from wall-clock deltas on load (kind offline progression)
 
 ## PWA
