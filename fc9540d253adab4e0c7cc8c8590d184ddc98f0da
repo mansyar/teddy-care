@@ -22,3 +22,25 @@ are unchanged.
 
 Files: src/audio/sound.ts, src/audio/sound.test.ts
 Gates: pnpm check clean; CI=true pnpm test 172/172.
+
+Phase 1 'Audio Engine Core' verification report (user-approved 2026-10-08)
+
+Scope: 8e95d5e..fc9540d - src/audio/scheduler.ts(+test), src/audio/sound.ts(+test)
+
+Automated gates:
+- pnpm check clean (Biome format/lint + strict tsc -b)
+- Full unit suite: 172/172 passing (CI=true pnpm test)
+- Coverage: scheduler.ts 100% stmts / 82.6% branches (defensive
+  guards only); sound.ts 87.6% stmts / 83.3% branches - both above
+  the 80% gate
+
+Manual verification (user confirmed 'yes'):
+- Music does not start on page load; starts after first tap/keypress
+  with a gentle fade-in (autoplay policy respected)
+- ~30s listening pass: music-box phrase loops seamlessly, no gaps
+  or drift (AudioContext-clock scheduling)
+- Feed action: munch SFX layers on top; music uninterrupted
+- Parent mute: quick fade-out (~0.15s), no click; unmute restores
+- Bedtime: full silence (lullaby arrives Phase 2)
+- Note: cross-theme crossfades not yet audible (single room theme
+  until Phases 2-3); scheduler crossfade logic verified by unit tests
