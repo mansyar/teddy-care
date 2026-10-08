@@ -40,7 +40,7 @@
   - [x] `pnpm check` green `9cb269e`
   - [x] `CI=true pnpm test` with coverage (>80% touched logic modules): 217 tests, store.ts 97.4% / usePetSave.ts 81.1% lines `9cb269e`
   - [x] `pnpm test:e2e`: 28 tests green `918b9f0`
-- [ ] Task: Docs sync
-  - [ ] product.md shipped entry
-  - [ ] tech-stack.md note if the save architecture line changes
+- [x] Task: Docs sync `7f464ee`
+  - [x] product.md shipped entry `7f464ee`
+  - [x] tech-stack.md note if the save architecture line changes `7f464ee`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
