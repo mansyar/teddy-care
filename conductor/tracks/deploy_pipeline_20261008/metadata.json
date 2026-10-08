@@ -2,7 +2,7 @@
   "id": "deploy_pipeline_20261008",
   "title": "Deployment Pipeline — GitHub repo, Actions CI, Cloudflare Pages auto-deploy",
   "type": "chore",
-  "status": "new",
+  "status": "complete",
   "branch": "deploy-pipeline",
   "created": "2026-10-08",
   "updated": "2026-10-08"
