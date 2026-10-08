@@ -21,3 +21,24 @@ Full suite: 208/208. pnpm check clean.
 
 Files: src/audio/sound.ts, src/audio/sound.test.ts
 Gates: pnpm check clean; CI=true pnpm test 208/208.
+
+Phase 4 'SFX Richness & Docs' verification report (user-approved 2026-10-08)
+
+Scope: 39aebb8..ed8d482 - src/audio/sound.ts(+test), conductor/product.md,
+conductor/tech-stack.md
+
+Automated gates:
+- pnpm check clean (Biome format/lint/import order + strict tsc -b)
+- Full unit suite: 208/208 passing (CI=true pnpm test)
+- Coverage: sound.ts 92.3% stmts / 86.2% branches (up from 90.8/82.7 -
+  the new texture/burst paths are covered); scheduler.ts and
+  useScreenMusic.ts unchanged from earlier phases
+
+Manual verification (user confirmed 'yes'):
+- SFX sound fuller via the sub-octave shadow layer
+- Munch has grainy crunch texture; wash fizz has an airy water bed
+- Star/sparkle chimes carry a soft shimmer tail; footsteps have scuffs
+- Sound off silences everything; bedtime keeps the soft lullaby
+- Noise textures stay gentle and non-jarring for a 4-year-old
+- product.md 'Track 6' shipped section and tech-stack.md Audio section
+  document the composed themes
