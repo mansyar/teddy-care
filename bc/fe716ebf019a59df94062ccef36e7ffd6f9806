@@ -1,5 +1,0 @@
-Tasks: Playwright e2e additions + PWA precache/offline — bcfe716
-
-E2E: new e2e/room-care.spec.ts (5 tests: bowl/bed/tub/pet stat boosts via IndexedDB polling with decay margin, toy box -> /runner, closet opens wardrobe, bedtime night class + sleepy sprite, both orientations assert scene aspect); new e2e/room-offline.spec.ts (SW ready -> precache fills -> setOffline(true) -> reload -> scene + decoded room-bg); updated care-star.spec.ts and settings-persist.spec.ts from CareScreen selectors (Feed button, .teddy-sprite) to room interaction (POI walk waits, .room-teddy-sprite).
-PWA: PRECACHE_ART now includes room-portrait.webp, room-landscape.webp, teddy-walk.webp, closet.webp (were missing - globPatterns has no webp); existing pwa/manifest.test.ts keeps them honest.
-Deviations: e2e first run failed against stale dist (vite preview serves dist, no auto-build) - rebuilt; stat thresholds loosened from exact nominal boosts because wall-clock decay nibbles a fraction between seed and load.
