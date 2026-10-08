@@ -1,0 +1,6 @@
+Task: Star clamping in store.ts (Phase 2, tasks 1-2)
+
+- Red phase: 3 new tests in src/save/store.test.ts failed (negative/fractional stars passed through v2 passthrough, v1 migration, and saveSave round-trip); non-finite already fell back to defaults.
+- Green phase: clampStars() helper clamps to Math.max(0, Math.floor(x)); non-finite -> 0. Applied in migrateSave (v2 passthrough + v1 branch) and saveSave. Schema stays v2, no migration bump.
+- Verification: CI=true pnpm vitest run src/save/store.test.ts -> 14/14 pass; pnpm check green.
+- Files: src/save/store.ts, src/save/store.test.ts
