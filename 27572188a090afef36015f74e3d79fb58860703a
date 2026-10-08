@@ -1,0 +1,21 @@
+Task 3.2 + 3.3: Mount the hook in App.tsx; first-gesture unlock
+
+What: App.tsx extracts a Shell component inside HashRouter that calls
+useSettings() + useLocation() and mounts useScreenMusic(settings,
+pathname) - one theme, always, across routes. decideMusic gained the
+FR3 parent-panel rule: /parents keeps whatever was playing (replays
+the remembered theme after a mute; falls back to the room theme if
+nothing was playing yet). Task 3.3 (first-gesture unlock, no UI) is
+realized inside the hook's one-time pointerdown/keydown listeners
+from Task 3.1; verified here plus Playwright in Phase 5.
+
+Note: until this commit the app never started music at all - only
+stopMusic was ever called (a silent regression since the room rework);
+this commit is where the app gains actual music.
+
+Tests: 9 useScreenMusic cases (new parent-panel retention case);
+whole suite 200/200; pnpm check clean (Biome reflowed the long
+react-router-dom import).
+
+Files: src/App.tsx, src/audio/useScreenMusic.ts, src/audio/useScreenMusic.test.ts
+Gates: pnpm check clean; CI=true pnpm test 200/200.
