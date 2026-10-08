@@ -1,3 +1,0 @@
-feat(audio): Add pickup, snap and boop SFX for the puzzle game — Red 3 failing tests (silent under MUTED/BEDTIME; audible schedules 1+2+2 oscillators) then Green: playPickup 660Hz 60ms tick, playSnap 880+1175Hz two-note click, playBoop 300->220Hz gentle descending boop, all gated via shared play()/isAudible. Two test-authoring bugs fixed (ctxStub undefined — module counters are constructed/oscillators; redundant unstubAllGlobals — afterEach owns cleanup) plus biome format. Full suite 139/139; check clean (51 files).
-
-Phase 2 verification report: pnpm check clean (51 files); 139/139 tests (full suite, +3 puzzle sound tests); manual plan (pure-audio phase, no UI change; SFX call sites arrive in Phase 4) presented and user confirmed yes.
