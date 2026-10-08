@@ -24,8 +24,8 @@
 ## Phase 3: App Integration (hook, crossfade, unlock)
 
 - [x] Task: Write failing tests for the `useScreenMusic` hook (Red) — current route + bedtime + settings resolve to exactly one active theme; mute silences without tearing down state (00f207b)
-- [ ] Task: Implement the hook and mount it in `App.tsx` (Parent panel keeps last theme — FR3)
-- [ ] Task: Wire first-gesture unlock (one-time tap/keydown listener; no UI)
+- [x] Task: Implement the hook and mount it in `App.tsx` (Parent panel keeps last theme — FR3) (2757218)
+- [x] Task: Wire first-gesture unlock (one-time tap/keydown listener; no UI) — realized inside the hook from Task 3.1; verified in e2e (2757218)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: SFX Richness & Docs
