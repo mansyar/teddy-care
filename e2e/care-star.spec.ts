@@ -24,10 +24,11 @@ test("feed earns stars and ten stars buy the costume", async ({ page }) => {
 	await expect(chip).toHaveText("⭐ 10");
 
 	await page.getByRole("button", { name: "Teddy's wardrobe" }).click();
-	await page.waitForTimeout(2500);
 	await page
-		.getByRole("button", { name: "Buy Sunset Onesie for 10 stars" })
+		.getByRole("button", { name: "Get Sunset Onesie for 10 stars" })
 		.click();
-	await expect(page.getByText(/Teddy loves his/)).toBeVisible();
+	await expect(
+		page.getByRole("button", { name: "Sunset Onesie, wearing it now" }),
+	).toBeVisible();
 	await expect(chip).toHaveText("⭐ 0");
 });
