@@ -1,6 +1,0 @@
-Phase 2 Verification & Checkpoint (manual, user-confirmed 2026-10-08)
-
-- Automated: CI=true pnpm vitest run src/save/store.test.ts -> 14/14 pass; pnpm check green.
-- Manual: no UI change by design; stars are integers >= 0 at every load/save; corrupted fractional/negative saves now load safely.
-- Fix attempts used: 0 of 2.
-- Files changed since phase start: src/save/store.ts, src/save/store.test.ts
