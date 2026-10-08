@@ -1,0 +1,7 @@
+Task: Refactor useSettings + screens to consume PetSaveProvider (Phase 1, tasks 3-4)
+
+- useSettings now reads from usePetSaveContext() instead of instantiating its own usePetSave.
+- RoomScreen, RunnerScreen, BubblesScreen, PuzzleScreen consume usePetSaveContext; ParentScreen keeps its props (fed by Shell).
+- App mounts one PetSaveProvider above Shell; stale-fork warning comment replaced with provider rationale.
+- Verification: pnpm check green; CI=true pnpm test — 20 files / 212 tests all pass.
+- Files: src/App.tsx, src/pet/useSettings.ts, src/screens/RoomScreen.tsx, src/screens/RunnerScreen.tsx, src/screens/BubblesScreen.tsx, src/screens/PuzzleScreen.tsx
