@@ -62,8 +62,24 @@ tracking.
   reduced motion drops the animations, sounds follow parent mute/bedtime,
   all three pictures precached for offline play
 
+## Shipped (Track 5: Wardrobe Expansion)
+- The closet is a real wardrobe now: a bottom-sheet with a live preview
+  strip — every look is a tappable card showing Teddy wearing it (rendered
+  through the costume's own CSS filter, so the thumbnail is the truth)
+- Four looks, tiered prices: the free default Comfy Onesie plus Sunset
+  Onesie ⭐10, Mint Dream ⭐20 and Berry Night ⭐30 — every entry a filter
+  recolor, so the choice shows up consistently in the idle room, walk
+  cycle and runner
+- Free switching once owned: tap to wear, tap the default card to go back;
+  buying is a small celebration (sparkle burst + happy chime, respecting
+  mute/bedtime) and the new look is worn immediately
+- Tapping a look you can't afford yet gives a gentle wiggle + soft boop —
+  never failure language; the star chip and worn state update live
+- Saves moved to v2 with an owned-costume list; old saves migrate safely
+  (the onesie you wore implies you own it), and the save database itself
+  now opens at the schema version
+
 ## Deferred (Post-MVP)
-- Costume system (accessories + palette recolor, not per-face redraws)
 - Pet collection metagame
 
 ## Constraints & Principles

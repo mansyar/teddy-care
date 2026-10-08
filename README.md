@@ -6,7 +6,7 @@ he loves you back with expressive faces, breathing idle motion, and playful
 reactions. Free forever: no ads, no accounts, zero tracking.
 
 - **Audience:** children ages 4+ (tap-first, zero reading) and their parents
-- **Screens:** Care (home) · Mini-games: Runner, Bubble Pop & Puzzle · Parent panel (mute, bedtime, reset)
+- **Screens:** Care (home) · Mini-games: Runner, Bubble Pop & Puzzle · Wardrobe (costume closet) · Parent panel (mute, bedtime, reset)
 - **Offline:** full PWA — install it, use airplane mode, everything still works
 
 ## Tech Stack
@@ -15,7 +15,7 @@ reactions. Free forever: no ads, no accounts, zero tracking.
 - **Phaser 4** — runner mini-game (mounted per run inside the React shell)
 - **Pure React/DOM** — Bubble Pop + Puzzle Pieces mini-games (CSS sprites/animations)
 - **Plain CSS** with custom properties — pastel theme, tiny payload
-- **IndexedDB** (local-only) — stats, stars, costumes, settings
+- **IndexedDB** (local-only, versioned with migration) — stats, stars, owned + worn costumes, settings
 - **vite-plugin-pwa** — installable, offline via precache
 - **WebAudio** — synthesized SFX + music loop (zero audio assets)
 - **pnpm · Biome · Vitest · Playwright** — tooling & quality
@@ -43,7 +43,7 @@ pnpm test:e2e   # Playwright flows (care, mini-games, offline, settings)
 src/
   screens/    RoomScreen, RunnerScreen, BubblesScreen, PuzzleScreen, ParentScreen (React glue)
   room/      layout, walk→act controller, object-state mapping
-  pet/        Pure game logic: stats, mood, breathe, stars, costume, bubbles, puzzle, settings
+  pet/        Pure game logic: stats, mood, breathe, stars, costume catalog, bubbles, puzzle, settings
   save/       IndexedDB persistence
   game/       Phaser runner mounting (runGame.ts)
   audio/      WebAudio SFX + music
