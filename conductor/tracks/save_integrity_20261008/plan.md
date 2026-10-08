@@ -44,3 +44,9 @@
   - [x] product.md shipped entry `7f464ee`
   - [x] tech-stack.md note if the save architecture line changes `7f464ee`
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) `[checkpoint: 9cb269e]`
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions
+  - [x] Biome `noPrivateImports` + `@package` JSDoc on `usePetSave` — fork vector now machine-checked (negative probe verified)
+  - [x] `useSettings` header comment rewrapped to <=80 columns
+  - [x] Biome format drift on `PetSaveProvider.tsx` committed
