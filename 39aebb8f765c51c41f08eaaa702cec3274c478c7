@@ -19,3 +19,24 @@ Tests: 3 new applyDecision cases (12 total in the file); full suite
 
 Files: src/audio/useScreenMusic.ts, src/audio/useScreenMusic.test.ts
 Gates: pnpm check clean; CI=true pnpm test 203/203.
+
+Phase 3 'App Integration' verification report (user-approved 2026-10-08)
+
+Scope: a489968..e0b8efc - src/audio/useScreenMusic.ts(+test), src/App.tsx
+
+Automated gates:
+- pnpm check clean (Biome format/lint/import order + strict tsc -b)
+- Full unit suite: 203/203 passing (CI=true pnpm test)
+- Coverage: useScreenMusic pure logic (decideMusic + applyDecision)
+  100% of logic lines, 92.9% branches; hook React-glue body (82-124)
+  exempt per plan (no RTL installed) - verified by Playwright e2e in
+  Phase 5; scheduler.ts and sound.ts unchanged from Phases 1-2
+
+Manual verification (user confirmed 'yes'):
+- No music on page load; room theme fades in on first tap (~1s)
+- Parent panel keeps the playing theme (no restart)
+- Runner/bubbles/puzzle each crossfade to their distinct mood
+- Sound off fades out; sound on resumes the correct screen theme
+- Bedtime swaps to the soft lullaby (not silence) and dims the room
+- Reload stays silent until the first tap (autoplay unlock, no UI)
+- 360px portrait visually unchanged except the bedtime dim
