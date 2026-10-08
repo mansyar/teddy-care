@@ -37,5 +37,8 @@
 ## Phase 5: E2E, Quality Gates & Polish [checkpoint: 23ea7cc]
 
 - [x] Task: Playwright e2e — mute silences all + persists; bedtime plays soft lullaby; theme continuity across navigation; offline parity (23ea7cc)
-- [~] Task: Full quality gates — `pnpm check`, `CI=true pnpm test`, coverage >80% on new logic modules, 360px portrait manual pass
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Full quality gates - `pnpm check`, `CI=true pnpm test`, coverage >80% on new logic modules, 360px portrait manual pass (3882364)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) (23ea7cc)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (8b62157)
