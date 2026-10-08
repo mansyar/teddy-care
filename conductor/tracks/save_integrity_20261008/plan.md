@@ -28,18 +28,18 @@
 - [x] Task: Implement clamping in `src/save/store.ts` at the load/save boundary `c88a128`
   - [x] Schema stays v2; no migration bump `c88a128`
   - [x] Green phase: tests pass `c88a128`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) `[checkpoint: c88a128]`
 
 ## Phase 3: E2E regression proof & quality gates
 
-- [ ] Task: Playwright e2e — fork regression
-  - [ ] Earn stars in room → toggle mute in parent panel → reload → stars survive
-- [ ] Task: Playwright e2e — parent reset flow
-  - [ ] Two-tap arming reset wipes progress and settings
-- [ ] Task: Full quality gates
-  - [ ] `pnpm check`
-  - [ ] `CI=true pnpm test` with coverage (>80% touched logic modules)
-  - [ ] `pnpm test:e2e`
+- [x] Task: Playwright e2e — fork regression `918b9f0`
+  - [x] Earn stars in room → toggle mute in parent panel → reload → stars survive `918b9f0`
+- [x] Task: Playwright e2e — parent reset flow `918b9f0`
+  - [x] Already covered by `e2e/settings-persist.spec.ts` (verified; no new spec needed)
+- [x] Task: Full quality gates `9cb269e`
+  - [x] `pnpm check` green `9cb269e`
+  - [x] `CI=true pnpm test` with coverage (>80% touched logic modules): 217 tests, store.ts 97.4% / usePetSave.ts 81.1% lines `9cb269e`
+  - [x] `pnpm test:e2e`: 28 tests green `918b9f0`
 - [ ] Task: Docs sync
   - [ ] product.md shipped entry
   - [ ] tech-stack.md note if the save architecture line changes
