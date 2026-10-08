@@ -1,1 +1,0 @@
-Task: PWA wiring (TDD). Failing manifest/precache tests first (red: missing module), then manifest.ts SSoT + VitePWA config + icons/art in public/. Tests 3/3 pass, pnpm check clean, build emits SW + manifest (29 precache entries, 4.5MB). Why: SSoT module lets tests guard what ships offline; no runtime caching keeps zero-network guarantee.
