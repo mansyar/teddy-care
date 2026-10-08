@@ -30,7 +30,9 @@ import { PetSaveProvider, usePetSaveContext } from "./PetSaveProvider";
 
 function Stars({ id }: { id: string }) {
 	const { save } = usePetSaveContext();
-	return <p data-testid={`stars-${id}`}>{save === null ? "loading" : save.stars}</p>;
+	return (
+		<p data-testid={`stars-${id}`}>{save === null ? "loading" : save.stars}</p>
+	);
 }
 
 function FeedButton() {
@@ -47,6 +49,22 @@ function MuteButton() {
 	return (
 		<button type="button" onClick={() => updateSettings({ muted: true })}>
 			mute
+		</button>
+	);
+}
+
+function AwardAllButton() {
+	const { award, awardBubbles, awardPuzzleRound } = usePetSaveContext();
+	return (
+		<button
+			type="button"
+			onClick={() => {
+				award({ distanceM: 0, starsGrabbed: 0 });
+				awardBubbles(9999);
+				awardPuzzleRound();
+			}}
+		>
+			award all
 		</button>
 	);
 }
@@ -97,6 +115,32 @@ describe("PetSaveProvider", () => {
 			expect(screen.getByTestId("stars-a").textContent).toBe("0");
 		});
 		expect(loadCalls).toBe(1);
+	});
+
+	it("award mutators from mini-games flow through the shared context", async () => {
+		render(
+			<PetSaveProvider>
+				<Stars id="a" />
+				<Stars id="b" />
+				<AwardAllButton />
+			</PetSaveProvider>,
+		);
+		await waitFor(() => {
+			expect(screen.getByTestId("stars-a").textContent).toBe("0");
+		});
+
+		await act(async () => {
+			screen.getByRole("button", { name: "award all" }).click();
+		});
+
+		// Runner (worst run = 1) + bubbles (9999 pops clamp at 5) + puzzle
+		// round (1) — and both consumers see the same single fork.
+		expect(screen.getByTestId("stars-a").textContent).toBe("7");
+		expect(screen.getByTestId("stars-b").textContent).toBe("7");
+
+		const { loadSave } = await import("../save/store");
+		const persisted = await loadSave();
+		expect(persisted.stars).toBe(7);
 	});
 
 	it("a settings patch from one consumer preserves stars earned by another", async () => {
