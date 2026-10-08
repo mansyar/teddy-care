@@ -21,4 +21,4 @@
   *Link: [music_audio_polish_20261008](../archive/music_audio_polish_20261008/index.md)* *(archived 2026-10-08, reviewed and approved)*
 
 - [x] **Track: Save Integrity — single source of truth for pet state (provider unification, star clamping, regression e2e)**
-  *Link: [save_integrity_20261008](./tracks/save_integrity_20261008/index.md)*
+  *Link: [save_integrity_20261008](../archive/save_integrity_20261008/index.md)* *(archived 2026-10-08, reviewed and approved)*
