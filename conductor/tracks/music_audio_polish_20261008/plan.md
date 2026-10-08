@@ -28,7 +28,7 @@
 - [x] Task: Wire first-gesture unlock (one-time tap/keydown listener; no UI) — realized inside the hook from Task 3.1; verified in e2e (2757218)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4: SFX Richness & Docs
+## Phase 4: SFX Richness & Docs [checkpoint: 4dced8b]
 
 - [x] Task: Layer richer textures into existing SFX (call sites untouched; recognizable signatures kept; mute/bedtime gating unchanged) (4dced8b)
 - [x] Task: Sync docs — `product.md` shipped section, `tech-stack.md` audio note (6ab6e11)
