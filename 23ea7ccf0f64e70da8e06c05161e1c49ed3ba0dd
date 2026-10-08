@@ -21,3 +21,27 @@ Real bugs found and fixed while making it pass:
 
 Verification: e2e/music.spec.ts 5/5; full e2e suite 27/27; units
 208/208; pnpm check clean. Gates: strict TS, Biome, no UI added.
+
+Phase 5 'E2E & Quality Gates' verification report (user-approved 2026-10-08)
+
+Scope: 4dced8b..HEAD - e2e/music.spec.ts (new), src/pet/useSettings.ts,
+src/App.tsx, src/screens/ParentScreen.tsx, plan updates
+
+Automated gates:
+- pnpm check clean (60 files)
+- Full unit suite 208/208 (CI=true pnpm test)
+- Full e2e suite 27/27 (12 existing specs + 5 new music proofs)
+- Coverage on new logic: scheduler 100%/82.6%, sound 92.3%/86.2%,
+  themes 100%, voices 100%; hook body exempt as React glue, verified
+  end-to-end in Playwright
+
+Key finding: e2e exposed the settings fork - ParentScreen and Shell
+each ran usePetSave, so panel toggles never reached the music hook;
+old direct stopMusic() masked it with stale hook state. Fixed: Shell
+owns settings and passes them to ParentScreen as props; useSettings
+never touches audio; decideMusic owns the music lifecycle.
+
+Manual verification (user confirmed 'yes'): first-tap unlock, per-screen
+moods with crossfades, parent panel keeps music, bedtime lullaby +
+dim, mute persists across reload and resumes on unmute, richer SFX
+over uninterrupted music, 360px layout unchanged.
