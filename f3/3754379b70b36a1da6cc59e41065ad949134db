@@ -1,0 +1,1 @@
+Task: room layout module (TDD). Red: 10 failing tests for POI registry, orientation selection, tap resolution, hotspot size. Green: src/room/layout.ts ΓÇö scene-% coordinates, portrait/landscape layouts, HOTSPOT_RADIUS_PCT=8 (57.6px target at 360px). 10/10 pass, 100% coverage. Deviations: none.
