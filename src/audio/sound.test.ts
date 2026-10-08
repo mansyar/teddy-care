@@ -17,6 +17,7 @@ const BEDTIME = { muted: false, bedtime: true };
 
 let constructed: number;
 let oscillators: number;
+let sources: number;
 /** Simulated audio-clock time; the wiring must read it, never guess it. */
 let nowS: number;
 
@@ -29,6 +30,7 @@ async function load(): Promise<typeof Sound> {
 class StubAudioContext {
 	state = "running";
 	destination = {};
+	sampleRate = 48000;
 
 	constructor() {
 		constructed++;
@@ -52,6 +54,31 @@ class StubAudioContext {
 			stop: () => undefined,
 		};
 	}
+	createBufferSource() {
+		sources++;
+		return {
+			buffer: null,
+			loop: false,
+			connect: (node: unknown) => node,
+			start: () => undefined,
+			stop: () => undefined,
+		};
+	}
+	createBuffer(_channels: number, length: number, sampleRate: number) {
+		return {
+			sampleRate,
+			getChannelData: () => new Float32Array(length),
+		};
+	}
+	createBiquadFilter() {
+		return {
+			type: "",
+			frequency: { value: 0 },
+			Q: { value: 0 },
+			connect: (node: unknown) => node,
+			disconnect: () => undefined,
+		};
+	}
 	createGain() {
 		return {
 			gain: {
@@ -70,6 +97,7 @@ class StubAudioContext {
 function installAudioStub() {
 	constructed = 0;
 	oscillators = 0;
+	sources = 0;
 	nowS = 0;
 	const timers = globalThis as unknown as {
 		setInterval: typeof setInterval;
@@ -326,7 +354,52 @@ describe("music wiring (scheduler-driven)", () => {
 		expect(oscillators).toBe(0);
 	});
 
+	it("voice routing: a shimmer note plays as a noise band, not an oscillator", async () => {
+		installAudioStub();
+		const { startMusic } = await load();
+		const shimmerTheme = {
+			id: "test-shimmer",
+			loopS: 2,
+			gain: 1,
+			notes: [
+				{
+					offsetS: 0,
+					frequency: 2093,
+					durationS: 2,
+					volume: 0.015,
+					voice: "shimmer",
+				},
+			],
+		};
+		startMusic(AUDIBLE, shimmerTheme);
+		expect(sources).toBe(1);
+		expect(oscillators).toBe(0);
+	});
+
+	it("voice routing: a pluck note plays as an oscillator", async () => {
+		installAudioStub();
+		const { startMusic } = await load();
+		const pluckTheme = {
+			id: "test-pluck",
+			loopS: 2,
+			gain: 1,
+			notes: [
+				{
+					offsetS: 0,
+					frequency: 523.25,
+					durationS: 0.9,
+					volume: 0.05,
+					voice: "pluck",
+				},
+			],
+		};
+		startMusic(AUDIBLE, pluckTheme);
+		expect(oscillators).toBe(1);
+		expect(sources).toBe(0);
+	});
+
 	it("sounds degrade gracefully without any AudioContext", async () => {
+		installAudioStub();
 		const timers = globalThis as unknown as {
 			setInterval: typeof setInterval;
 			clearInterval: typeof clearInterval;

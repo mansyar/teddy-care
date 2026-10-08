@@ -14,9 +14,12 @@ import type { ParentSettings } from "../save/store";
 import {
 	FADE_S,
 	MusicScheduler,
+	type ScheduledNote,
 	type SchedulerHost,
 	type Theme,
 } from "./scheduler";
+import type { VoiceName } from "./themes";
+import { envelopeFor, voiceFor } from "./voices";
 
 let ctx: AudioContext | null = null;
 let scheduler: MusicScheduler | null = null;
@@ -26,6 +29,8 @@ let liveSettings: ParentSettings | null = null;
 const themes = new Map<string, Theme>();
 /** Per-theme gain buses — the crossfade happens between these. */
 const buses = new Map<string, GainNode>();
+/** Shared noise band for the shimmer voice, built once per context. */
+let noiseBuffer: AudioBuffer | null = null;
 
 /** How often the pump driver tops up the lookahead (ms). */
 const PUMP_INTERVAL_MS = 200;
@@ -80,6 +85,67 @@ function tone(
 	osc.connect(gain).connect(out);
 	osc.start(start);
 	osc.stop(start + durationS + 0.05);
+}
+
+/** A one-second white-noise band, shared by every shimmer note. */
+function noiseFor(context: AudioContext): AudioBuffer {
+	if (noiseBuffer === null || noiseBuffer.sampleRate !== context.sampleRate) {
+		const buffer = context.createBuffer(
+			1,
+			context.sampleRate,
+			context.sampleRate,
+		);
+		const data = buffer.getChannelData(0);
+		for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+		noiseBuffer = buffer;
+	}
+	return noiseBuffer;
+}
+
+/** Play one scheduled theme note with its voice's timbre and envelope. */
+function playVoice(
+	context: AudioContext,
+	out: AudioNode,
+	atS: number,
+	note: ScheduledNote,
+): void {
+	const spec = voiceFor((note.voice ?? "pluck") as VoiceName);
+	const env = envelopeFor(spec, note.durationS);
+	const level = note.volume * spec.gainScale;
+	const releaseStart = atS + env.attackS + env.holdS;
+	const endS = releaseStart + env.releaseS;
+
+	const gain = context.createGain();
+	gain.gain.setValueAtTime(0, atS);
+	gain.gain.linearRampToValueAtTime(level, atS + env.attackS);
+	gain.gain.setValueAtTime(level, releaseStart);
+	gain.gain.exponentialRampToValueAtTime(0.001, endS);
+
+	let source: AudioScheduledSourceNode;
+	if (spec.noise) {
+		const band = context.createBufferSource();
+		band.buffer = noiseFor(context);
+		band.loop = true;
+		source = band;
+	} else {
+		const osc = context.createOscillator();
+		osc.type = spec.wave;
+		osc.frequency.value = note.frequency;
+		source = osc;
+	}
+	source.connect(gain);
+
+	let tail: AudioNode = gain;
+	if (spec.filterHz !== undefined) {
+		const filter = context.createBiquadFilter();
+		filter.type = "lowpass";
+		filter.frequency.value = spec.filterHz;
+		gain.connect(filter);
+		tail = filter;
+	}
+	tail.connect(out);
+	source.start(atS);
+	source.stop(endS + 0.05);
 }
 
 function play(
@@ -222,16 +288,7 @@ function busFor(context: AudioContext, theme: Theme): GainNode {
 function musicHost(context: AudioContext): SchedulerHost {
 	return {
 		note(atS, note, theme) {
-			// A music-box voice: triangle wave into the theme's bus.
-			tone(
-				context,
-				note.frequency,
-				atS - context.currentTime,
-				note.durationS,
-				note.volume,
-				"triangle",
-				busFor(context, theme),
-			);
+			playVoice(context, busFor(context, theme), atS, note);
 		},
 		fade(prev, next, atS) {
 			const nextTheme = themes.get(next);
