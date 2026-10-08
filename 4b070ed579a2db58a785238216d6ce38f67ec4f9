@@ -1,1 +1,3 @@
 Phase 6: wardrobe.spec.ts (buy Mint Dream = sparkle + worn + 0 stars; unaffordable Berry Night = wiggle, stars unchanged; free switch default<->mint; survives reload via room sprite filter) + wardrobe-offline.spec.ts (room boots + wardrobe opens + preview img decodes offline); README screens/structure + IndexedDB migration line; product.md Shipped Track 5 + costume system removed from Deferred. E2e needs a fresh pnpm build (vite preview of dist). Gate: check clean, 159/159 unit, 2/2 new e2e.
+
+Phase 6 checkpoint verification: unit 159/159, new e2e 2/2 against fresh build; checkpoint diff b7d2e1d..HEAD = 2 e2e specs + README + product.md only; user approved close.
