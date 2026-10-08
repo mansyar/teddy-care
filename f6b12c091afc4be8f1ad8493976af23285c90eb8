@@ -1,1 +1,0 @@
-Task: IndexedDB wrapper. TDD: failing tests first (fresh defaults, round-trip, garbage-data safe reset, resetSave), then raw-IDB implementation with versioned SaveData guard. Verified: 7/7 tests green, coverage 81% stmts / 97% lines on store.ts (uncovered: defensive catch paths), pnpm check clean. Why: local-only persistence foundation for stats, stars, costume, settings.
