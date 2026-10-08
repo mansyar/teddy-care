@@ -1,1 +1,0 @@
-Review fixes (4 low-severity findings): spec header grammar in room-care.spec.ts; stale App.tsx module doc (runner->mini-games); dead .bubble-parked top rule replaced by comment-only hook; justification comment on --rise-to type assertion. Verified: check clean, 121/121 unit, room-care e2e 6/6.
